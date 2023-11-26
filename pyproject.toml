@@ -31,7 +31,7 @@ dev = [
 ]
 
 [tool.mypy]
-mypy_path = 'typings'
+mypy_path = 'stubs'
 
 [tool.ruff]
 ignore-init-module-imports = true
