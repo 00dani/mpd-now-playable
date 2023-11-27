@@ -6,7 +6,7 @@ authors = [
     {name = "Danielle McLean", email = "dani@00dani.me"},
 ]
 dependencies = [
-    "async-lru>=2.0.4",
+    "aiocache>=0.12.2",
     "attrs>=23.1.0",
     "pyobjc-framework-MediaPlayer>=10.0",
     "python-mpd2>=3.1.0",
