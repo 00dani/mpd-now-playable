@@ -58,11 +58,12 @@ def ns_image_to_media_item_artwork(img: NSImage) -> MPMediaItemArtwork:
 
 
 def playback_state_to_cocoa(state: PlaybackState) -> MPMusicPlaybackState:
-	return {
+	mapping: dict[PlaybackState, MPMusicPlaybackState] = {
 		PlaybackState.play: MPMusicPlaybackStatePlaying,
 		PlaybackState.pause: MPMusicPlaybackStatePaused,
 		PlaybackState.stop: MPMusicPlaybackStateStopped,
-	}[state]
+	}
+	return mapping[state]
 
 
 def song_to_media_item(song: Song) -> NSMutableDictionary:
@@ -139,7 +140,7 @@ class CocoaNowPlaying:
 
 	def _create_handler(
 		self, player: Callable[[], Coroutine[None, None, PlaybackState | None]]
-	) -> Callable[[MPRemoteCommandEvent], None]:
+	) -> Callable[[MPRemoteCommandEvent], MPRemoteCommandHandlerStatus]:
 		async def invoke_music_player() -> None:
 			result = await player()
 			if result:
