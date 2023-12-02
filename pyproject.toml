@@ -1,6 +1,6 @@
 [project]
 name = "mpd-now-playable"
-version = "0.0.1"
+dynamic = ["version"]
 description = "Expose your MPD server as a 'now playable' app on MacOS"
 authors = [
     {name = "Danielle McLean", email = "dani@00dani.me"},
@@ -23,6 +23,9 @@ start = {call = 'mpd_now_playable.cli:main'}
 lint = 'ruff check src/mpd_now_playable'
 typecheck = 'mypy -p mpd_now_playable'
 check = {composite = ['lint', 'typecheck']}
+
+[tool.pdm.version]
+source = "scm"
 
 [build-system]
 requires = ["pdm-backend"]
