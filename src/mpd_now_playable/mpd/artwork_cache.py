@@ -7,7 +7,9 @@ CACHE_TTL = 60 * 10  # ten minutes
 
 
 def calc_album_key(song: CurrentSongResponse) -> str:
-	return f'{song["albumartist"]}:-:-:{song["album"]}'
+	artist = song.get("albumartist", song.get("artist", "Unknown Artist"))
+	album = song.get("album", "Unknown Album")
+	return f"{artist}:-:-:{album}"
 
 
 def calc_track_key(song: CurrentSongResponse) -> str:
@@ -16,8 +18,8 @@ def calc_track_key(song: CurrentSongResponse) -> str:
 
 class MpdArtworkCache:
 	mpd: MpdStateHandler
-	album_cache: 'Cache[bytes | None]'
-	track_cache: 'Cache[bytes | None]'
+	album_cache: "Cache[bytes | None]"
+	track_cache: "Cache[bytes | None]"
 
 	def __init__(self, mpd: MpdStateHandler):
 		self.mpd = mpd
