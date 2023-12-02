@@ -24,6 +24,13 @@ lint = 'ruff check src/mpd_now_playable'
 typecheck = 'mypy -p mpd_now_playable'
 check = {composite = ['lint', 'typecheck']}
 
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pdm.build]
+excludes = ["**/.mypy_cache"]
+
 [tool.pdm.dev-dependencies]
 dev = [
     "mypy>=1.7.1",
