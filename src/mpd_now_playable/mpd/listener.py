@@ -1,10 +1,13 @@
 import asyncio
+from pathlib import Path
+from uuid import UUID
 
 from mpd.asyncio import MPDClient
 from mpd.base import CommandError
 
 from ..player import Player
 from ..song import PlaybackState, Song, SongListener
+from ..type_tools import convert_if_exists
 from .artwork_cache import MpdArtworkCache
 from .types import CurrentSongResponse, StatusResponse
 
@@ -14,10 +17,18 @@ def mpd_current_to_song(
 ) -> Song:
 	return Song(
 		state=PlaybackState(status["state"]),
-		title=current["title"],
-		artist=current["artist"],
-		album=current["album"],
-		album_artist=current["albumartist"],
+		queue_index=int(current["pos"]),
+		queue_length=int(status["playlistlength"]),
+		file=Path(current["file"]),
+		musicbrainz_trackid=convert_if_exists(current.get("musicbrainz_trackid"), UUID),
+		title=current.get("title"),
+		artist=current.get("artist"),
+		album=current.get("album"),
+		album_artist=current.get("albumartist"),
+		composer=current.get("composer"),
+		genre=current.get("genre"),
+		track=convert_if_exists(current.get("track"), int),
+		disc=convert_if_exists(current.get("disc"), int),
 		duration=float(status["duration"]),
 		elapsed=float(status["elapsed"]),
 		art=art,
