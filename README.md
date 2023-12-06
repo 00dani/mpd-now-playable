@@ -5,12 +5,7 @@ This enables your keyboard's standard media keys to control MPD, as well as more
 
 ## Installation
 
-The recommended way to install mpd-now-playable and its dependencies is with [pipx](https://pypa.github.io/pipx/). I'm currently unable to register a PyPI account, so to install you'll currently need to do something like this:
-```shell
-pipx install 'git+https://git.00dani.me/00dani/mpd-now-playable'
-```
-
-However once PyPI opens registration again, this will work too, and it's the approach I definitely recommend:
+The recommended way to install mpd-now-playable and its dependencies is with [pipx](https://pypa.github.io/pipx/):
 ```shell
 pipx install mpd-now-playable
 ```
