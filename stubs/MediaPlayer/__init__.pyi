@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Final, Literal
+from typing import Final, Literal, override
 
 from AppKit import NSImage
 from Foundation import CGSize, NSMutableDictionary
@@ -52,18 +52,34 @@ class MPNowPlayingInfoCenter:
 	def setNowPlayingInfo_(self, info: NSMutableDictionary) -> None: ...
 	def setPlaybackState_(self, state: MPMusicPlaybackState) -> None: ...
 
-MPRemoteCommandHandlerStatusSuccess: Literal[0] = 0
-MPRemoteCommandHandlerStatusCommandFailed: Literal[200] = 200
+MPRemoteCommandHandlerStatusSuccess: Final = 0
+MPRemoteCommandHandlerStatusCommandFailed: Final = 200
 MPRemoteCommandHandlerStatus = Literal[0, 200]
 
 class MPRemoteCommandEvent:
 	pass
+
+class MPChangePlaybackPositionCommandEvent(MPRemoteCommandEvent):
+	def positionTime(self) -> float:
+		"""Return the requested playback position as a number of seconds (fractional seconds are allowed)."""
+		pass
 
 class MPRemoteCommand:
 	def setEnabled_(self, enabled: bool) -> None: ...
 	def removeTarget_(self, target: object) -> None: ...
 	def addTargetWithHandler_(
 		self, handler: Callable[[MPRemoteCommandEvent], MPRemoteCommandHandlerStatus]
+	) -> None:
+		"""Register a callback to handle the commands. Many remote commands don't carry useful information in the event object (play, pause, next track, etc.), so the callback does not necessarily need to care about the event argument."""
+		pass
+
+class MPChangePlaybackPositionCommand(MPRemoteCommand):
+	@override
+	def addTargetWithHandler_(
+		self,
+		handler: Callable[
+			[MPChangePlaybackPositionCommandEvent], MPRemoteCommandHandlerStatus
+		],
 	) -> None: ...
 
 class MPRemoteCommandCenter:
@@ -80,4 +96,4 @@ class MPRemoteCommandCenter:
 	def skipBackwardCommand(self) -> MPRemoteCommand: ...
 	def seekForwardCommand(self) -> MPRemoteCommand: ...
 	def skipForwardCommand(self) -> MPRemoteCommand: ...
-	def changePlaybackPositionCommand(self) -> MPRemoteCommand: ...
+	def changePlaybackPositionCommand(self) -> MPChangePlaybackPositionCommand: ...

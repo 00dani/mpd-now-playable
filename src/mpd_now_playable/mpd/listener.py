@@ -126,3 +126,6 @@ class MpdStateListener(Player):
 
 	async def on_prev(self) -> None:
 		await self.client.previous()
+
+	async def on_seek(self, position: float) -> None:
+		await self.client.seekcur(position)

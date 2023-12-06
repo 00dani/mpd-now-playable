@@ -21,3 +21,6 @@ class Player(Protocol):
 
 	async def on_prev(self) -> None:
 		...
+
+	async def on_seek(self, position: float) -> None:
+		...

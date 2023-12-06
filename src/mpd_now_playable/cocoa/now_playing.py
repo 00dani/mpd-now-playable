@@ -4,6 +4,7 @@ from pathlib import Path
 from AppKit import NSCompositingOperationCopy, NSImage, NSMakeRect
 from Foundation import CGSize, NSMutableDictionary
 from MediaPlayer import (
+	MPChangePlaybackPositionCommandEvent,
 	MPMediaItemArtwork,
 	MPMediaItemPropertyAlbumTitle,
 	MPMediaItemPropertyAlbumTrackNumber,
@@ -31,6 +32,7 @@ from MediaPlayer import (
 	MPRemoteCommandCenter,
 	MPRemoteCommandEvent,
 	MPRemoteCommandHandlerStatus,
+	MPRemoteCommandHandlerStatusSuccess,
 )
 
 from ..async_tools import run_background_task
@@ -138,13 +140,17 @@ class CocoaNowPlaying:
 			cmd.removeTarget_(None)
 			cmd.addTargetWithHandler_(self._create_handler(handler))
 
+		seekCmd = self.cmd_center.changePlaybackPositionCommand()
+		seekCmd.setEnabled_(True)
+		seekCmd.removeTarget_(None)
+		seekCmd.addTargetWithHandler_(self._create_seek_handler(player.on_seek))
+
 		unsupported_cmds = (
 			self.cmd_center.changePlaybackRateCommand(),
 			self.cmd_center.seekBackwardCommand(),
 			self.cmd_center.skipBackwardCommand(),
 			self.cmd_center.seekForwardCommand(),
 			self.cmd_center.skipForwardCommand(),
-			self.cmd_center.changePlaybackPositionCommand(),
 		)
 		for cmd in unsupported_cmds:
 			cmd.setEnabled_(False)
@@ -173,5 +179,16 @@ class CocoaNowPlaying:
 		def handler(event: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus:
 			run_background_task(invoke_music_player())
 			return 0
+
+		return handler
+
+	def _create_seek_handler(
+		self, player: Callable[[float], Coroutine[None, None, None]]
+	) -> Callable[[MPChangePlaybackPositionCommandEvent], MPRemoteCommandHandlerStatus]:
+		def handler(
+			event: MPChangePlaybackPositionCommandEvent,
+		) -> MPRemoteCommandHandlerStatus:
+			run_background_task(player(event.positionTime()))
+			return MPRemoteCommandHandlerStatusSuccess
 
 		return handler
