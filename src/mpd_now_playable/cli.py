@@ -16,7 +16,7 @@ async def listen() -> None:
 
 	listener = MpdStateListener()
 	now_playing = CocoaNowPlaying(listener)
-	await listener.start(hostname=host, port=port, password=password)
+	await listener.start(host=host, port=port, password=password)
 	await listener.loop(now_playing)
 
 
