@@ -11,9 +11,21 @@ dependencies = [
     "pyobjc-framework-MediaPlayer>=10.0",
     "python-mpd2>=3.1.0",
 ]
-requires-python = ">=3.12"
 readme = "README.md"
+
+requires-python = ">=3.12"
 license = {text = "MIT"}
+classifiers = [
+    "Environment :: No Input/Output (Daemon)",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS :: MacOS X",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Players",
+]
+
+[project.urls]
+Homepage = "https://git.00dani.me/00dani/mpd-now-playable"
+Issues = "https://git.00dani.me/00dani/mpd-now-playable/issues"
 
 [project.scripts]
 mpd-now-playable = 'mpd_now_playable.cli:main'

@@ -17,7 +17,7 @@ pipx install mpd-now-playable
 
 Once pipx is done, the `mpd-now-playable` script should be available on your `$PATH` and ready to use.
 
-Most likely, you'll want mpd-now-playable to stay running in the background as a launchd service. [Here's the service plist I use](./me.00dani.mpd-now-playable.plist), but it's hardcoded to my `$HOME` so you'll want to customise it.
+Most likely, you'll want mpd-now-playable to stay running in the background as a launchd service. [Here's the service plist I use](https://git.00dani.me/00dani/mpd-now-playable/src/branch/main/me.00dani.mpd-now-playable.plist), but it's hardcoded to my `$HOME` so you'll want to customise it.
 
 ## Configuration
 
