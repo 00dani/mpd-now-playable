@@ -43,7 +43,7 @@ from .persistent_id import song_to_persistent_id
 
 def logo_to_ns_image() -> NSImage:
 	return NSImage.alloc().initByReferencingFile_(
-		str(Path(__file__).parent / "mpd/logo.svg")
+		str(Path(__file__).parent.parent / "mpd/logo.svg")
 	)
 
 
