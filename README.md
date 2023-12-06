@@ -43,9 +43,7 @@ Make sure this wrapper script is only readable by you, with something like `chmo
 
 ## Limitations
 
-Currently mpd-now-playable does not support seeking through the current track, because I didn't personally feel the need for that feature. It explicitly tells MacOS that seeking isn't supported by this media player, but for some reason the Mac UI still lets the user seek anyway, which of course does nothing.
-
-Also, mpd-now-playable is currently *very* specific to MacOS. I did my best to keep the generic MPD and extremely Apple parts separate, but it definitely won't work with MPRIS2 or the Windows system media feature.
+mpd-now-playable is currently *very* specific to MacOS. I did my best to keep the generic MPD and extremely Apple parts separate, but it definitely won't work with MPRIS2 or the Windows system media feature.
 
 Chances are my MacOS integration code isn't the best, either. This is the first project I've written using PyObjC and it took a lot of fiddling to get working.
 
