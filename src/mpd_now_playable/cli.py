@@ -8,13 +8,15 @@ from .mpd.listener import MpdStateListener
 
 
 async def listen() -> None:
+	port = int(environ.get("MPD_PORT", "6600"))
+	host = environ.get("MPD_HOST", "localhost")
+	password = environ.get("MPD_PASSWORD")
+	if password is None and "@" in host:
+		password, host = host.split("@", maxsplit=1)
+
 	listener = MpdStateListener()
 	now_playing = CocoaNowPlaying(listener)
-	await listener.start(
-		hostname=environ.get("MPD_HOSTNAME", "localhost"),
-		port=int(environ.get("MPD_PORT", "6600")),
-		password=environ.get("MPD_PASSWORD"),
-	)
+	await listener.start(hostname=host, port=port, password=password)
 	await listener.loop(now_playing)
 
 

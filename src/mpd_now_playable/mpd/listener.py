@@ -46,10 +46,10 @@ class MpdStateListener(Player):
 		self.art_cache = MpdArtworkCache(self)
 
 	async def start(
-		self, hostname: str = "localhost", port: int = 6600, password: str | None = None
+		self, host: str = "localhost", port: int = 6600, password: str | None = None
 	) -> None:
-		print(f"Connecting to MPD server {hostname}:{port}...")
-		await self.client.connect(hostname, port)
+		print(f"Connecting to MPD server {host}:{port}...")
+		await self.client.connect(host, port)
 		if password is not None:
 			print("Authorising to MPD with your password...")
 			await self.client.password(password)

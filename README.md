@@ -25,11 +25,11 @@ You may not need any configuration! If you've got a relatively normal MPD setup 
 
 Currently, mpd-now-playable can only be configured through environment variables. Command-line arguments are intentionally not supported, since your MPD password is among the supported settings and command-line arguments are not a secure way to pass secrets such as passwords into commands. Reading configuration from a file is secure, so mpd-now-playable may support a config file in future.
 
-The following environment variables are read:
+The following environment variables are read. The `MPD_HOST` and `MPD_PORT` variables are supported in the same way `mpc` uses them, but you can alternatively provide your password as a separate `MPD_PASSWORD` variable if you wish.
 
-- `MPD_HOSTNAME` - defaults to `localhost`, which should be fine for most users. If you want to control a remote MPD server, though, you can.
+- `MPD_HOST` - defaults to `localhost`, which should be fine for most users. If you want to control a remote MPD server, though, you can.
 - `MPD_PORT` - defaults to 6600, which will almost always be the correct port to use.
-- `MPD_PASSWORD` - has no default. Set this only if your MPD server expects a password.
+- `MPD_PASSWORD` - has no default. Set this only if your MPD server expects a password. You can also provide a password by setting `MPD_HOST=password@host`, if you want to be consistent with how `mpc` works.
 
 One simple secure way to set your environment variables is with a small wrapper script like this:
 ```shell
