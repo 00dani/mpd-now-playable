@@ -6,8 +6,12 @@ from Foundation import CGSize, NSMutableDictionary
 from MediaPlayer import (
 	MPMediaItemArtwork,
 	MPMediaItemPropertyAlbumTitle,
+	MPMediaItemPropertyAlbumTrackNumber,
 	MPMediaItemPropertyArtist,
 	MPMediaItemPropertyArtwork,
+	MPMediaItemPropertyComposer,
+	MPMediaItemPropertyDiscNumber,
+	MPMediaItemPropertyGenre,
 	MPMediaItemPropertyPlaybackDuration,
 	MPMediaItemPropertyTitle,
 	MPMusicPlaybackState,
@@ -18,7 +22,11 @@ from MediaPlayer import (
 	MPNowPlayingInfoMediaTypeAudio,
 	MPNowPlayingInfoMediaTypeNone,
 	MPNowPlayingInfoPropertyElapsedPlaybackTime,
+	MPNowPlayingInfoPropertyExternalContentIdentifier,
 	MPNowPlayingInfoPropertyMediaType,
+	MPNowPlayingInfoPropertyPlaybackQueueCount,
+	MPNowPlayingInfoPropertyPlaybackQueueIndex,
+	MPNowPlayingInfoPropertyPlaybackRate,
 	MPRemoteCommandCenter,
 	MPRemoteCommandEvent,
 	MPRemoteCommandHandlerStatus,
@@ -70,11 +78,23 @@ def song_to_media_item(song: Song) -> NSMutableDictionary:
 	nowplaying_info = nothing_to_media_item()
 	nowplaying_info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaTypeAudio
 	nowplaying_info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = song.elapsed
+	nowplaying_info[MPNowPlayingInfoPropertyExternalContentIdentifier] = song.file
+	nowplaying_info[MPNowPlayingInfoPropertyPlaybackQueueCount] = song.queue_length
+	nowplaying_info[MPNowPlayingInfoPropertyPlaybackQueueIndex] = song.queue_index
 
 	nowplaying_info[MPMediaItemPropertyTitle] = song.title
 	nowplaying_info[MPMediaItemPropertyArtist] = song.artist
 	nowplaying_info[MPMediaItemPropertyAlbumTitle] = song.album
+	nowplaying_info[MPMediaItemPropertyAlbumTrackNumber] = song.track
+	nowplaying_info[MPMediaItemPropertyDiscNumber] = song.disc
+	nowplaying_info[MPMediaItemPropertyGenre] = song.genre
+	nowplaying_info[MPMediaItemPropertyComposer] = song.composer
 	nowplaying_info[MPMediaItemPropertyPlaybackDuration] = song.duration
+
+	# MPD can't play back music at different rates, so we just want to set it
+	# to 1.0 if the song is playing. (Leave it at 0.0 if the song is paused.)
+	if song.state == PlaybackState.play:
+		nowplaying_info[MPNowPlayingInfoPropertyPlaybackRate] = 1.0
 
 	if song.art:
 		nowplaying_info[MPMediaItemPropertyArtwork] = ns_image_to_media_item_artwork(
@@ -88,6 +108,7 @@ def nothing_to_media_item() -> NSMutableDictionary:
 	nowplaying_info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaTypeNone
 	nowplaying_info[MPMediaItemPropertyArtwork] = MPD_LOGO
 	nowplaying_info[MPMediaItemPropertyTitle] = "MPD (stopped)"
+	nowplaying_info[MPNowPlayingInfoPropertyPlaybackRate] = 0.0
 
 	return nowplaying_info
 

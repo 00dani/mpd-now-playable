@@ -24,6 +24,7 @@ MPNowPlayingInfoPropertyMediaType: Final = "MPNowPlayingInfoPropertyMediaType"
 MPNowPlayingInfoMediaTypeAudio: Final = 1
 MPNowPlayingInfoMediaTypeNone: Final = 0
 
+MPNowPlayingInfoPropertyPlaybackRate: Final = "MPNowPlayingInfoPropertyPlaybackRate"
 MPNowPlayingInfoPropertyPlaybackQueueCount: Final = (
 	"MPNowPlayingInfoPropertyPlaybackQueueCount"
 )
