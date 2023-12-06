@@ -3,7 +3,7 @@ from os import environ
 
 from corefoundationasyncio import CoreFoundationEventLoop
 
-from .cocoa import CocoaNowPlaying
+from .cocoa.now_playing import CocoaNowPlaying
 from .mpd.listener import MpdStateListener
 
 

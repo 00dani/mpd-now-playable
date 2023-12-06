@@ -12,6 +12,7 @@ from MediaPlayer import (
 	MPMediaItemPropertyComposer,
 	MPMediaItemPropertyDiscNumber,
 	MPMediaItemPropertyGenre,
+	MPMediaItemPropertyPersistentID,
 	MPMediaItemPropertyPlaybackDuration,
 	MPMediaItemPropertyTitle,
 	MPMusicPlaybackState,
@@ -32,9 +33,10 @@ from MediaPlayer import (
 	MPRemoteCommandHandlerStatus,
 )
 
-from .async_tools import run_background_task
-from .player import Player
-from .song import PlaybackState, Song
+from ..async_tools import run_background_task
+from ..player import Player
+from ..song import PlaybackState, Song
+from .persistent_id import song_to_persistent_id
 
 
 def logo_to_ns_image() -> NSImage:
@@ -81,6 +83,7 @@ def song_to_media_item(song: Song) -> NSMutableDictionary:
 	nowplaying_info[MPNowPlayingInfoPropertyExternalContentIdentifier] = song.file
 	nowplaying_info[MPNowPlayingInfoPropertyPlaybackQueueCount] = song.queue_length
 	nowplaying_info[MPNowPlayingInfoPropertyPlaybackQueueIndex] = song.queue_index
+	nowplaying_info[MPMediaItemPropertyPersistentID] = song_to_persistent_id(song)
 
 	nowplaying_info[MPMediaItemPropertyTitle] = song.title
 	nowplaying_info[MPMediaItemPropertyArtist] = song.artist
