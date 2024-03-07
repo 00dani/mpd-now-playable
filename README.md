@@ -1,4 +1,4 @@
-# mpd-now-playable
+# mpd-now-playable [![PyPI version](https://badge.fury.io/py/mpd-now-playable.svg)](https://badge.fury.io/py/mpd-now-playable)
 
 This little Python program turns your MPD server into a [now playable app](https://developer.apple.com/documentation/mediaplayer/becoming_a_now_playable_app) on MacOS.
 This enables your keyboard's standard media keys to control MPD, as well as more esoteric music control methods like the buttons on your Bluetooth headphones.
