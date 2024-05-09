@@ -4,8 +4,8 @@
 [metadata]
 groups = ["default", "dev"]
 strategy = ["cross_platform"]
-lock_version = "4.4"
-content_hash = "sha256:af2cdb41c46862cfc00c9a7c4662bad8886a8632b127ee8a7855cd87d481fd8b"
+lock_version = "4.4.1"
+content_hash = "sha256:edd2d2385248f816649983cdbeb254c328ed27d57c5df0c96773a436383bd9ba"
 
 [[package]]
 name = "aiocache"
