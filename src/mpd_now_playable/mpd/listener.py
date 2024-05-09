@@ -93,7 +93,7 @@ class MpdStateListener(Player):
 	async def readpicture(self, file: str) -> bytes | None:
 		try:
 			readpic = await self.client.readpicture(file)
-			return readpic["binary"]
+			return readpic.get("binary")
 		except CommandError:
 			return None
 
