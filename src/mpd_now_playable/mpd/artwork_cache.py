@@ -6,7 +6,7 @@ from ..async_tools import run_background_task
 from ..cache import Cache, make_cache
 from .types import CurrentSongResponse, MpdStateHandler
 
-CACHE_TTL = 60 * 10  # ten minutes
+CACHE_TTL = 60 * 60 # seconds = 1 hour
 
 
 class ArtCacheEntry(TypedDict):
