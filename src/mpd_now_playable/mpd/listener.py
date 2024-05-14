@@ -44,9 +44,11 @@ class MpdStateListener(Player):
 	art_cache: MpdArtworkCache
 	idle_count = 0
 
-	def __init__(self) -> None:
+	def __init__(self, cache: str | None = None) -> None:
 		self.client = MPDClient()
-		self.art_cache = MpdArtworkCache(self)
+		self.art_cache = (
+			MpdArtworkCache(self, cache) if cache else MpdArtworkCache(self)
+		)
 
 	async def start(
 		self, host: str = "localhost", port: int = 6600, password: str | None = None
