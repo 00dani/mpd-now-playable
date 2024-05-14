@@ -23,6 +23,16 @@ classifiers = [
     "Topic :: Multimedia :: Sound/Audio :: Players",
 ]
 
+[project.optional-dependencies]
+redis = ["aiocache[redis]"]
+memcached = ["aiocache[memcached]"]
+msgpack = [
+    "ormsgpack>=1.5.0",
+]
+all = [
+    "mpd-now-playable[redis,memcached,msgpack]",
+]
+
 [project.urls]
 Homepage = "https://git.00dani.me/00dani/mpd-now-playable"
 Issues = "https://git.00dani.me/00dani/mpd-now-playable/issues"

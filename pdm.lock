@@ -2,10 +2,10 @@
 # It is not intended for manual editing.
 
 [metadata]
-groups = ["default", "dev"]
+groups = ["default", "all", "dev"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:edd2d2385248f816649983cdbeb254c328ed27d57c5df0c96773a436383bd9ba"
+content_hash = "sha256:2b4fba8ca6883f5a1de28a420870d566efa031d62f9057c59095a25a0e51d36e"
 
 [[package]]
 name = "aiocache"
@@ -17,18 +17,56 @@ files = [
 ]
 
 [[package]]
+name = "aiocache"
+version = "0.12.2"
+extras = ["memcached"]
+summary = "multi backend asyncio cache"
+dependencies = [
+    "aiocache==0.12.2",
+    "aiomcache>=0.5.2",
+]
+files = [
+    {file = "aiocache-0.12.2-py2.py3-none-any.whl", hash = "sha256:9b6fa30634ab0bfc3ecc44928a91ff07c6ea16d27d55469636b296ebc6eb5918"},
+    {file = "aiocache-0.12.2.tar.gz", hash = "sha256:b41c9a145b050a5dcbae1599f847db6dd445193b1f3bd172d8e0fe0cb9e96684"},
+]
+
+[[package]]
+name = "aiocache"
+version = "0.12.2"
+extras = ["redis"]
+summary = "multi backend asyncio cache"
+dependencies = [
+    "aiocache==0.12.2",
+    "redis>=4.2.0",
+]
+files = [
+    {file = "aiocache-0.12.2-py2.py3-none-any.whl", hash = "sha256:9b6fa30634ab0bfc3ecc44928a91ff07c6ea16d27d55469636b296ebc6eb5918"},
+    {file = "aiocache-0.12.2.tar.gz", hash = "sha256:b41c9a145b050a5dcbae1599f847db6dd445193b1f3bd172d8e0fe0cb9e96684"},
+]
+
+[[package]]
+name = "aiomcache"
+version = "0.8.2"
+requires_python = ">=3.8"
+summary = "Minimal pure python memcached client"
+files = [
+    {file = "aiomcache-0.8.2-py3-none-any.whl", hash = "sha256:9d78d6b6e74e775df18b350b1cddfa96bd2f0a44d49ad27fa87759a3469cef5e"},
+    {file = "aiomcache-0.8.2.tar.gz", hash = "sha256:43b220d7f499a32a71871c4f457116eb23460fa216e69c1d32b81e3209e51359"},
+]
+
+[[package]]
 name = "attrs"
-version = "23.1.0"
+version = "23.2.0"
 requires_python = ">=3.7"
 summary = "Classes Without Boilerplate"
 files = [
-    {file = "attrs-23.1.0-py3-none-any.whl", hash = "sha256:1f28b4522cdc2fb4256ac1a020c78acf9cba2c6b461ccd2c126f3aa8e8335d04"},
-    {file = "attrs-23.1.0.tar.gz", hash = "sha256:6279836d581513a26f1bf235f9acd333bc9115683f14f7e8fae46c98fc50e015"},
+    {file = "attrs-23.2.0-py3-none-any.whl", hash = "sha256:99b87a485a5820b23b879f04c2305b44b951b502fd64be915879d77a7e8fc6f1"},
+    {file = "attrs-23.2.0.tar.gz", hash = "sha256:935dc3b529c262f6cf76e50877d35a4bd3c1de194fd41f47a2b7ae8f19971f30"},
 ]
 
 [[package]]
 name = "mypy"
-version = "1.7.1"
+version = "1.10.0"
 requires_python = ">=3.8"
 summary = "Optional static typing for Python"
 dependencies = [
@@ -36,13 +74,13 @@ dependencies = [
     "typing-extensions>=4.1.0",
 ]
 files = [
-    {file = "mypy-1.7.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:6dbdec441c60699288adf051f51a5d512b0d818526d1dcfff5a41f8cd8b4aaf1"},
-    {file = "mypy-1.7.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:4fc3d14ee80cd22367caaaf6e014494415bf440980a3045bf5045b525680ac33"},
-    {file = "mypy-1.7.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2c6e4464ed5f01dc44dc9821caf67b60a4e5c3b04278286a85c067010653a0eb"},
-    {file = "mypy-1.7.1-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:d9b338c19fa2412f76e17525c1b4f2c687a55b156320acb588df79f2e6fa9fea"},
-    {file = "mypy-1.7.1-cp312-cp312-win_amd64.whl", hash = "sha256:204e0d6de5fd2317394a4eff62065614c4892d5a4d1a7ee55b765d7a3d9e3f82"},
-    {file = "mypy-1.7.1-py3-none-any.whl", hash = "sha256:f7c5d642db47376a0cc130f0de6d055056e010debdaf0707cd2b0fc7e7ef30ea"},
-    {file = "mypy-1.7.1.tar.gz", hash = "sha256:fcb6d9afb1b6208b4c712af0dafdc650f518836065df0d4fb1d800f5d6773db2"},
+    {file = "mypy-1.10.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:a781f6ad4bab20eef8b65174a57e5203f4be627b46291f4589879bf4e257b97b"},
+    {file = "mypy-1.10.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:b808e12113505b97d9023b0b5e0c0705a90571c6feefc6f215c1df9381256e30"},
+    {file = "mypy-1.10.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8f55583b12156c399dce2df7d16f8a5095291354f1e839c252ec6c0611e86e2e"},
+    {file = "mypy-1.10.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:4cf18f9d0efa1b16478c4c129eabec36148032575391095f73cae2e722fcf9d5"},
+    {file = "mypy-1.10.0-cp312-cp312-win_amd64.whl", hash = "sha256:bc6ac273b23c6b82da3bb25f4136c4fd42665f17f2cd850771cb600bdd2ebeda"},
+    {file = "mypy-1.10.0-py3-none-any.whl", hash = "sha256:f8c083976eb530019175aabadb60921e73b4f45736760826aa1689dda8208aee"},
+    {file = "mypy-1.10.0.tar.gz", hash = "sha256:3d087fcbec056c4ee34974da493a826ce316947485cef3901f511848e687c131"},
 ]
 
 [[package]]
@@ -56,144 +94,168 @@ files = [
 ]
 
 [[package]]
+name = "ormsgpack"
+version = "1.5.0"
+requires_python = ">=3.8"
+summary = "Fast, correct Python msgpack library supporting dataclasses, datetimes, and numpy"
+files = [
+    {file = "ormsgpack-1.5.0-cp312-cp312-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:a921b0d54b5fb5ba1ea4e87c65caa8992736224f1fc5ce8f46a882e918c8e22d"},
+    {file = "ormsgpack-1.5.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c6d423668e2c3abdbc474562b1c73360ff7326f06cb9532dcb73254b5b63dae4"},
+    {file = "ormsgpack-1.5.0-cp312-cp312-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:eeb2dd4ed3e503a8266dcbfbb8d810a36baa34e4bb4229e90e9c213058a06d74"},
+    {file = "ormsgpack-1.5.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6f13bd643df1324e8797caba4c5c0168a87524df8424e8413ba29723e89a586a"},
+    {file = "ormsgpack-1.5.0-cp312-none-win_amd64.whl", hash = "sha256:e016da381a126478c4bafab0ae19d3a2537f6471341ecced4bb61471e8841cad"},
+    {file = "ormsgpack-1.5.0.tar.gz", hash = "sha256:00c0743ebaa8d21f1c868fbb609c99151ea79e67fec98b51a29077efd91ce348"},
+]
+
+[[package]]
 name = "pyobjc-core"
-version = "10.0"
+version = "10.2"
 requires_python = ">=3.8"
 summary = "Python<->ObjC Interoperability Module"
 files = [
-    {file = "pyobjc-core-10.0.tar.gz", hash = "sha256:3dd0a7b3acd7e0b8ffd3f5331b29a3aaebe79a03323e61efeece38627a6020b3"},
-    {file = "pyobjc_core-10.0-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:2843ca32e86a01ccee67d7ad82a325ddd72d754929d1f2c0d96bc8741dc9af09"},
+    {file = "pyobjc-core-10.2.tar.gz", hash = "sha256:0153206e15d0e0d7abd53ee8a7fbaf5606602a032e177a028fc8589516a8771c"},
+    {file = "pyobjc_core-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:a70546246177c23acb323c9324330e37638f1a0a3d13664abcba3bb75e43012c"},
 ]
 
 [[package]]
 name = "pyobjc-framework-avfoundation"
-version = "10.0"
+version = "10.2"
 requires_python = ">=3.8"
 summary = "Wrappers for the framework AVFoundation on macOS"
 dependencies = [
-    "pyobjc-core>=10.0",
-    "pyobjc-framework-Cocoa>=10.0",
-    "pyobjc-framework-CoreAudio>=10.0",
-    "pyobjc-framework-CoreMedia>=10.0",
-    "pyobjc-framework-Quartz>=10.0",
+    "pyobjc-core>=10.2",
+    "pyobjc-framework-Cocoa>=10.2",
+    "pyobjc-framework-CoreAudio>=10.2",
+    "pyobjc-framework-CoreMedia>=10.2",
+    "pyobjc-framework-Quartz>=10.2",
 ]
 files = [
-    {file = "pyobjc-framework-AVFoundation-10.0.tar.gz", hash = "sha256:40366a8c6bb964e7b7263e8cf060350f69ad365e6a5356d6ccab9f256a9987f7"},
-    {file = "pyobjc_framework_AVFoundation-10.0-cp36-abi3-macosx_10_9_universal2.whl", hash = "sha256:b9b2e6731a64425f297bed68c6fc6e31e20965277c96012e62f7fa9059ff544e"},
-    {file = "pyobjc_framework_AVFoundation-10.0-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:917185ff4e3f262b98cca2789ed68d43b0b111b161b9c8bda0bc7e6ab6def41c"},
-    {file = "pyobjc_framework_AVFoundation-10.0-cp36-abi3-macosx_11_0_universal2.whl", hash = "sha256:d2bf8c4cfe72a24a4632d4152522c6b1b9b69b1bfadc7d76fd1082e7cc3cec7e"},
+    {file = "pyobjc-framework-AVFoundation-10.2.tar.gz", hash = "sha256:4d394014f2477c0c6a596dbb01ef5d92944058d0e0d954ce6121a676ae9395ce"},
+    {file = "pyobjc_framework_AVFoundation-10.2-cp36-abi3-macosx_10_9_universal2.whl", hash = "sha256:5f20c11a8870d7d58f0e4f20f918e45e922520aa5c9dbee61dc59ca4bc4bd26d"},
+    {file = "pyobjc_framework_AVFoundation-10.2-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:283355d1f96c184e5f5f479870eb3bf510747307697616737bbc5d224af3abcb"},
+    {file = "pyobjc_framework_AVFoundation-10.2-cp36-abi3-macosx_11_0_universal2.whl", hash = "sha256:a63a4e26c088023b0b1cb29d7da2c2246aa8eca2b56767fe1cc36a18c6fb650b"},
 ]
 
 [[package]]
 name = "pyobjc-framework-cocoa"
-version = "10.0"
+version = "10.2"
 requires_python = ">=3.8"
 summary = "Wrappers for the Cocoa frameworks on macOS"
 dependencies = [
-    "pyobjc-core>=10.0",
+    "pyobjc-core>=10.2",
 ]
 files = [
-    {file = "pyobjc-framework-Cocoa-10.0.tar.gz", hash = "sha256:723421eff4f59e4ca9a9bb8ec6dafbc0f778141236fa85a49fdd86732d58a74c"},
-    {file = "pyobjc_framework_Cocoa-10.0-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:a81dabdc40268591e3196087388e680c6570fed1b521df9b04733cb3ece0414e"},
+    {file = "pyobjc-framework-Cocoa-10.2.tar.gz", hash = "sha256:6383141379636b13855dca1b39c032752862b829f93a49d7ddb35046abfdc035"},
+    {file = "pyobjc_framework_Cocoa-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:18886d5013cd7dc7ecd6e0df5134c767569b5247fc10a5e293c72ee3937b217b"},
 ]
 
 [[package]]
 name = "pyobjc-framework-coreaudio"
-version = "10.0"
+version = "10.2"
 requires_python = ">=3.8"
 summary = "Wrappers for the framework CoreAudio on macOS"
 dependencies = [
-    "pyobjc-core>=10.0",
-    "pyobjc-framework-Cocoa>=10.0",
+    "pyobjc-core>=10.2",
+    "pyobjc-framework-Cocoa>=10.2",
 ]
 files = [
-    {file = "pyobjc-framework-CoreAudio-10.0.tar.gz", hash = "sha256:6042e9fea80bf5c23a8a3a4a2888243b7152316275ab863ed6bc289eabdef9f1"},
-    {file = "pyobjc_framework_CoreAudio-10.0-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:41c75e7a2e17619841c55a0be8c3c0666fad190a7142f1a80f01451184832cf3"},
+    {file = "pyobjc-framework-CoreAudio-10.2.tar.gz", hash = "sha256:5e97ae7a65be85aee83aef004b31146c5fbf28325d870362959f7312b303fb67"},
+    {file = "pyobjc_framework_CoreAudio-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:32608ce881b5e6a7cb332c2732762fa93829ac495c5344c33e8e8b72a2431b23"},
 ]
 
 [[package]]
 name = "pyobjc-framework-coremedia"
-version = "10.0"
+version = "10.2"
 requires_python = ">=3.8"
 summary = "Wrappers for the framework CoreMedia on macOS"
 dependencies = [
-    "pyobjc-core>=10.0",
-    "pyobjc-framework-Cocoa>=10.0",
+    "pyobjc-core>=10.2",
+    "pyobjc-framework-Cocoa>=10.2",
 ]
 files = [
-    {file = "pyobjc-framework-CoreMedia-10.0.tar.gz", hash = "sha256:27d0755cbd3ae3b487ace5e3233f0598b976905f43357b71fd73489865f7b9e1"},
-    {file = "pyobjc_framework_CoreMedia-10.0-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:9d8bf02036e60c5f47b904a259e0665b7774d915eda95810566ca1b82a1be27e"},
+    {file = "pyobjc-framework-CoreMedia-10.2.tar.gz", hash = "sha256:d726d86636217eaa135e5626d05c7eb0f9b4529ce1ed504e08069fe1e0421483"},
+    {file = "pyobjc_framework_CoreMedia-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:7fa13166a14d384bb6442e5f635310dd075c2a4b3b3bd67ac63b1e2e1fd2d65e"},
 ]
 
 [[package]]
 name = "pyobjc-framework-mediaplayer"
-version = "10.0"
+version = "10.2"
 requires_python = ">=3.8"
 summary = "Wrappers for the framework MediaPlayer on macOS"
 dependencies = [
-    "pyobjc-core>=10.0",
-    "pyobjc-framework-AVFoundation>=10.0",
+    "pyobjc-core>=10.2",
+    "pyobjc-framework-AVFoundation>=10.2",
 ]
 files = [
-    {file = "pyobjc-framework-MediaPlayer-10.0.tar.gz", hash = "sha256:e3c66443fd13e5ddede01f15fdd9b635492edc239c4cd88fa540b866a76c1602"},
-    {file = "pyobjc_framework_MediaPlayer-10.0-py2.py3-none-any.whl", hash = "sha256:19afc844bc204e008eac5f59699b93bae84e6235fa030d72651200414b019fc2"},
+    {file = "pyobjc-framework-MediaPlayer-10.2.tar.gz", hash = "sha256:4b6d296b084e01fb6e5c782b7b6308077db09f4051f50b0a6c3298ffbd1f1d70"},
+    {file = "pyobjc_framework_MediaPlayer-10.2-py2.py3-none-any.whl", hash = "sha256:c501ea19380bfbf6b04fbe909fcfe9a78c5ff2a9b58dae87be259066b1ae3521"},
 ]
 
 [[package]]
 name = "pyobjc-framework-quartz"
-version = "10.0"
+version = "10.2"
 requires_python = ">=3.8"
 summary = "Wrappers for the Quartz frameworks on macOS"
 dependencies = [
-    "pyobjc-core>=10.0",
-    "pyobjc-framework-Cocoa>=10.0",
+    "pyobjc-core>=10.2",
+    "pyobjc-framework-Cocoa>=10.2",
 ]
 files = [
-    {file = "pyobjc-framework-Quartz-10.0.tar.gz", hash = "sha256:ff7c938d9c8adff87d577d63e58f9be6e4bc75274384715fa7a20032a1ce8b0e"},
-    {file = "pyobjc_framework_Quartz-10.0-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:f0cc89890de411a341e90d2c4148831b6d241fca66e734b5470d27869c04e33c"},
+    {file = "pyobjc-framework-Quartz-10.2.tar.gz", hash = "sha256:9b947e081f5bd6cd01c99ab5d62c36500d2d6e8d3b87421c1cbb7f9c885555eb"},
+    {file = "pyobjc_framework_Quartz-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:3e8e33246d966c2bd7f5ee2cf3b431582fa434a6ec2b6dbe580045ebf1f55be5"},
 ]
 
 [[package]]
 name = "python-mpd2"
-version = "3.1.0"
+version = "3.1.1"
 requires_python = ">=3.6"
 summary = "A Python MPD client library"
 files = [
-    {file = "python-mpd2-3.1.0.tar.gz", hash = "sha256:f33c2cdb0d6baa74a36724f38c1c4a099a7ce2c8ec4a2bb7192150a5855df476"},
-    {file = "python_mpd2-3.1.0-py2.py3-none-any.whl", hash = "sha256:c4d44a54e88a675f7301fdb11a1bd31165a6f51a664dd41e8137e92f7b02ebfb"},
+    {file = "python-mpd2-3.1.1.tar.gz", hash = "sha256:4baec3584cc43ed9948d5559079fafc2679b06b2ade273e909b3582654b2b3f5"},
+    {file = "python_mpd2-3.1.1-py2.py3-none-any.whl", hash = "sha256:86bf1100a0b135959d74a9a7a58cf0515bf30bb54eb25ae6fb8e175e50300fc3"},
+]
+
+[[package]]
+name = "redis"
+version = "5.0.4"
+requires_python = ">=3.7"
+summary = "Python client for Redis database and key-value store"
+files = [
+    {file = "redis-5.0.4-py3-none-any.whl", hash = "sha256:7adc2835c7a9b5033b7ad8f8918d09b7344188228809c98df07af226d39dec91"},
+    {file = "redis-5.0.4.tar.gz", hash = "sha256:ec31f2ed9675cc54c21ba854cfe0462e6faf1d83c8ce5944709db8a4700b9c61"},
 ]
 
 [[package]]
 name = "ruff"
-version = "0.1.6"
+version = "0.4.4"
 requires_python = ">=3.7"
 summary = "An extremely fast Python linter and code formatter, written in Rust."
 files = [
-    {file = "ruff-0.1.6-py3-none-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:88b8cdf6abf98130991cbc9f6438f35f6e8d41a02622cc5ee130a02a0ed28703"},
-    {file = "ruff-0.1.6-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:5c549ed437680b6105a1299d2cd30e4964211606eeb48a0ff7a93ef70b902248"},
-    {file = "ruff-0.1.6-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1cf5f701062e294f2167e66d11b092bba7af6a057668ed618a9253e1e90cfd76"},
-    {file = "ruff-0.1.6-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:05991ee20d4ac4bb78385360c684e4b417edd971030ab12a4fbd075ff535050e"},
-    {file = "ruff-0.1.6-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:87455a0c1f739b3c069e2f4c43b66479a54dea0276dd5d4d67b091265f6fd1dc"},
-    {file = "ruff-0.1.6-py3-none-manylinux_2_17_ppc64.manylinux2014_ppc64.whl", hash = "sha256:683aa5bdda5a48cb8266fcde8eea2a6af4e5700a392c56ea5fb5f0d4bfdc0240"},
-    {file = "ruff-0.1.6-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:137852105586dcbf80c1717facb6781555c4e99f520c9c827bd414fac67ddfb6"},
-    {file = "ruff-0.1.6-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:bd98138a98d48a1c36c394fd6b84cd943ac92a08278aa8ac8c0fdefcf7138f35"},
-    {file = "ruff-0.1.6-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3a0cd909d25f227ac5c36d4e7e681577275fb74ba3b11d288aff7ec47e3ae745"},
-    {file = "ruff-0.1.6-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:e8fd1c62a47aa88a02707b5dd20c5ff20d035d634aa74826b42a1da77861b5ff"},
-    {file = "ruff-0.1.6-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:fd89b45d374935829134a082617954120d7a1470a9f0ec0e7f3ead983edc48cc"},
-    {file = "ruff-0.1.6-py3-none-musllinux_1_2_i686.whl", hash = "sha256:491262006e92f825b145cd1e52948073c56560243b55fb3b4ecb142f6f0e9543"},
-    {file = "ruff-0.1.6-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:ea284789861b8b5ca9d5443591a92a397ac183d4351882ab52f6296b4fdd5462"},
-    {file = "ruff-0.1.6-py3-none-win32.whl", hash = "sha256:1610e14750826dfc207ccbcdd7331b6bd285607d4181df9c1c6ae26646d6848a"},
-    {file = "ruff-0.1.6-py3-none-win_amd64.whl", hash = "sha256:4558b3e178145491e9bc3b2ee3c4b42f19d19384eaa5c59d10acf6e8f8b57e33"},
-    {file = "ruff-0.1.6-py3-none-win_arm64.whl", hash = "sha256:03910e81df0d8db0e30050725a5802441c2022ea3ae4fe0609b76081731accbc"},
-    {file = "ruff-0.1.6.tar.gz", hash = "sha256:1b09f29b16c6ead5ea6b097ef2764b42372aebe363722f1605ecbcd2b9207184"},
+    {file = "ruff-0.4.4-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:29d44ef5bb6a08e235c8249294fa8d431adc1426bfda99ed493119e6f9ea1bf6"},
+    {file = "ruff-0.4.4-py3-none-macosx_11_0_arm64.whl", hash = "sha256:c4efe62b5bbb24178c950732ddd40712b878a9b96b1d02b0ff0b08a090cbd891"},
+    {file = "ruff-0.4.4-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4c8e2f1e8fc12d07ab521a9005d68a969e167b589cbcaee354cb61e9d9de9c15"},
+    {file = "ruff-0.4.4-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:60ed88b636a463214905c002fa3eaab19795679ed55529f91e488db3fe8976ab"},
+    {file = "ruff-0.4.4-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b90fc5e170fc71c712cc4d9ab0e24ea505c6a9e4ebf346787a67e691dfb72e85"},
+    {file = "ruff-0.4.4-py3-none-manylinux_2_17_ppc64.manylinux2014_ppc64.whl", hash = "sha256:8e7e6ebc10ef16dcdc77fd5557ee60647512b400e4a60bdc4849468f076f6eef"},
+    {file = "ruff-0.4.4-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:b9ddb2c494fb79fc208cd15ffe08f32b7682519e067413dbaf5f4b01a6087bcd"},
+    {file = "ruff-0.4.4-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:c51c928a14f9f0a871082603e25a1588059b7e08a920f2f9fa7157b5bf08cfe9"},
+    {file = "ruff-0.4.4-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b5eb0a4bfd6400b7d07c09a7725e1a98c3b838be557fee229ac0f84d9aa49c36"},
+    {file = "ruff-0.4.4-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:b1867ee9bf3acc21778dcb293db504692eda5f7a11a6e6cc40890182a9f9e595"},
+    {file = "ruff-0.4.4-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:1aecced1269481ef2894cc495647392a34b0bf3e28ff53ed95a385b13aa45768"},
+    {file = "ruff-0.4.4-py3-none-musllinux_1_2_i686.whl", hash = "sha256:9da73eb616b3241a307b837f32756dc20a0b07e2bcb694fec73699c93d04a69e"},
+    {file = "ruff-0.4.4-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:958b4ea5589706a81065e2a776237de2ecc3e763342e5cc8e02a4a4d8a5e6f95"},
+    {file = "ruff-0.4.4-py3-none-win32.whl", hash = "sha256:cb53473849f011bca6e754f2cdf47cafc9c4f4ff4570003a0dad0b9b6890e876"},
+    {file = "ruff-0.4.4-py3-none-win_amd64.whl", hash = "sha256:424e5b72597482543b684c11def82669cc6b395aa8cc69acc1858b5ef3e5daae"},
+    {file = "ruff-0.4.4-py3-none-win_arm64.whl", hash = "sha256:39df0537b47d3b597293edbb95baf54ff5b49589eb7ff41926d8243caa995ea6"},
+    {file = "ruff-0.4.4.tar.gz", hash = "sha256:f87ea42d5cdebdc6a69761a9d0bc83ae9b3b30d0ad78952005ba6568d6c022af"},
 ]
 
 [[package]]
 name = "typing-extensions"
-version = "4.8.0"
+version = "4.11.0"
 requires_python = ">=3.8"
 summary = "Backported and Experimental Type Hints for Python 3.8+"
 files = [
-    {file = "typing_extensions-4.8.0-py3-none-any.whl", hash = "sha256:8f92fc8806f9a6b641eaa5318da32b44d401efaac0f6678c9bc448ba3605faa0"},
-    {file = "typing_extensions-4.8.0.tar.gz", hash = "sha256:df8e4339e9cb77357558cbdbceca33c303714cf861d1eef15e1070055ae8b7ef"},
+    {file = "typing_extensions-4.11.0-py3-none-any.whl", hash = "sha256:c1f94d72897edaf4ce775bb7558d5b79d8126906a14ea5ed1635921406c0387a"},
+    {file = "typing_extensions-4.11.0.tar.gz", hash = "sha256:83f085bd5ca59c80295fc2a82ab5dac679cbe02b9f33f7d83af68e241bea51b0"},
 ]
