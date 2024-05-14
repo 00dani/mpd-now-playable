@@ -16,7 +16,7 @@ class ArtCacheEntry(TypedDict):
 def calc_album_key(song: CurrentSongResponse) -> str:
 	artist = song.get("albumartist", song.get("artist", "Unknown Artist"))
 	album = song.get("album", "Unknown Album")
-	return f"{artist}:-:-:{album}"
+	return ":".join(t.replace(":", "-") for t in (artist, album))
 
 
 def calc_track_key(song: CurrentSongResponse) -> str:
