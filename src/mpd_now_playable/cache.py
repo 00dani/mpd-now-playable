@@ -47,8 +47,7 @@ def make_cache(url: str, namespace: str = "") -> Cache[T]:
 	if parsed_url.password:
 		kwargs["password"] = parsed_url.password
 
-	namespace = ":".join(s for s in [kwargs.get("namespace"), namespace] if s)
-	del kwargs["namespace"]
+	namespace = ":".join(s for s in [kwargs.pop("namespace", ""), namespace] if s)
 
 	serializer = OrmsgpackSerializer if HAS_ORMSGPACK else PickleSerializer
 
