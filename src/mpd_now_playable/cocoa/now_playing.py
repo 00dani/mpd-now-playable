@@ -82,7 +82,7 @@ def song_to_media_item(song: Song) -> NSMutableDictionary:
 	nowplaying_info = nothing_to_media_item()
 	nowplaying_info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaTypeAudio
 	nowplaying_info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = song.elapsed
-	nowplaying_info[MPNowPlayingInfoPropertyExternalContentIdentifier] = song.file
+	nowplaying_info[MPNowPlayingInfoPropertyExternalContentIdentifier] = str(song.file)
 	nowplaying_info[MPNowPlayingInfoPropertyPlaybackQueueCount] = song.queue_length
 	nowplaying_info[MPNowPlayingInfoPropertyPlaybackQueueIndex] = song.queue_index
 	nowplaying_info[MPMediaItemPropertyPersistentID] = song_to_persistent_id(song)
