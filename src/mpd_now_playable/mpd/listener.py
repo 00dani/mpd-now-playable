@@ -21,6 +21,9 @@ def mpd_current_to_song(
 		queue_length=int(status["playlistlength"]),
 		file=Path(current["file"]),
 		musicbrainz_trackid=convert_if_exists(current.get("musicbrainz_trackid"), UUID),
+		musicbrainz_releasetrackid=convert_if_exists(
+			current.get("musicbrainz_releasetrackid"), UUID
+		),
 		title=current.get("title"),
 		artist=current.get("artist"),
 		album=current.get("album"),

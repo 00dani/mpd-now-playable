@@ -8,6 +8,7 @@ from ..song import Song
 # The maximum size for a BLAKE2b "person" value is sixteen bytes, so we need to be concise.
 HASH_PERSON_PREFIX: Final = b"mnp.mac."
 TRACKID_HASH_PERSON: Final = HASH_PERSON_PREFIX + b"mb_tid"
+RELEASETRACKID_HASH_PERSON: Final = HASH_PERSON_PREFIX + b"mb_rtid"
 FILE_HASH_PERSON: Final = HASH_PERSON_PREFIX + b"f"
 
 PERSISTENT_ID_BITS: Final = 64
@@ -17,6 +18,14 @@ PERSISTENT_ID_BYTES: Final = PERSISTENT_ID_BITS // 8
 def digest_trackid(trackid: UUID) -> bytes:
 	return blake2b(
 		trackid.bytes, digest_size=PERSISTENT_ID_BYTES, person=TRACKID_HASH_PERSON
+	).digest()
+
+
+def digest_releasetrackid(trackid: UUID) -> bytes:
+	return blake2b(
+		trackid.bytes,
+		digest_size=PERSISTENT_ID_BYTES,
+		person=RELEASETRACKID_HASH_PERSON,
 	).digest()
 
 
@@ -34,6 +43,8 @@ def digest_file_uri(file: Path) -> bytes:
 def song_to_persistent_id(song: Song) -> int:
 	if song.musicbrainz_trackid:
 		hashed_id = digest_trackid(song.musicbrainz_trackid)
+	elif song.musicbrainz_releasetrackid:
+		hashed_id = digest_releasetrackid(song.musicbrainz_releasetrackid)
 	else:
 		hashed_id = digest_file_uri(song.file)
 	return int.from_bytes(hashed_id)

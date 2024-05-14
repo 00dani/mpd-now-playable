@@ -19,6 +19,7 @@ class Song:
 	queue_length: int
 	file: Path
 	musicbrainz_trackid: UUID | None
+	musicbrainz_releasetrackid: UUID | None
 	title: str | None
 	artist: str | None
 	composer: str | None
