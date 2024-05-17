@@ -6,7 +6,7 @@ from ..async_tools import run_background_task
 from ..cache import Cache, make_cache
 from .types import CurrentSongResponse, MpdStateHandler
 
-CACHE_TTL = 60 * 60 # seconds = 1 hour
+CACHE_TTL = 60 * 60  # seconds = 1 hour
 
 
 class ArtCacheEntry(TypedDict):
@@ -49,7 +49,7 @@ class MpdArtworkCache:
 		return None
 
 	async def cache_artwork(self, song: CurrentSongResponse) -> None:
-		art = ArtCacheEntry(data=await self.mpd.readpicture(song["file"]))
+		art = ArtCacheEntry(data=await self.mpd.get_art(song["file"]))
 		try:
 			await self.album_cache.add(calc_album_key(song), art, ttl=CACHE_TTL)
 		except ValueError:

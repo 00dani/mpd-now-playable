@@ -2,11 +2,9 @@ from typing import Literal, NotRequired, Protocol, TypedDict
 
 
 class MpdStateHandler(Protocol):
-	async def readpicture(self, file: str) -> bytes | None:
-		...
+	async def get_art(self, file: str) -> bytes | None: ...
 
-	async def refresh(self) -> None:
-		...
+	async def refresh(self) -> None: ...
 
 
 BooleanFlag = Literal["0", "1"]
