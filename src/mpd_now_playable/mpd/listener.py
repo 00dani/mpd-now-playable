@@ -95,6 +95,13 @@ class MpdStateListener(Player):
 		print(song)
 		listener.update(song)
 
+	async def albumart(self, file: str) -> bytes | None:
+		try:
+			albumart = await self.client.albumart(file)
+			return albumart.get("binary")
+		except CommandError:
+			return None
+
 	async def readpicture(self, file: str) -> bytes | None:
 		try:
 			readpic = await self.client.readpicture(file)
