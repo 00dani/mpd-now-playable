@@ -1,6 +1,7 @@
 from json import dump
 from pathlib import Path
 from pprint import pp
+from shutil import get_terminal_size
 from typing import Any, Mapping
 
 from apischema import schema, settings
@@ -35,7 +36,7 @@ def write() -> None:
 
 	schema_file = Path(__file__).parent / Config.schema.name
 	print(f"Writing this schema to {schema_file}")
-	pp(schema)
+	pp(schema, sort_dicts=True, width=get_terminal_size().columns)
 	with open(schema_file, "w") as fp:
 		dump(schema, fp, indent="\t", sort_keys=True)
 		fp.write("\n")
