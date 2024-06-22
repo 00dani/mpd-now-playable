@@ -35,9 +35,9 @@ from MediaPlayer import (
 	MPRemoteCommandHandlerStatusSuccess,
 )
 
-from ..async_tools import run_background_task
 from ..player import Player
 from ..song import PlaybackState, Song
+from ..tools.asyncio import run_background_task
 from .persistent_id import song_to_persistent_id
 
 

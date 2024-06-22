@@ -9,7 +9,7 @@ from yarl import URL
 from ..config.model import MpdConfig
 from ..player import Player
 from ..song import PlaybackState, Song, SongListener
-from ..type_tools import convert_if_exists
+from ..tools.types import convert_if_exists
 from .artwork_cache import MpdArtworkCache
 from .types import CurrentSongResponse, StatusResponse
 

@@ -4,8 +4,8 @@ from typing import TypedDict
 
 from yarl import URL
 
-from ..async_tools import run_background_task
 from ..cache import Cache, make_cache
+from ..tools.asyncio import run_background_task
 from .types import CurrentSongResponse, MpdStateHandler
 
 CACHE_TTL = 60 * 60  # seconds = 1 hour
