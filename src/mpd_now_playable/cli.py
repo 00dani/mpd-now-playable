@@ -3,6 +3,7 @@ from os import environ
 
 from corefoundationasyncio import CoreFoundationEventLoop
 
+from .__version__ import __version__
 from .cocoa.now_playing import CocoaNowPlaying
 from .mpd.listener import MpdStateListener
 
@@ -15,6 +16,7 @@ async def listen() -> None:
 	if password is None and "@" in host:
 		password, host = host.split("@", maxsplit=1)
 
+	print(f"mpd-now-playable v{__version__}")
 	listener = MpdStateListener(cache)
 	now_playing = CocoaNowPlaying(listener)
 	await listener.start(host=host, port=port, password=password)

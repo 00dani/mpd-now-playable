@@ -48,6 +48,8 @@ check = {composite = ['lint', 'typecheck']}
 
 [tool.pdm.version]
 source = "scm"
+write_to = 'mpd_now_playable/__version__.py'
+write_template = "__version__ = '{}'"
 
 [build-system]
 requires = ["pdm-backend"]
