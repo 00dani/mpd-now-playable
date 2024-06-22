@@ -4,7 +4,9 @@ from uuid import UUID
 
 from mpd.asyncio import MPDClient
 from mpd.base import CommandError
+from yarl import URL
 
+from ..config.model import MpdConfig
 from ..player import Player
 from ..song import PlaybackState, Song, SongListener
 from ..type_tools import convert_if_exists
@@ -44,20 +46,18 @@ class MpdStateListener(Player):
 	art_cache: MpdArtworkCache
 	idle_count = 0
 
-	def __init__(self, cache: str | None = None) -> None:
+	def __init__(self, cache: URL | None = None) -> None:
 		self.client = MPDClient()
 		self.art_cache = (
 			MpdArtworkCache(self, cache) if cache else MpdArtworkCache(self)
 		)
 
-	async def start(
-		self, host: str = "localhost", port: int = 6600, password: str | None = None
-	) -> None:
-		print(f"Connecting to MPD server {host}:{port}...")
-		await self.client.connect(host, port)
-		if password is not None:
+	async def start(self, conf: MpdConfig) -> None:
+		print(f"Connecting to MPD server {conf.host}:{conf.port}...")
+		await self.client.connect(conf.host, conf.port)
+		if conf.password is not None:
 			print("Authorising to MPD with your password...")
-			await self.client.password(password)
+			await self.client.password(conf.password)
 		print(f"Connected to MPD v{self.client.mpd_version}")
 
 	async def refresh(self) -> None:

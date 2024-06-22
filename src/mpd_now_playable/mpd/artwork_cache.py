@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TypedDict
 
+from yarl import URL
+
 from ..async_tools import run_background_task
 from ..cache import Cache, make_cache
 from .types import CurrentSongResponse, MpdStateHandler
@@ -23,12 +25,15 @@ def calc_track_key(song: CurrentSongResponse) -> str:
 	return song["file"]
 
 
+MEMORY = URL("memory://")
+
+
 class MpdArtworkCache:
 	mpd: MpdStateHandler
 	album_cache: Cache[ArtCacheEntry]
 	track_cache: Cache[ArtCacheEntry]
 
-	def __init__(self, mpd: MpdStateHandler, cache_url: str = "memory://"):
+	def __init__(self, mpd: MpdStateHandler, cache_url: URL = MEMORY):
 		self.mpd = mpd
 		self.album_cache = make_cache(cache_url, "album")
 		self.track_cache = make_cache(cache_url, "track")

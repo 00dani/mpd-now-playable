@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from contextlib import suppress
 from typing import Any, Optional, TypeVar
-from urllib.parse import parse_qsl, urlparse
 
 from aiocache import Cache
 from aiocache.serializers import BaseSerializer, PickleSerializer
+from yarl import URL
 
 T = TypeVar("T")
 
@@ -28,24 +28,23 @@ class OrmsgpackSerializer(BaseSerializer):
 		return ormsgpack.unpackb(value)
 
 
-def make_cache(url: str, namespace: str = "") -> Cache[T]:
-	parsed_url = urlparse(url)
-	backend = Cache.get_scheme_class(parsed_url.scheme)
+def make_cache(url: URL, namespace: str = "") -> Cache[T]:
+	backend = Cache.get_scheme_class(url.scheme)
 	if backend == Cache.MEMORY:
 		return Cache(backend)
-	kwargs: dict[str, Any] = dict(parse_qsl(parsed_url.query))
+	kwargs: dict[str, Any] = dict(url.query)
 
-	if parsed_url.path:
-		kwargs.update(backend.parse_uri_path(parsed_url.path))
+	if url.path:
+		kwargs.update(backend.parse_uri_path(url.path))
 
-	if parsed_url.hostname:
-		kwargs["endpoint"] = parsed_url.hostname
+	if url.host:
+		kwargs["endpoint"] = url.host
 
-	if parsed_url.port:
-		kwargs["port"] = parsed_url.port
+	if url.port:
+		kwargs["port"] = url.port
 
-	if parsed_url.password:
-		kwargs["password"] = parsed_url.password
+	if url.password:
+		kwargs["password"] = url.password
 
 	namespace = ":".join(s for s in [kwargs.pop("namespace", ""), namespace] if s)
 

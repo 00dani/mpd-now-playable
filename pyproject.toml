@@ -10,6 +10,10 @@ dependencies = [
     "attrs>=23.1.0",
     "pyobjc-framework-MediaPlayer>=10.0",
     "python-mpd2>=3.1.0",
+    "xdg-base-dirs>=6.0.1",
+    "pytomlpp>=1.0.13",
+    "apischema>=0.18.1",
+    "yarl>=1.9.4",
 ]
 readme = "README.md"
 

@@ -1,0 +1,44 @@
+{
+	"$id": "https://cdn.00dani.me/m/schemata/mpd-now-playable/config-v1.json",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"additionalProperties": false,
+	"definitions": {
+		"URL": {
+			"format": "uri",
+			"type": "string"
+		}
+	},
+	"properties": {
+		"$schema": {
+			"$ref": "#/definitions/URL"
+		},
+		"cache": {
+			"$ref": "#/definitions/URL"
+		},
+		"mpd": {
+			"additionalProperties": false,
+			"default": {
+				"host": "127.0.0.1",
+				"port": 6600
+			},
+			"properties": {
+				"host": {
+					"default": "127.0.0.1",
+					"format": "hostname",
+					"type": "string"
+				},
+				"password": {
+					"type": "string"
+				},
+				"port": {
+					"default": 6600,
+					"maximum": 65535,
+					"minimum": 1,
+					"type": "integer"
+				}
+			},
+			"type": "object"
+		}
+	},
+	"type": "object"
+}
