@@ -19,10 +19,10 @@ with suppress(ImportError):
 class OrmsgpackSerializer(BaseSerializer):
 	DEFAULT_ENCODING = None
 
-	def dumps(self, value: Any) -> bytes:
+	def dumps(self, value: object) -> bytes:
 		return ormsgpack.packb(value)
 
-	def loads(self, value: Optional[bytes]) -> Any:
+	def loads(self, value: Optional[bytes]) -> object:
 		if value is None:
 			return None
 		return ormsgpack.unpackb(value)

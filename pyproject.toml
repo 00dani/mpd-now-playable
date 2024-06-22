@@ -48,7 +48,7 @@ mpd-now-playable = 'mpd_now_playable.cli:main'
 start = {call = 'mpd_now_playable.cli:main'}
 lint = 'ruff check src/mpd_now_playable'
 typecheck = 'mypy -p mpd_now_playable'
-check = {composite = ['lint', 'typecheck']}
+check = {composite = ['lint', 'typecheck'], keep_going = true}
 
 [tool.pdm.version]
 source = "scm"
@@ -71,7 +71,7 @@ dev = [
 [tool.mypy]
 mypy_path = 'stubs'
 
-[tool.ruff]
+[tool.ruff.lint]
 ignore-init-module-imports = true
 select = [
     # pycodestyle
