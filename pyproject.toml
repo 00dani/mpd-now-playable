@@ -44,29 +44,9 @@ Issues = "https://git.00dani.me/00dani/mpd-now-playable/issues"
 [project.scripts]
 mpd-now-playable = 'mpd_now_playable.cli:main'
 
-[tool.pdm.scripts]
-start = {call = 'mpd_now_playable.cli:main'}
-lint = 'ruff check src/mpd_now_playable'
-typecheck = 'mypy -p mpd_now_playable'
-check = {composite = ['lint', 'typecheck'], keep_going = true}
-
-[tool.pdm.version]
-source = "scm"
-write_to = 'mpd_now_playable/__version__.py'
-write_template = "__version__ = '{}'"
-
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
-
-[tool.pdm.build]
-excludes = ["**/.mypy_cache"]
-
-[tool.pdm.dev-dependencies]
-dev = [
-    "mypy>=1.7.1",
-    "ruff>=0.1.6",
-]
 
 [tool.mypy]
 mypy_path = 'stubs'
@@ -101,3 +81,26 @@ mypy-init-return = true
 [tool.ruff.format]
 # I prefer tabs for accessibility reasons.
 indent-style = "tab"
+
+[tool.pdm.scripts]
+start = {call = 'mpd_now_playable.cli:main'}
+lint = 'ruff check src/mpd_now_playable'
+typecheck = 'mypy -p mpd_now_playable'
+check = {composite = ['lint', 'typecheck'], keep_going = true}
+
+[tool.pdm.version]
+source = "scm"
+write_to = 'mpd_now_playable/__version__.py'
+write_template = "__version__ = '{}'"
+
+[tool.pdm.build]
+excludes = ["**/.mypy_cache"]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "mypy>=1.7.1",
+    "ruff>=0.1.6",
+    "class-doc>=0.2.6",
+]
+
+

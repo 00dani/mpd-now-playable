@@ -13,7 +13,12 @@
 			"$ref": "#/definitions/URL"
 		},
 		"cache": {
-			"$ref": "#/definitions/URL"
+			"allOf": [
+				{
+					"$ref": "#/definitions/URL"
+				}
+			],
+			"description": "A URL describing a cache service for mpd-now-playable to use. Supported protocols are memory://, redis://, and memcached://."
 		},
 		"mpd": {
 			"additionalProperties": false,
@@ -24,14 +29,17 @@
 			"properties": {
 				"host": {
 					"default": "127.0.0.1",
+					"description": "The hostname or IP address of your MPD server. If you're running MPD on your local machine, you don't need to configure this.",
 					"format": "hostname",
 					"type": "string"
 				},
 				"password": {
+					"description": "The password required to connect to your MPD instance, if you need one.",
 					"type": "string"
 				},
 				"port": {
 					"default": 6600,
+					"description": "The port on which to connect to MPD. Unless you're managing multiple MPD servers on one machine for some reason, you probably haven't changed this from the default port, 6600.",
 					"maximum": 65535,
 					"minimum": 1,
 					"type": "integer"

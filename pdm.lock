@@ -5,7 +5,7 @@
 groups = ["default", "all", "dev"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:828f8051de2c2a04cede8130abf86764edb38f0428cd1d52dd797bff43452afe"
+content_hash = "sha256:17fdf74bf4b2980c66c106cebcb936921e671e8adaeb2f2e95d95f255704aa38"
 
 [[package]]
 name = "aiocache"
@@ -81,6 +81,19 @@ files = [
 ]
 
 [[package]]
+name = "class-doc"
+version = "0.2.6"
+requires_python = ">=3.6,<4.0"
+summary = "Extract attributes docstrings defined in various ways"
+dependencies = [
+    "more-itertools>=5.0.0",
+]
+files = [
+    {file = "class-doc-0.2.6.tar.gz", hash = "sha256:f5e036ed9b7f6de528affdd9f038851910b342d4c1c1252983a55ff080b530e0"},
+    {file = "class_doc-0.2.6-py3-none-any.whl", hash = "sha256:e6f2cea2dfbe93f76dee25de13d70dc0d2269698e8b849f751d98dc894c52ea5"},
+]
+
+[[package]]
 name = "idna"
 version = "3.7"
 requires_python = ">=3.5"
@@ -88,6 +101,16 @@ summary = "Internationalized Domain Names in Applications (IDNA)"
 files = [
     {file = "idna-3.7-py3-none-any.whl", hash = "sha256:82fee1fc78add43492d3a1898bfa6d8a904cc97d8427f683ed8e798d07761aa0"},
     {file = "idna-3.7.tar.gz", hash = "sha256:028ff3aadf0609c1fd278d8ea3089299412a7a8b9bd005dd08b9f8285bcb5cfc"},
+]
+
+[[package]]
+name = "more-itertools"
+version = "10.3.0"
+requires_python = ">=3.8"
+summary = "More routines for operating on iterables, beyond itertools"
+files = [
+    {file = "more-itertools-10.3.0.tar.gz", hash = "sha256:e5d93ef411224fbcef366a6e8ddc4c5781bc6359d43412a65dd5964e46111463"},
+    {file = "more_itertools-10.3.0-py3-none-any.whl", hash = "sha256:ea6a02e24a9161e51faad17a8782b92a0df82c12c1c8886fec7f0c3fa1a1b320"},
 ]
 
 [[package]]
