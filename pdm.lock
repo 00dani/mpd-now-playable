@@ -183,100 +183,106 @@ files = [
 
 [[package]]
 name = "pyobjc-core"
-version = "10.2"
+version = "10.3.1"
 requires_python = ">=3.8"
 summary = "Python<->ObjC Interoperability Module"
 files = [
-    {file = "pyobjc-core-10.2.tar.gz", hash = "sha256:0153206e15d0e0d7abd53ee8a7fbaf5606602a032e177a028fc8589516a8771c"},
-    {file = "pyobjc_core-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:a70546246177c23acb323c9324330e37638f1a0a3d13664abcba3bb75e43012c"},
+    {file = "pyobjc_core-10.3.1-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:6ff5823d13d0a534cdc17fa4ad47cf5bee4846ce0fd27fc40012e12b46db571b"},
+    {file = "pyobjc_core-10.3.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:2581e8e68885bcb0e11ec619e81ef28e08ee3fac4de20d8cc83bc5af5bcf4a90"},
+    {file = "pyobjc_core-10.3.1.tar.gz", hash = "sha256:b204a80ccc070f9ab3f8af423a3a25a6fd787e228508d00c4c30f8ac538ba720"},
 ]
 
 [[package]]
 name = "pyobjc-framework-avfoundation"
-version = "10.2"
+version = "10.3.1"
 requires_python = ">=3.8"
 summary = "Wrappers for the framework AVFoundation on macOS"
 dependencies = [
-    "pyobjc-core>=10.2",
-    "pyobjc-framework-Cocoa>=10.2",
-    "pyobjc-framework-CoreAudio>=10.2",
-    "pyobjc-framework-CoreMedia>=10.2",
-    "pyobjc-framework-Quartz>=10.2",
+    "pyobjc-core>=10.3.1",
+    "pyobjc-framework-Cocoa>=10.3.1",
+    "pyobjc-framework-CoreAudio>=10.3.1",
+    "pyobjc-framework-CoreMedia>=10.3.1",
+    "pyobjc-framework-Quartz>=10.3.1",
 ]
 files = [
-    {file = "pyobjc-framework-AVFoundation-10.2.tar.gz", hash = "sha256:4d394014f2477c0c6a596dbb01ef5d92944058d0e0d954ce6121a676ae9395ce"},
-    {file = "pyobjc_framework_AVFoundation-10.2-cp36-abi3-macosx_10_9_universal2.whl", hash = "sha256:5f20c11a8870d7d58f0e4f20f918e45e922520aa5c9dbee61dc59ca4bc4bd26d"},
-    {file = "pyobjc_framework_AVFoundation-10.2-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:283355d1f96c184e5f5f479870eb3bf510747307697616737bbc5d224af3abcb"},
-    {file = "pyobjc_framework_AVFoundation-10.2-cp36-abi3-macosx_11_0_universal2.whl", hash = "sha256:a63a4e26c088023b0b1cb29d7da2c2246aa8eca2b56767fe1cc36a18c6fb650b"},
+    {file = "pyobjc_framework_AVFoundation-10.3.1-cp36-abi3-macosx_10_13_universal2.whl", hash = "sha256:0896f6650df35f0229d1fb3aa3fbf632647dd815d4921cb61d9eb7fa26be6237"},
+    {file = "pyobjc_framework_AVFoundation-10.3.1-cp36-abi3-macosx_10_9_universal2.whl", hash = "sha256:0cb27cc95288d95df7504adf474596f8855de7fa7798bbc1bbfbdfbbcb940952"},
+    {file = "pyobjc_framework_AVFoundation-10.3.1-cp36-abi3-macosx_10_9_x86_64.whl", hash = "sha256:ccb606ef0806d952a04db45ae691167678121df1d8d7c2f8cc73745695097033"},
+    {file = "pyobjc_framework_AVFoundation-10.3.1-cp36-abi3-macosx_11_0_universal2.whl", hash = "sha256:00889eb915479aa9ea392cdd241e4b635ae0fa3114f043d08cf3e1d1b5a23bd4"},
+    {file = "pyobjc_framework_avfoundation-10.3.1.tar.gz", hash = "sha256:2f94bee3a4217b46d9416cad066e4f357bf0f344079c328736114451ae19ae94"},
 ]
 
 [[package]]
 name = "pyobjc-framework-cocoa"
-version = "10.2"
+version = "10.3.1"
 requires_python = ">=3.8"
 summary = "Wrappers for the Cocoa frameworks on macOS"
 dependencies = [
-    "pyobjc-core>=10.2",
+    "pyobjc-core>=10.3.1",
 ]
 files = [
-    {file = "pyobjc-framework-Cocoa-10.2.tar.gz", hash = "sha256:6383141379636b13855dca1b39c032752862b829f93a49d7ddb35046abfdc035"},
-    {file = "pyobjc_framework_Cocoa-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:18886d5013cd7dc7ecd6e0df5134c767569b5247fc10a5e293c72ee3937b217b"},
+    {file = "pyobjc_framework_Cocoa-10.3.1-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:11b4e0bad4bbb44a4edda128612f03cdeab38644bbf174de0c13129715497296"},
+    {file = "pyobjc_framework_Cocoa-10.3.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:de5e62e5ccf2871a94acf3bf79646b20ea893cc9db78afa8d1fe1b0d0f7cbdb0"},
+    {file = "pyobjc_framework_cocoa-10.3.1.tar.gz", hash = "sha256:1cf20714daaa986b488fb62d69713049f635c9d41a60c8da97d835710445281a"},
 ]
 
 [[package]]
 name = "pyobjc-framework-coreaudio"
-version = "10.2"
+version = "10.3.1"
 requires_python = ">=3.8"
 summary = "Wrappers for the framework CoreAudio on macOS"
 dependencies = [
-    "pyobjc-core>=10.2",
-    "pyobjc-framework-Cocoa>=10.2",
+    "pyobjc-core>=10.3.1",
+    "pyobjc-framework-Cocoa>=10.3.1",
 ]
 files = [
-    {file = "pyobjc-framework-CoreAudio-10.2.tar.gz", hash = "sha256:5e97ae7a65be85aee83aef004b31146c5fbf28325d870362959f7312b303fb67"},
-    {file = "pyobjc_framework_CoreAudio-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:32608ce881b5e6a7cb332c2732762fa93829ac495c5344c33e8e8b72a2431b23"},
+    {file = "pyobjc_framework_CoreAudio-10.3.1-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:e0aeca61a425d846afc92350ffba970e1e503469182f5f0ea436de98cfd00d96"},
+    {file = "pyobjc_framework_CoreAudio-10.3.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:21cecd1b023b6960d1071c106345656de45a399196701b07c7e5c076321f25ad"},
+    {file = "pyobjc_framework_coreaudio-10.3.1.tar.gz", hash = "sha256:c81c709bf955aea474a4de380b187f3c2e56c864ca7de520b08362b73070c795"},
 ]
 
 [[package]]
 name = "pyobjc-framework-coremedia"
-version = "10.2"
+version = "10.3.1"
 requires_python = ">=3.8"
 summary = "Wrappers for the framework CoreMedia on macOS"
 dependencies = [
-    "pyobjc-core>=10.2",
-    "pyobjc-framework-Cocoa>=10.2",
+    "pyobjc-core>=10.3.1",
+    "pyobjc-framework-Cocoa>=10.3.1",
 ]
 files = [
-    {file = "pyobjc-framework-CoreMedia-10.2.tar.gz", hash = "sha256:d726d86636217eaa135e5626d05c7eb0f9b4529ce1ed504e08069fe1e0421483"},
-    {file = "pyobjc_framework_CoreMedia-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:7fa13166a14d384bb6442e5f635310dd075c2a4b3b3bd67ac63b1e2e1fd2d65e"},
+    {file = "pyobjc_framework_CoreMedia-10.3.1-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:c6eaf48f202becab10679e3b5dd62607ddec2739495db45882524592cabf3997"},
+    {file = "pyobjc_framework_CoreMedia-10.3.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:98b8ab02e6ec979007b706e05166e16bd61121e47fbc6e449f4b2de2c58f3cb6"},
+    {file = "pyobjc_framework_coremedia-10.3.1.tar.gz", hash = "sha256:bc3e0cddf5f546b5d8407d8f46b203f1bd4396ad5dbfdc0d064a560b3fe31221"},
 ]
 
 [[package]]
 name = "pyobjc-framework-mediaplayer"
-version = "10.2"
+version = "10.3.1"
 requires_python = ">=3.8"
 summary = "Wrappers for the framework MediaPlayer on macOS"
 dependencies = [
-    "pyobjc-core>=10.2",
-    "pyobjc-framework-AVFoundation>=10.2",
+    "pyobjc-core>=10.3.1",
+    "pyobjc-framework-AVFoundation>=10.3.1",
 ]
 files = [
-    {file = "pyobjc-framework-MediaPlayer-10.2.tar.gz", hash = "sha256:4b6d296b084e01fb6e5c782b7b6308077db09f4051f50b0a6c3298ffbd1f1d70"},
-    {file = "pyobjc_framework_MediaPlayer-10.2-py2.py3-none-any.whl", hash = "sha256:c501ea19380bfbf6b04fbe909fcfe9a78c5ff2a9b58dae87be259066b1ae3521"},
+    {file = "pyobjc_framework_MediaPlayer-10.3.1-py2.py3-none-any.whl", hash = "sha256:5b428cc28e57c1778bd431156c3adb948650f7503f266689559d0ece94b34e8a"},
+    {file = "pyobjc_framework_mediaplayer-10.3.1.tar.gz", hash = "sha256:97043df5ef89d4fbe217813e8f4ee1e226d8a43dee4eac00fff95e6b8a7772be"},
 ]
 
 [[package]]
 name = "pyobjc-framework-quartz"
-version = "10.2"
+version = "10.3.1"
 requires_python = ">=3.8"
 summary = "Wrappers for the Quartz frameworks on macOS"
 dependencies = [
-    "pyobjc-core>=10.2",
-    "pyobjc-framework-Cocoa>=10.2",
+    "pyobjc-core>=10.3.1",
+    "pyobjc-framework-Cocoa>=10.3.1",
 ]
 files = [
-    {file = "pyobjc-framework-Quartz-10.2.tar.gz", hash = "sha256:9b947e081f5bd6cd01c99ab5d62c36500d2d6e8d3b87421c1cbb7f9c885555eb"},
-    {file = "pyobjc_framework_Quartz-10.2-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:3e8e33246d966c2bd7f5ee2cf3b431582fa434a6ec2b6dbe580045ebf1f55be5"},
+    {file = "pyobjc_framework_Quartz-10.3.1-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:ca35f92486869a41847a1703bb176aab8a53dbfd8e678d1f4d68d8e6e1581c71"},
+    {file = "pyobjc_framework_Quartz-10.3.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:00a0933267e3a46ea4afcc35d117b2efb920f06de797fa66279c52e7057e3590"},
+    {file = "pyobjc_framework_quartz-10.3.1.tar.gz", hash = "sha256:b6d7e346d735c9a7f147cd78e6da79eeae416a0b7d3874644c83a23786c6f886"},
 ]
 
 [[package]]
@@ -321,27 +327,27 @@ files = [
 
 [[package]]
 name = "ruff"
-version = "0.4.4"
+version = "0.4.10"
 requires_python = ">=3.7"
 summary = "An extremely fast Python linter and code formatter, written in Rust."
 files = [
-    {file = "ruff-0.4.4-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:29d44ef5bb6a08e235c8249294fa8d431adc1426bfda99ed493119e6f9ea1bf6"},
-    {file = "ruff-0.4.4-py3-none-macosx_11_0_arm64.whl", hash = "sha256:c4efe62b5bbb24178c950732ddd40712b878a9b96b1d02b0ff0b08a090cbd891"},
-    {file = "ruff-0.4.4-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4c8e2f1e8fc12d07ab521a9005d68a969e167b589cbcaee354cb61e9d9de9c15"},
-    {file = "ruff-0.4.4-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:60ed88b636a463214905c002fa3eaab19795679ed55529f91e488db3fe8976ab"},
-    {file = "ruff-0.4.4-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b90fc5e170fc71c712cc4d9ab0e24ea505c6a9e4ebf346787a67e691dfb72e85"},
-    {file = "ruff-0.4.4-py3-none-manylinux_2_17_ppc64.manylinux2014_ppc64.whl", hash = "sha256:8e7e6ebc10ef16dcdc77fd5557ee60647512b400e4a60bdc4849468f076f6eef"},
-    {file = "ruff-0.4.4-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:b9ddb2c494fb79fc208cd15ffe08f32b7682519e067413dbaf5f4b01a6087bcd"},
-    {file = "ruff-0.4.4-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:c51c928a14f9f0a871082603e25a1588059b7e08a920f2f9fa7157b5bf08cfe9"},
-    {file = "ruff-0.4.4-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b5eb0a4bfd6400b7d07c09a7725e1a98c3b838be557fee229ac0f84d9aa49c36"},
-    {file = "ruff-0.4.4-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:b1867ee9bf3acc21778dcb293db504692eda5f7a11a6e6cc40890182a9f9e595"},
-    {file = "ruff-0.4.4-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:1aecced1269481ef2894cc495647392a34b0bf3e28ff53ed95a385b13aa45768"},
-    {file = "ruff-0.4.4-py3-none-musllinux_1_2_i686.whl", hash = "sha256:9da73eb616b3241a307b837f32756dc20a0b07e2bcb694fec73699c93d04a69e"},
-    {file = "ruff-0.4.4-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:958b4ea5589706a81065e2a776237de2ecc3e763342e5cc8e02a4a4d8a5e6f95"},
-    {file = "ruff-0.4.4-py3-none-win32.whl", hash = "sha256:cb53473849f011bca6e754f2cdf47cafc9c4f4ff4570003a0dad0b9b6890e876"},
-    {file = "ruff-0.4.4-py3-none-win_amd64.whl", hash = "sha256:424e5b72597482543b684c11def82669cc6b395aa8cc69acc1858b5ef3e5daae"},
-    {file = "ruff-0.4.4-py3-none-win_arm64.whl", hash = "sha256:39df0537b47d3b597293edbb95baf54ff5b49589eb7ff41926d8243caa995ea6"},
-    {file = "ruff-0.4.4.tar.gz", hash = "sha256:f87ea42d5cdebdc6a69761a9d0bc83ae9b3b30d0ad78952005ba6568d6c022af"},
+    {file = "ruff-0.4.10-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:5c2c4d0859305ac5a16310eec40e4e9a9dec5dcdfbe92697acd99624e8638dac"},
+    {file = "ruff-0.4.10-py3-none-macosx_11_0_arm64.whl", hash = "sha256:a79489607d1495685cdd911a323a35871abfb7a95d4f98fc6f85e799227ac46e"},
+    {file = "ruff-0.4.10-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b1dd1681dfa90a41b8376a61af05cc4dc5ff32c8f14f5fe20dba9ff5deb80cd6"},
+    {file = "ruff-0.4.10-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:c75c53bb79d71310dc79fb69eb4902fba804a81f374bc86a9b117a8d077a1784"},
+    {file = "ruff-0.4.10-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:18238c80ee3d9100d3535d8eb15a59c4a0753b45cc55f8bf38f38d6a597b9739"},
+    {file = "ruff-0.4.10-py3-none-manylinux_2_17_ppc64.manylinux2014_ppc64.whl", hash = "sha256:d8f71885bce242da344989cae08e263de29752f094233f932d4f5cfb4ef36a81"},
+    {file = "ruff-0.4.10-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:330421543bd3222cdfec481e8ff3460e8702ed1e58b494cf9d9e4bf90db52b9d"},
+    {file = "ruff-0.4.10-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:9e9b6fb3a37b772628415b00c4fc892f97954275394ed611056a4b8a2631365e"},
+    {file = "ruff-0.4.10-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0f54c481b39a762d48f64d97351048e842861c6662d63ec599f67d515cb417f6"},
+    {file = "ruff-0.4.10-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:67fe086b433b965c22de0b4259ddfe6fa541c95bf418499bedb9ad5fb8d1c631"},
+    {file = "ruff-0.4.10-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:acfaaab59543382085f9eb51f8e87bac26bf96b164839955f244d07125a982ef"},
+    {file = "ruff-0.4.10-py3-none-musllinux_1_2_i686.whl", hash = "sha256:3cea07079962b2941244191569cf3a05541477286f5cafea638cd3aa94b56815"},
+    {file = "ruff-0.4.10-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:338a64ef0748f8c3a80d7f05785930f7965d71ca260904a9321d13be24b79695"},
+    {file = "ruff-0.4.10-py3-none-win32.whl", hash = "sha256:ffe3cd2f89cb54561c62e5fa20e8f182c0a444934bf430515a4b422f1ab7b7ca"},
+    {file = "ruff-0.4.10-py3-none-win_amd64.whl", hash = "sha256:67f67cef43c55ffc8cc59e8e0b97e9e60b4837c8f21e8ab5ffd5d66e196e25f7"},
+    {file = "ruff-0.4.10-py3-none-win_arm64.whl", hash = "sha256:dd1fcee327c20addac7916ca4e2653fbbf2e8388d8a6477ce5b4e986b68ae6c0"},
+    {file = "ruff-0.4.10.tar.gz", hash = "sha256:3aa4f2bc388a30d346c56524f7cacca85945ba124945fe489952aadb6b5cd804"},
 ]
 
 [[package]]
