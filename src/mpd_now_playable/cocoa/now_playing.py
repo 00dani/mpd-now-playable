@@ -78,6 +78,12 @@ def playback_state_to_cocoa(state: PlaybackState) -> MPMusicPlaybackState:
 	return mapping[state]
 
 
+def join_plural_field(field: list[str]) -> str | None:
+	if field:
+		return ", ".join(field)
+	return None
+
+
 def song_to_media_item(song: Song) -> NSMutableDictionary:
 	nowplaying_info = nothing_to_media_item()
 	nowplaying_info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaTypeAudio
@@ -88,12 +94,12 @@ def song_to_media_item(song: Song) -> NSMutableDictionary:
 	nowplaying_info[MPMediaItemPropertyPersistentID] = song_to_persistent_id(song)
 
 	nowplaying_info[MPMediaItemPropertyTitle] = song.title
-	nowplaying_info[MPMediaItemPropertyArtist] = song.artist
-	nowplaying_info[MPMediaItemPropertyAlbumTitle] = song.album
+	nowplaying_info[MPMediaItemPropertyArtist] = join_plural_field(song.artist)
+	nowplaying_info[MPMediaItemPropertyAlbumTitle] = join_plural_field(song.album)
 	nowplaying_info[MPMediaItemPropertyAlbumTrackNumber] = song.track
 	nowplaying_info[MPMediaItemPropertyDiscNumber] = song.disc
-	nowplaying_info[MPMediaItemPropertyGenre] = song.genre
-	nowplaying_info[MPMediaItemPropertyComposer] = song.composer
+	nowplaying_info[MPMediaItemPropertyGenre] = join_plural_field(song.genre)
+	nowplaying_info[MPMediaItemPropertyComposer] = join_plural_field(song.composer)
 	nowplaying_info[MPMediaItemPropertyPlaybackDuration] = song.duration
 
 	# MPD can't play back music at different rates, so we just want to set it

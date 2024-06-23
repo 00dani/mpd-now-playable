@@ -9,7 +9,7 @@ from yarl import URL
 from ..config.model import MpdConfig
 from ..player import Player
 from ..song import PlaybackState, Song, SongListener
-from ..tools.types import convert_if_exists
+from ..tools.types import convert_if_exists, un_maybe_plural
 from .artwork_cache import MpdArtworkCache
 from .types import CurrentSongResponse, StatusResponse
 
@@ -27,11 +27,11 @@ def mpd_current_to_song(
 			current.get("musicbrainz_releasetrackid"), UUID
 		),
 		title=current.get("title"),
-		artist=current.get("artist"),
-		album=current.get("album"),
-		album_artist=current.get("albumartist"),
-		composer=current.get("composer"),
-		genre=current.get("genre"),
+		artist=un_maybe_plural(current.get("artist")),
+		album=un_maybe_plural(current.get("album")),
+		album_artist=un_maybe_plural(current.get("albumartist")),
+		composer=un_maybe_plural(current.get("composer")),
+		genre=un_maybe_plural(current.get("genre")),
 		track=convert_if_exists(current.get("track"), int),
 		disc=convert_if_exists(current.get("disc"), int),
 		duration=float(status["duration"]),

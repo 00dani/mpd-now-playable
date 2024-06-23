@@ -1,5 +1,7 @@
 from typing import Literal, NotRequired, Protocol, TypedDict
 
+from ..tools.types import MaybePlural
+
 
 class MpdStateHandler(Protocol):
 	async def get_art(self, file: str) -> bytes | None: ...
@@ -47,19 +49,19 @@ class StatusResponse(TypedDict):
 # tagged, since then it can pass more information on to Now Playing, but it
 # should work fine with completely untagged music too.
 class CurrentSongTags(TypedDict, total=False):
-	artist: str
-	albumartist: str
-	artistsort: str
-	albumartistsort: str
+	artist: MaybePlural[str]
+	albumartist: MaybePlural[str]
+	artistsort: MaybePlural[str]
+	albumartistsort: MaybePlural[str]
 	title: str
-	album: str
+	album: MaybePlural[str]
 	track: str
 	date: str
 	originaldate: str
-	composer: str
+	composer: MaybePlural[str]
 	disc: str
 	label: str
-	genre: str
+	genre: MaybePlural[str]
 	musicbrainz_albumid: str
 	musicbrainz_albumartistid: str
 	musicbrainz_releasetrackid: str

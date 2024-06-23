@@ -21,18 +21,17 @@ class Song:
 	musicbrainz_trackid: UUID | None
 	musicbrainz_releasetrackid: UUID | None
 	title: str | None
-	artist: str | None
-	composer: str | None
-	album: str | None
-	album_artist: str | None
+	artist: list[str]
+	composer: list[str]
+	album: list[str]
+	album_artist: list[str]
 	track: int | None
 	disc: int | None
-	genre: str | None
+	genre: list[str]
 	duration: float
 	elapsed: float
 	art: bytes | None = field(repr=lambda a: "<has art>" if a else "<no art>")
 
 
 class SongListener(Protocol):
-	def update(self, song: Song | None) -> None:
-		...
+	def update(self, song: Song | None) -> None: ...

@@ -6,6 +6,7 @@ from yarl import URL
 
 from ..cache import Cache, make_cache
 from ..tools.asyncio import run_background_task
+from ..tools.types import un_maybe_plural
 from .types import CurrentSongResponse, MpdStateHandler
 
 CACHE_TTL = 60 * 60  # seconds = 1 hour
@@ -16,9 +17,11 @@ class ArtCacheEntry(TypedDict):
 
 
 def calc_album_key(song: CurrentSongResponse) -> str:
-	artist = song.get("albumartist", song.get("artist", "Unknown Artist"))
-	album = song.get("album", "Unknown Album")
-	return ":".join(t.replace(":", "-") for t in (artist, album))
+	artist = sorted(
+		un_maybe_plural(song.get("albumartist", song.get("artist", "Unknown Artist")))
+	)
+	album = sorted(un_maybe_plural(song.get("album", "Unknown Album")))
+	return ":".join(";".join(t).replace(":", "-") for t in (artist, album))
 
 
 def calc_track_key(song: CurrentSongResponse) -> str:
