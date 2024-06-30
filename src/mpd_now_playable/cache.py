@@ -1,37 +1,41 @@
 from __future__ import annotations
 
 from contextlib import suppress
-from typing import Any, Optional, TypeVar
+from typing import Any, Generic, Optional, TypeVar
 
 from aiocache import Cache
-from aiocache.serializers import BaseSerializer, PickleSerializer
+from aiocache.serializers import BaseSerializer
+from pydantic.type_adapter import TypeAdapter
 from yarl import URL
 
 T = TypeVar("T")
 
-HAS_ORMSGPACK = False
 with suppress(ImportError):
 	import ormsgpack
 
-	HAS_ORMSGPACK = True
 
-
-class OrmsgpackSerializer(BaseSerializer):
+class OrmsgpackSerializer(BaseSerializer, Generic[T]):
 	DEFAULT_ENCODING = None
 
-	def dumps(self, value: object) -> bytes:
-		return ormsgpack.packb(value)
+	def __init__(self, schema: TypeAdapter[T]):
+		super().__init__()
+		self.schema = schema
 
-	def loads(self, value: Optional[bytes]) -> object:
+	def dumps(self, value: T) -> bytes:
+		return ormsgpack.packb(self.schema.dump_python(value))
+
+	def loads(self, value: Optional[bytes]) -> T | None:
 		if value is None:
 			return None
-		return ormsgpack.unpackb(value)
+		data = ormsgpack.unpackb(value)
+		return self.schema.validate_python(data)
 
 
-def make_cache(url: URL, namespace: str = "") -> Cache[T]:
+def make_cache(schema: TypeAdapter[T], url: URL, namespace: str = "") -> Cache[T]:
 	backend = Cache.get_scheme_class(url.scheme)
 	if backend == Cache.MEMORY:
 		return Cache(backend)
+
 	kwargs: dict[str, Any] = dict(url.query)
 
 	if url.path:
@@ -48,6 +52,6 @@ def make_cache(url: URL, namespace: str = "") -> Cache[T]:
 
 	namespace = ":".join(s for s in [kwargs.pop("namespace", ""), namespace] if s)
 
-	serializer = OrmsgpackSerializer if HAS_ORMSGPACK else PickleSerializer
+	serializer = OrmsgpackSerializer(schema)
 
-	return Cache(backend, serializer=serializer(), namespace=namespace, **kwargs)
+	return Cache(backend, serializer=serializer, namespace=namespace, **kwargs)

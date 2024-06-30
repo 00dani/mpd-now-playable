@@ -9,8 +9,8 @@ The recommended way to install mpd-now-playable and its dependencies is with [pi
 ```shell
 pipx install mpd-now-playable
 # or, if you'd like to use a separate cache service, one of these:
-pipx install mpd-now-playable[redis,msgpack]
-pipx install mpd-now-playable[memcached,msgpack]
+pipx install mpd-now-playable[redis]
+pipx install mpd-now-playable[memcached]
 ```
 
 Once pipx is done, the `mpd-now-playable` script should be available on your `$PATH` and ready to use.

@@ -1,28 +1,37 @@
-from dataclasses import field
-from typing import NewType, Optional, TypeVar
+from typing import Annotated, NewType
 
-from apischema import schema
-from apischema.conversions import deserializer
-from apischema.metadata import none_as_undefined
-from yarl import URL
+from annotated_types import Ge, Le
+from pydantic import (
+	Field,
+	PlainSerializer,
+	PlainValidator,
+	SecretStr,
+	Strict,
+	WithJsonSchema,
+)
+from yarl import URL as Yarl
 
-__all__ = ("Host", "Port", "optional")
-
-T = TypeVar("T")
-
-Host = NewType("Host", str)
-schema(format="hostname")(Host)
-
-Port = NewType("Port", int)
-schema(min=1, max=65535)(Port)
-
-schema(format="uri")(URL)
+__all__ = ("Host", "Password", "Port", "Url")
 
 
-def optional() -> Optional[T]:
-	return field(default=None, metadata=none_as_undefined)
+def from_yarl(url: Yarl) -> str:
+	return url.human_repr()
 
 
-@deserializer
-def from_yarl(url: str) -> URL:
-	return URL(url)
+def to_yarl(value: object) -> Yarl:
+	if isinstance(value, str):
+		return Yarl(value)
+	raise NotImplementedError(f"Cannot convert {type(object)} to URL")
+
+
+Host = NewType(
+	"Host", Annotated[str, Strict(), Field(json_schema_extra={"format": "hostname"})]
+)
+Password = NewType("Password", Annotated[SecretStr, Strict()])
+Port = NewType("Port", Annotated[int, Strict(), Ge(1), Le(65535)])
+Url = Annotated[
+	Yarl,
+	PlainValidator(to_yarl),
+	PlainSerializer(from_yarl, return_type=str),
+	WithJsonSchema({"type": "string", "format": "uri"}),
+]

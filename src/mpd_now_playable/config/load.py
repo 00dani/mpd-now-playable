@@ -2,7 +2,6 @@ from collections.abc import Mapping
 from os import environ
 from typing import TypeVar
 
-from apischema import deserialize
 from boltons.iterutils import remap
 from pytomlpp import load
 from xdg_base_dirs import xdg_config_home
@@ -33,7 +32,7 @@ def loadConfigFromFile() -> Config:
 	path = xdg_config_home() / "mpd-now-playable" / "config.toml"
 	data = load(path)
 	print(f"Loaded your configuration from {path}")
-	return deserialize(Config, data)
+	return Config.schema.validate_python(data)
 
 
 def loadConfigFromEnv() -> Config:
@@ -44,7 +43,7 @@ def loadConfigFromEnv() -> Config:
 	if password is None and host is not None and "@" in host:
 		password, host = host.split("@", maxsplit=1)
 	data = {"cache": cache, "mpd": {"port": port, "host": host, "password": password}}
-	return deserialize(Config, withoutNones(data))
+	return Config.schema.validate_python(withoutNones(data))
 
 
 def loadConfig() -> Config:

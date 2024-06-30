@@ -109,7 +109,7 @@ def song_to_media_item(song: Song) -> NSMutableDictionary:
 
 	if song.art:
 		nowplaying_info[MPMediaItemPropertyArtwork] = ns_image_to_media_item_artwork(
-			data_to_ns_image(song.art)
+			data_to_ns_image(song.art.data)
 		)
 	return nowplaying_info
 

@@ -4,18 +4,19 @@ from uuid import UUID
 
 from mpd.asyncio import MPDClient
 from mpd.base import CommandError
+from rich import print as rprint
 from yarl import URL
 
 from ..config.model import MpdConfig
 from ..player import Player
-from ..song import PlaybackState, Song, SongListener
+from ..song import Artwork, PlaybackState, Song, SongListener, to_artwork
 from ..tools.types import convert_if_exists, un_maybe_plural
 from .artwork_cache import MpdArtworkCache
 from .types import CurrentSongResponse, StatusResponse
 
 
 def mpd_current_to_song(
-	status: StatusResponse, current: CurrentSongResponse, art: bytes | None
+	status: StatusResponse, current: CurrentSongResponse, art: Artwork
 ) -> Song:
 	return Song(
 		state=PlaybackState(status["state"]),
@@ -57,7 +58,7 @@ class MpdStateListener(Player):
 		await self.client.connect(conf.host, conf.port)
 		if conf.password is not None:
 			print("Authorising to MPD with your password...")
-			await self.client.password(conf.password)
+			await self.client.password(conf.password.get_secret_value())
 		print(f"Connected to MPD v{self.client.mpd_version}")
 
 	async def refresh(self) -> None:
@@ -91,8 +92,8 @@ class MpdStateListener(Player):
 		if starting_idle_count != self.idle_count:
 			return
 
-		song = mpd_current_to_song(status, current, art)
-		print(song)
+		song = mpd_current_to_song(status, current, to_artwork(art))
+		rprint(song)
 		listener.update(song)
 
 	async def get_art(self, file: str) -> bytes | None:

@@ -12,9 +12,10 @@ dependencies = [
     "python-mpd2>=3.1.0",
     "xdg-base-dirs>=6.0.1",
     "pytomlpp>=1.0.13",
-    "apischema>=0.18.1",
     "yarl>=1.9.4",
     "boltons>=24.0.0",
+    "pydantic>=2.7.4",
+    "rich>=13.7.1",
 ]
 readme = "README.md"
 
@@ -29,14 +30,9 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-redis = ["aiocache[redis]"]
-memcached = ["aiocache[memcached]"]
-msgpack = [
-    "ormsgpack>=1.5.0",
-]
-all = [
-    "mpd-now-playable[redis,memcached,msgpack]",
-]
+redis = ["aiocache[redis]", "ormsgpack>=1.5.0"]
+memcached = ["aiocache[memcached]", "ormsgpack>=1.5.0"]
+all = ["mpd-now-playable[redis,memcached]"]
 
 [project.urls]
 Homepage = "https://git.00dani.me/00dani/mpd-now-playable"
@@ -51,6 +47,7 @@ build-backend = "pdm.backend"
 
 [tool.mypy]
 mypy_path = 'stubs'
+plugins = ['pydantic.mypy', 'mpd_now_playable.tools.schema.plugin']
 
 [tool.ruff.lint]
 select = [

@@ -1,52 +1,47 @@
 {
-	"$id": "https://cdn.00dani.me/m/schemata/mpd-now-playable/config-v1.json",
-	"$schema": "http://json-schema.org/draft-07/schema#",
-	"additionalProperties": false,
-	"definitions": {
-		"URL": {
-			"format": "uri",
-			"type": "string"
-		}
-	},
-	"properties": {
-		"$schema": {
-			"$ref": "#/definitions/URL"
-		},
-		"cache": {
-			"allOf": [
-				{
-					"$ref": "#/definitions/URL"
-				}
-			],
-			"description": "A URL describing a cache service for mpd-now-playable to use. Supported protocols are memory://, redis://, and memcached://."
-		},
-		"mpd": {
-			"additionalProperties": false,
-			"default": {
-				"host": "127.0.0.1",
-				"port": 6600
-			},
+	"$defs": {
+		"MpdConfig": {
 			"properties": {
 				"host": {
 					"default": "127.0.0.1",
 					"description": "The hostname or IP address of your MPD server. If you're running MPD on your local machine, you don't need to configure this.",
 					"format": "hostname",
+					"title": "Host",
 					"type": "string"
 				},
 				"password": {
 					"description": "The password required to connect to your MPD instance, if you need one.",
-					"type": "string"
+					"format": "password",
+					"title": "Password",
+					"type": "string",
+					"writeOnly": true
 				},
 				"port": {
 					"default": 6600,
 					"description": "The port on which to connect to MPD. Unless you're managing multiple MPD servers on one machine for some reason, you probably haven't changed this from the default port, 6600.",
 					"maximum": 65535,
 					"minimum": 1,
+					"title": "Port",
 					"type": "integer"
 				}
 			},
+			"title": "MpdConfig",
 			"type": "object"
 		}
 	},
+	"$id": "https://cdn.00dani.me/m/schemata/mpd-now-playable/config-v1.json",
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"properties": {
+		"cache": {
+			"description": "A URL describing a cache service for mpd-now-playable to use. Supported protocols are memory://, redis://, and memcached://.",
+			"format": "uri",
+			"title": "Cache",
+			"type": "string"
+		},
+		"mpd": {
+			"$ref": "#/$defs/MpdConfig"
+		}
+	},
+	"title": "Config",
 	"type": "object"
 }

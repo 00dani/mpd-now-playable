@@ -1,6 +1,7 @@
 import asyncio
 
 from corefoundationasyncio import CoreFoundationEventLoop
+from rich import print
 
 from .__version__ import __version__
 from .cocoa.now_playing import CocoaNowPlaying
@@ -11,6 +12,7 @@ from .mpd.listener import MpdStateListener
 async def listen() -> None:
 	print(f"mpd-now-playable v{__version__}")
 	config = loadConfig()
+	print(config)
 	listener = MpdStateListener(config.cache)
 	now_playing = CocoaNowPlaying(listener)
 	await listener.start(config.mpd)
