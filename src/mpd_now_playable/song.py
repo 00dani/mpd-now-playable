@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from enum import StrEnum
 from pathlib import Path
-from typing import Literal, Protocol
+from typing import Literal
 from uuid import UUID
 
 from pydantic.type_adapter import TypeAdapter
@@ -53,7 +53,3 @@ class Song:
 	duration: float
 	elapsed: float
 	art: Artwork
-
-
-class SongListener(Protocol):
-	def update(self, song: Song | None) -> None: ...

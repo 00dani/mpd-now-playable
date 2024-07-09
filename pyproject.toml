@@ -70,6 +70,7 @@ select = [
 ]
 ignore = [
     "ANN101", # missing-type-self
+    "ANN102", # missing-type-cls
 ]
 
 [tool.ruff.lint.flake8-annotations]

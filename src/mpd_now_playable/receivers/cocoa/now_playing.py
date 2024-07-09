@@ -1,7 +1,9 @@
 from collections.abc import Callable, Coroutine
 from pathlib import Path
+from typing import Literal
 
 from AppKit import NSCompositingOperationCopy, NSImage, NSMakeRect
+from corefoundationasyncio import CoreFoundationEventLoop
 from Foundation import CGSize, NSMutableDictionary
 from MediaPlayer import (
 	MPChangePlaybackPositionCommandEvent,
@@ -35,9 +37,11 @@ from MediaPlayer import (
 	MPRemoteCommandHandlerStatusSuccess,
 )
 
-from ..player import Player
-from ..song import PlaybackState, Song
-from ..tools.asyncio import run_background_task
+from ...config.model import Config
+from ...player import Player
+from ...song import PlaybackState, Song
+from ...song_receiver import LoopFactory, Receiver
+from ...tools.asyncio import run_background_task
 from .persistent_id import song_to_persistent_id
 
 
@@ -127,8 +131,22 @@ def nothing_to_media_item() -> NSMutableDictionary:
 MPD_LOGO = ns_image_to_media_item_artwork(logo_to_ns_image())
 
 
-class CocoaNowPlaying:
-	def __init__(self, player: Player):
+class CocoaLoopFactory(LoopFactory[CoreFoundationEventLoop]):
+	@property
+	def is_replaceable(self) -> Literal[False]:
+		return False
+
+	@classmethod
+	def make_loop(cls) -> CoreFoundationEventLoop:
+		return CoreFoundationEventLoop(console_app=True)
+
+
+class CocoaNowPlayingReceiver(Receiver):
+	@classmethod
+	def loop_factory(cls) -> LoopFactory[CoreFoundationEventLoop]:
+		return CocoaLoopFactory()
+
+	def __init__(self, player: Player, config: Config):
 		self.cmd_center = MPRemoteCommandCenter.sharedCommandCenter()
 		self.info_center = MPNowPlayingInfoCenter.defaultCenter()
 

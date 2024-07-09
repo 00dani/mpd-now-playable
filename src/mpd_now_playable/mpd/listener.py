@@ -1,4 +1,5 @@
 import asyncio
+from collections.abc import Iterable
 from pathlib import Path
 from uuid import UUID
 
@@ -9,7 +10,8 @@ from yarl import URL
 
 from ..config.model import MpdConfig
 from ..player import Player
-from ..song import Artwork, PlaybackState, Song, SongListener, to_artwork
+from ..song import Artwork, PlaybackState, Song, to_artwork
+from ..song_receiver import Receiver
 from ..tools.types import convert_if_exists, un_maybe_plural
 from .artwork_cache import MpdArtworkCache
 from .types import CurrentSongResponse, StatusResponse
@@ -43,7 +45,7 @@ def mpd_current_to_song(
 
 class MpdStateListener(Player):
 	client: MPDClient
-	listener: SongListener
+	receivers: Iterable[Receiver]
 	art_cache: MpdArtworkCache
 	idle_count = 0
 
@@ -62,18 +64,18 @@ class MpdStateListener(Player):
 		print(f"Connected to MPD v{self.client.mpd_version}")
 
 	async def refresh(self) -> None:
-		await self.update_listener(self.listener)
+		await self.update_receivers()
 
-	async def loop(self, listener: SongListener) -> None:
-		self.listener = listener
-		# notify our listener of the initial state MPD is in when this script loads up.
-		await self.update_listener(listener)
+	async def loop(self, receivers: Iterable[Receiver]) -> None:
+		self.receivers = receivers
+		# notify our receivers of the initial state MPD is in when this script loads up.
+		await self.update_receivers()
 		# then wait for stuff to change in MPD. :)
 		async for _ in self.client.idle():
 			self.idle_count += 1
-			await self.update_listener(listener)
+			await self.update_receivers()
 
-	async def update_listener(self, listener: SongListener) -> None:
+	async def update_receivers(self) -> None:
 		# If any async calls in here take long enough that we got another MPD idle event, we want to bail out of this older update.
 		starting_idle_count = self.idle_count
 		status, current = await asyncio.gather(
@@ -85,7 +87,8 @@ class MpdStateListener(Player):
 
 		if status["state"] == "stop":
 			print("Nothing playing")
-			listener.update(None)
+			for r in self.receivers:
+				r.update(None)
 			return
 
 		art = await self.art_cache.get_cached_artwork(current)
@@ -94,7 +97,8 @@ class MpdStateListener(Player):
 
 		song = mpd_current_to_song(status, current, to_artwork(art))
 		rprint(song)
-		listener.update(song)
+		for r in self.receivers:
+			r.update(song)
 
 	async def get_art(self, file: str) -> bytes | None:
 		picture = await self.readpicture(file)

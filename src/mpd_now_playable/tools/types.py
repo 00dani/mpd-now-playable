@@ -31,6 +31,12 @@ AnyExceptList = (
 U = TypeVar("U")
 
 
+def not_none(value: U | None) -> U:
+	if value is None:
+		raise ValueError("None should not be possible here.")
+	return value
+
+
 def convert_if_exists(value: str | None, converter: Callable[[str], U]) -> U | None:
 	if value is None:
 		return None

@@ -1,5 +1,20 @@
 {
 	"$defs": {
+		"CocoaReceiverConfig": {
+			"properties": {
+				"kind": {
+					"const": "cocoa",
+					"default": "cocoa",
+					"enum": [
+						"cocoa"
+					],
+					"title": "Kind",
+					"type": "string"
+				}
+			},
+			"title": "CocoaReceiverConfig",
+			"type": "object"
+		},
 		"MpdConfig": {
 			"properties": {
 				"host": {
@@ -40,6 +55,28 @@
 		},
 		"mpd": {
 			"$ref": "#/$defs/MpdConfig"
+		},
+		"receivers": {
+			"default": [
+				{
+					"kind": "cocoa"
+				}
+			],
+			"items": {
+				"discriminator": {
+					"mapping": {
+						"cocoa": "#/$defs/CocoaReceiverConfig"
+					},
+					"propertyName": "kind"
+				},
+				"oneOf": [
+					{
+						"$ref": "#/$defs/CocoaReceiverConfig"
+					}
+				]
+			},
+			"title": "Receivers",
+			"type": "array"
 		}
 	},
 	"title": "Config",

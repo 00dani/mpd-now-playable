@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Final
 from uuid import UUID
 
-from ..song import Song
+from ...song import Song
 
 # The maximum size for a BLAKE2b "person" value is sixteen bytes, so we need to be concise.
 HASH_PERSON_PREFIX: Final = b"mnp.mac."

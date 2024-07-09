@@ -1,30 +1,41 @@
 import asyncio
+from collections.abc import Iterable
 
-from corefoundationasyncio import CoreFoundationEventLoop
 from rich import print
 
 from .__version__ import __version__
-from .cocoa.now_playing import CocoaNowPlaying
 from .config.load import loadConfig
+from .config.model import Config
 from .mpd.listener import MpdStateListener
+from .song_receiver import (
+	Receiver,
+	choose_loop_factory,
+	import_receiver,
+)
 
 
-async def listen() -> None:
-	print(f"mpd-now-playable v{__version__}")
-	config = loadConfig()
-	print(config)
-	listener = MpdStateListener(config.cache)
-	now_playing = CocoaNowPlaying(listener)
+async def listen(
+	config: Config, listener: MpdStateListener, receiver_types: Iterable[type[Receiver]]
+) -> None:
 	await listener.start(config.mpd)
-	await listener.loop(now_playing)
-
-
-def make_loop() -> CoreFoundationEventLoop:
-	return CoreFoundationEventLoop(console_app=True)
+	receivers = (rec(listener, config) for rec in receiver_types)
+	await listener.loop(receivers)
 
 
 def main() -> None:
-	asyncio.run(listen(), loop_factory=make_loop, debug=True)
+	print(f"mpd-now-playable v{__version__}")
+	config = loadConfig()
+	print(config)
+
+	listener = MpdStateListener(config.cache)
+	receiver_types = tuple(import_receiver(rec) for rec in config.receivers)
+
+	factory = choose_loop_factory(receiver_types)
+	asyncio.run(
+		listen(config, listener, receiver_types),
+		loop_factory=factory.make_loop,
+		debug=True,
+	)
 
 
 if __name__ == "__main__":

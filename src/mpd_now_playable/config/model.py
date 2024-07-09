@@ -1,10 +1,33 @@
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Annotated, Literal, Optional, Protocol
+
+from pydantic import Field
 
 from ..tools.schema.define import schema
 from .fields import Host, Password, Port, Url
 
-__all__ = ("MpdConfig", "Config")
+__all__ = (
+	"Config",
+	"MpdConfig",
+	"BaseReceiverConfig",
+	"CocoaReceiverConfig",
+)
+
+
+class BaseReceiverConfig(Protocol):
+	@property
+	def kind(self) -> str: ...
+
+
+@dataclass(slots=True)
+class CocoaReceiverConfig(BaseReceiverConfig):
+	kind: Literal["cocoa"] = "cocoa"
+
+
+ReceiverConfig = Annotated[
+	CocoaReceiverConfig,
+	Field(discriminator="kind"),
+]
 
 
 @dataclass(slots=True)
@@ -27,3 +50,4 @@ class Config:
 	#: protocols are memory://, redis://, and memcached://.
 	cache: Optional[Url] = None
 	mpd: MpdConfig = field(default_factory=MpdConfig)
+	receivers: tuple[ReceiverConfig, ...] = (CocoaReceiverConfig(),)
