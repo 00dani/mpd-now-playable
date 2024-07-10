@@ -5,7 +5,7 @@
 groups = ["default", "all", "dev"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:5a1cfd2988fd81c4b8743daaf399bbeb9f1f9d78e161901f0bf76c771ec8052f"
+content_hash = "sha256:c9845c93dab5638ddd0cbce910010bb8c03a6f42ae0af666e6b759d05540c8a6"
 
 [[package]]
 name = "aiocache"
