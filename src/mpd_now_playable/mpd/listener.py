@@ -1,7 +1,6 @@
 import asyncio
 from collections.abc import Iterable
 from pathlib import Path
-from uuid import UUID
 
 from mpd.asyncio import MPDClient
 from mpd.base import CommandError
@@ -10,7 +9,7 @@ from yarl import URL
 
 from ..config.model import MpdConfig
 from ..player import Player
-from ..song import Artwork, PlaybackState, Song, to_artwork
+from ..song import Artwork, PlaybackState, Song, to_artwork, to_brainz
 from ..song_receiver import Receiver
 from ..tools.types import convert_if_exists, un_maybe_plural
 from .artwork_cache import MpdArtworkCache
@@ -25,10 +24,6 @@ def mpd_current_to_song(
 		queue_index=int(current["pos"]),
 		queue_length=int(status["playlistlength"]),
 		file=Path(current["file"]),
-		musicbrainz_trackid=convert_if_exists(current.get("musicbrainz_trackid"), UUID),
-		musicbrainz_releasetrackid=convert_if_exists(
-			current.get("musicbrainz_releasetrackid"), UUID
-		),
 		title=current.get("title"),
 		artist=un_maybe_plural(current.get("artist")),
 		album=un_maybe_plural(current.get("album")),
@@ -39,6 +34,7 @@ def mpd_current_to_song(
 		disc=convert_if_exists(current.get("disc"), int),
 		duration=float(status["duration"]),
 		elapsed=float(status["elapsed"]),
+		musicbrainz=to_brainz(current),
 		art=art,
 	)
 

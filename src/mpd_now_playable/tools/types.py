@@ -4,6 +4,7 @@ from typing import Any, TypeAlias, TypeVar
 __all__ = (
 	"AnyExceptList",
 	"MaybePlural",
+	"option_fmap",
 	"convert_if_exists",
 	"un_maybe_plural",
 )
@@ -29,12 +30,19 @@ AnyExceptList = (
 
 
 U = TypeVar("U")
+V = TypeVar("V")
 
 
 def not_none(value: U | None) -> U:
 	if value is None:
 		raise ValueError("None should not be possible here.")
 	return value
+
+
+def option_fmap(f: Callable[[U], V], value: U | None) -> V | None:
+	if value is None:
+		return None
+	return f(value)
 
 
 def convert_if_exists(value: str | None, converter: Callable[[str], U]) -> U | None:
