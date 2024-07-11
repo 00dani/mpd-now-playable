@@ -16,6 +16,7 @@ dependencies = [
     "boltons>=24.0.0",
     "pydantic>=2.7.4",
     "rich>=13.7.1",
+    "ormsgpack>=1.5.0",
 ]
 readme = "README.md"
 
@@ -30,9 +31,16 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-redis = ["aiocache[redis]", "ormsgpack>=1.5.0"]
-memcached = ["aiocache[memcached]", "ormsgpack>=1.5.0"]
-all = ["mpd-now-playable[redis,memcached]"]
+redis = [
+    "aiocache[redis]",
+]
+memcached = [
+    "aiocache[memcached]",
+]
+websockets = [
+    "websockets>=12.0",
+]
+all = ["mpd-now-playable[redis,memcached,websockets]"]
 
 [project.urls]
 Homepage = "https://git.00dani.me/00dani/mpd-now-playable"
