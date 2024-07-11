@@ -10,15 +10,15 @@ from .mpd.listener import MpdStateListener
 from .song_receiver import (
 	Receiver,
 	choose_loop_factory,
-	import_receiver,
+	construct_receiver,
 )
 
 
 async def listen(
-	config: Config, listener: MpdStateListener, receiver_types: Iterable[type[Receiver]]
+	config: Config, listener: MpdStateListener, receivers: Iterable[Receiver]
 ) -> None:
 	await listener.start(config.mpd)
-	receivers = (rec(listener, config) for rec in receiver_types)
+	await asyncio.gather(*(rec.start(listener) for rec in receivers))
 	await listener.loop(receivers)
 
 
@@ -28,11 +28,11 @@ def main() -> None:
 	print(config)
 
 	listener = MpdStateListener(config.cache)
-	receiver_types = tuple(import_receiver(rec) for rec in config.receivers)
+	receivers = tuple(construct_receiver(rec_config) for rec_config in config.receivers)
+	factory = choose_loop_factory(receivers)
 
-	factory = choose_loop_factory(receiver_types)
 	asyncio.run(
-		listen(config, listener, receiver_types),
+		listen(config, listener, receivers),
 		loop_factory=factory.make_loop,
 		debug=True,
 	)

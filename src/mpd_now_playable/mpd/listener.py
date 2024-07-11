@@ -83,8 +83,7 @@ class MpdStateListener(Player):
 
 		if status["state"] == "stop":
 			print("Nothing playing")
-			for r in self.receivers:
-				r.update(None)
+			await self.update(None)
 			return
 
 		art = await self.art_cache.get_cached_artwork(current)
@@ -93,8 +92,10 @@ class MpdStateListener(Player):
 
 		song = mpd_current_to_song(status, current, to_artwork(art))
 		rprint(song)
-		for r in self.receivers:
-			r.update(song)
+		await self.update(song)
+
+	async def update(self, song: Song | None) -> None:
+		await asyncio.gather(*(r.update(song) for r in self.receivers))
 
 	async def get_art(self, file: str) -> bytes | None:
 		picture = await self.readpicture(file)

@@ -21,7 +21,7 @@ class BaseReceiverConfig(Protocol):
 
 @dataclass(slots=True)
 class CocoaReceiverConfig(BaseReceiverConfig):
-	kind: Literal["cocoa"] = "cocoa"
+	kind: Literal["cocoa"] = field(default="cocoa", repr=False)
 
 
 ReceiverConfig = Annotated[

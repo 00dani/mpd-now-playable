@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from importlib import import_module
 from typing import Generic, Iterable, Literal, Protocol, TypeVar, cast
 
-from .config.model import BaseReceiverConfig, Config
+from .config.model import BaseReceiverConfig
 from .player import Player
 from .song import Song
 from .tools.types import not_none
@@ -20,10 +20,12 @@ class LoopFactory(Generic[T], Protocol):
 
 
 class Receiver(Protocol):
-	def __init__(self, player: Player, config: Config) -> None: ...
+	def __init__(self, config: BaseReceiverConfig): ...
 	@classmethod
 	def loop_factory(cls) -> LoopFactory[AbstractEventLoop]: ...
-	def update(self, song: Song | None) -> None: ...
+
+	async def start(self, player: Player) -> None: ...
+	async def update(self, song: Song | None) -> None: ...
 
 
 class ReceiverModule(Protocol):
@@ -42,8 +44,8 @@ class DefaultLoopFactory(LoopFactory[AbstractEventLoop]):
 
 @dataclass
 class IncompatibleReceiverError(Exception):
-	a: type[Receiver]
-	b: type[Receiver]
+	a: Receiver
+	b: Receiver
 
 
 def import_receiver(config: BaseReceiverConfig) -> type[Receiver]:
@@ -53,13 +55,18 @@ def import_receiver(config: BaseReceiverConfig) -> type[Receiver]:
 	return mod.receiver
 
 
+def construct_receiver(config: BaseReceiverConfig) -> Receiver:
+	cls = import_receiver(config)
+	return cls(config)
+
+
 def choose_loop_factory(
-	receivers: Iterable[type[Receiver]],
+	receivers: Iterable[Receiver],
 ) -> LoopFactory[AbstractEventLoop]:
 	"""Given the desired receivers, determine which asyncio event loop implementation will support all of them. Will raise an IncompatibleReceiverError if no such implementation exists."""
 
 	chosen_fac: LoopFactory[AbstractEventLoop] = DefaultLoopFactory()
-	chosen_rec: type[Receiver] | None = None
+	chosen_rec: Receiver | None = None
 
 	for rec in receivers:
 		fac = rec.loop_factory()

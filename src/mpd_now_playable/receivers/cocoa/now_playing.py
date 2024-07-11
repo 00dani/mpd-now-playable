@@ -37,7 +37,7 @@ from MediaPlayer import (
 	MPRemoteCommandHandlerStatusSuccess,
 )
 
-from ...config.model import Config
+from ...config.model import CocoaReceiverConfig
 from ...player import Player
 from ...song import PlaybackState, Song
 from ...song_receiver import LoopFactory, Receiver
@@ -146,7 +146,10 @@ class CocoaNowPlayingReceiver(Receiver):
 	def loop_factory(cls) -> LoopFactory[CoreFoundationEventLoop]:
 		return CocoaLoopFactory()
 
-	def __init__(self, player: Player, config: Config):
+	def __init__(self, config: CocoaReceiverConfig):
+		pass
+
+	async def start(self, player: Player) -> None:
 		self.cmd_center = MPRemoteCommandCenter.sharedCommandCenter()
 		self.info_center = MPNowPlayingInfoCenter.defaultCenter()
 
@@ -184,7 +187,7 @@ class CocoaNowPlayingReceiver(Receiver):
 		# unpause with remote commands.
 		self.info_center.setPlaybackState_(MPMusicPlaybackStatePlaying)
 
-	def update(self, song: Song | None) -> None:
+	async def update(self, song: Song | None) -> None:
 		if song:
 			self.info_center.setNowPlayingInfo_(song_to_media_item(song))
 			self.info_center.setPlaybackState_(playback_state_to_cocoa(song.state))
