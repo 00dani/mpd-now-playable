@@ -45,3 +45,9 @@ class MyGenerateJsonSchema(GenerateJsonSchema):
 
 	def nullable_schema(self, schema: s.NullableSchema) -> JsonSchemaValue:
 		return self.generate_inner(schema["schema"])
+
+if __name__ == '__main__':
+	from ...config.model import Config
+	from ...song import Song
+	write(Config)
+	write(Song)

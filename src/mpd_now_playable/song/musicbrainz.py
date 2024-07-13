@@ -1,11 +1,14 @@
 from dataclasses import dataclass
 from functools import partial
-from typing import TypedDict
+from typing import Annotated, TypedDict
 from uuid import UUID
+
+from pydantic import Field
 
 from ..tools.types import option_fmap
 
 option_uuid = partial(option_fmap, UUID)
+OptionUUID = Annotated[UUID | None, Field(default=None)]
 
 
 class MusicBrainzTags(TypedDict, total=False):
@@ -44,35 +47,35 @@ class MusicBrainzIds:
 	#: so recording IDs are a much more reliable way to identify a particular
 	#: song.
 	#: https://musicbrainz.org/doc/Recording
-	recording: UUID | None
+	recording: OptionUUID
 
 	#: A MusicBrainz work represents the idea of a particular song or creation
 	#: (it doesn't have to be audio). Each work may have multiple recordings
 	#: (studio versus live, different performers, etc.), with the work ID
 	#: grouping them together.
 	#: https://musicbrainz.org/doc/Work
-	work: UUID | None
+	work: OptionUUID
 
 	#: A MusicBrainz track represents a specific instance of a recording
 	#: appearing as part of some release. For example, if the same song appears
 	#: on both two-CD and four-CD versions of a soundtrack, then it will be
 	#: considered the same "recording" in both cases, but different "tracks".
 	#: https://musicbrainz.org/doc/Track
-	track: UUID | None
+	track: OptionUUID
 
 	#: https://musicbrainz.org/doc/Artist
-	artist: UUID | None
+	artist: OptionUUID
 
 	#: A MusicBrainz release roughly corresponds to an "album", and indeed is
 	#: stored in a tag called MUSICBRAINZ_ALBUMID. The more general name is
 	#: meant to encompass all the different ways music can be released.
 	#: https://musicbrainz.org/doc/Release
-	release: UUID | None
+	release: OptionUUID
 
 	#: Again, the release artist corresponds to an "album artist". These MBIDs
 	#: refer to the same artists in the MusicBrainz database that individual
 	#: recordings' artist MBIDs do.
-	release_artist: UUID | None
+	release_artist: OptionUUID
 
 	#: A MusicBrainz release group roughly corresponds to "all the editions of
 	#: a particular album". For example, if the same album were released on CD,
@@ -81,7 +84,7 @@ class MusicBrainzIds:
 	#: for this tag is relatively new (July 2023) and doesn't seem especially
 	#: reliable, so it might be missing here even if your music has been tagged
 	#: with it. Not sure why. https://musicbrainz.org/doc/Release_Group
-	release_group: UUID | None
+	release_group: OptionUUID
 
 
 def to_brainz(tags: MusicBrainzTags) -> MusicBrainzIds:

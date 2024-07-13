@@ -11,6 +11,7 @@ __all__ = (
 	"MpdConfig",
 	"BaseReceiverConfig",
 	"CocoaReceiverConfig",
+	"WebsocketsReceiverConfig",
 )
 
 
@@ -24,8 +25,15 @@ class CocoaReceiverConfig(BaseReceiverConfig):
 	kind: Literal["cocoa"] = field(default="cocoa", repr=False)
 
 
+@dataclass(slots=True, kw_only=True)
+class WebsocketsReceiverConfig(BaseReceiverConfig):
+	kind: Literal["websockets"] = field(default="websockets", repr=False)
+	port: Port
+	host: Optional[Host | tuple[Host, ...]] = None
+
+
 ReceiverConfig = Annotated[
-	CocoaReceiverConfig,
+	CocoaReceiverConfig | WebsocketsReceiverConfig,
 	Field(discriminator="kind"),
 ]
 

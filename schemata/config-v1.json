@@ -42,6 +42,46 @@
 			},
 			"title": "MpdConfig",
 			"type": "object"
+		},
+		"WebsocketsReceiverConfig": {
+			"properties": {
+				"host": {
+					"anyOf": [
+						{
+							"format": "hostname",
+							"type": "string"
+						},
+						{
+							"items": {
+								"format": "hostname",
+								"type": "string"
+							},
+							"type": "array"
+						}
+					],
+					"title": "Host"
+				},
+				"kind": {
+					"const": "websockets",
+					"default": "websockets",
+					"enum": [
+						"websockets"
+					],
+					"title": "Kind",
+					"type": "string"
+				},
+				"port": {
+					"maximum": 65535,
+					"minimum": 1,
+					"title": "Port",
+					"type": "integer"
+				}
+			},
+			"required": [
+				"port"
+			],
+			"title": "WebsocketsReceiverConfig",
+			"type": "object"
 		}
 	},
 	"$id": "https://cdn.00dani.me/m/schemata/mpd-now-playable/config-v1.json",
@@ -65,13 +105,17 @@
 			"items": {
 				"discriminator": {
 					"mapping": {
-						"cocoa": "#/$defs/CocoaReceiverConfig"
+						"cocoa": "#/$defs/CocoaReceiverConfig",
+						"websockets": "#/$defs/WebsocketsReceiverConfig"
 					},
 					"propertyName": "kind"
 				},
 				"oneOf": [
 					{
 						"$ref": "#/$defs/CocoaReceiverConfig"
+					},
+					{
+						"$ref": "#/$defs/WebsocketsReceiverConfig"
 					}
 				]
 			},
