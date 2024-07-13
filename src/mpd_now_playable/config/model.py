@@ -28,7 +28,13 @@ class CocoaReceiverConfig(BaseReceiverConfig):
 @dataclass(slots=True, kw_only=True)
 class WebsocketsReceiverConfig(BaseReceiverConfig):
 	kind: Literal["websockets"] = field(default="websockets", repr=False)
+	#: The TCP port you'd like your WebSockets server to listen on. Should
+	#: generally be higher than 1024, since mpd-now-playable doesn't normally
+	#: run with the privilege to bind to low-numbered ports.
 	port: Port
+	#: The hostname you'd like your WebSockets server to listen on. In most
+	#: cases the default behaviour, which binds to all network interfaces, will
+	#: be fine.
 	host: Optional[Host | tuple[Host, ...]] = None
 
 
