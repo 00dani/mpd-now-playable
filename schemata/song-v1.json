@@ -17,10 +17,13 @@
 		"MusicBrainzIds": {
 			"properties": {
 				"artist": {
-					"description": "https://musicbrainz.org/doc/Artist",
-					"format": "uuid",
+					"description": "A MusicBrainz artist is pretty intuitively the artist who recorded the song. This particular ID refers to the individual recording's artist or artists, which may be distinct from the release artist below when a release contains recordings from many different artists. https://musicbrainz.org/doc/Artist",
+					"items": {
+						"format": "uuid",
+						"type": "string"
+					},
 					"title": "Artist",
-					"type": "string"
+					"type": "array"
 				},
 				"recording": {
 					"description": "A MusicBrainz recording represents audio from a specific performance. For example, if the same song was released as a studio recording and as a live performance, those two versions of the song are different recordings. The song itself is considered a \"work\", of which two recordings were made. However, recordings are not always associated with a work in the MusicBrainz database, and Picard won't load work IDs by default (you have to enable \"use track relationships\" in the options), so recording IDs are a much more reliable way to identify a particular song. https://musicbrainz.org/doc/Recording",
@@ -30,15 +33,21 @@
 				},
 				"release": {
 					"description": "A MusicBrainz release roughly corresponds to an \"album\", and indeed is stored in a tag called MUSICBRAINZ_ALBUMID. The more general name is meant to encompass all the different ways music can be released. https://musicbrainz.org/doc/Release",
-					"format": "uuid",
+					"items": {
+						"format": "uuid",
+						"type": "string"
+					},
 					"title": "Release",
-					"type": "string"
+					"type": "array"
 				},
 				"release_artist": {
 					"description": "Again, the release artist corresponds to an \"album artist\". These MBIDs refer to the same artists in the MusicBrainz database that individual recordings' artist MBIDs do.",
-					"format": "uuid",
+					"items": {
+						"format": "uuid",
+						"type": "string"
+					},
 					"title": "Release Artist",
-					"type": "string"
+					"type": "array"
 				},
 				"release_group": {
 					"description": "A MusicBrainz release group roughly corresponds to \"all the editions of a particular album\". For example, if the same album were released on CD, vinyl records, and as a digital download, then all of those would be different releases but share a release group. Note that MPD's support for this tag is relatively new (July 2023) and doesn't seem especially reliable, so it might be missing here even if your music has been tagged with it. Not sure why. https://musicbrainz.org/doc/Release_Group",
@@ -59,6 +68,11 @@
 					"type": "string"
 				}
 			},
+			"required": [
+				"artist",
+				"release",
+				"release_artist"
+			],
 			"title": "MusicBrainzIds",
 			"type": "object"
 		},
