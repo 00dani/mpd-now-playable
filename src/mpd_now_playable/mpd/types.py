@@ -1,5 +1,6 @@
 from typing import Literal, NotRequired, Protocol, TypedDict
 
+from ..song.musicbrainz import MusicBrainzTags
 from ..tools.types import MaybePlural
 
 
@@ -15,7 +16,7 @@ OneshotFlag = Literal[BooleanFlag, "oneshot"]
 
 
 # This is not the complete status response from MPD, just the parts of it mpd-now-playable uses.
-class StatusResponse(TypedDict):
+class StatusResponse(TypedDict, MusicBrainzTags):
 	state: Literal["play", "stop", "pause"]
 
 	# The total duration and elapsed playback of the current song, measured in seconds. Fractional seconds are allowed.
@@ -48,7 +49,7 @@ class StatusResponse(TypedDict):
 # optional. mpd-now-playable will work better if your music is properly
 # tagged, since then it can pass more information on to Now Playing, but it
 # should work fine with completely untagged music too.
-class CurrentSongTags(TypedDict, total=False):
+class CurrentSongTags(TypedDict, MusicBrainzTags, total=False):
 	artist: MaybePlural[str]
 	albumartist: MaybePlural[str]
 	artistsort: MaybePlural[str]
@@ -62,11 +63,6 @@ class CurrentSongTags(TypedDict, total=False):
 	disc: str
 	label: str
 	genre: MaybePlural[str]
-	musicbrainz_albumid: str
-	musicbrainz_albumartistid: str
-	musicbrainz_releasetrackid: str
-	musicbrainz_artistid: str
-	musicbrainz_trackid: str
 
 
 class CurrentSongResponse(CurrentSongTags):

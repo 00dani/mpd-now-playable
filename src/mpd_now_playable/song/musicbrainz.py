@@ -5,10 +5,14 @@ from uuid import UUID
 
 from pydantic import Field
 
-from ..tools.types import option_fmap
+from ..tools.types import MaybePlural, option_fmap, un_maybe_plural
 
 option_uuid = partial(option_fmap, UUID)
 OptionUUID = Annotated[UUID | None, Field(default=None)]
+
+
+def to_uuids(values: MaybePlural[str] | None) -> list[UUID]:
+	return [UUID(i) for i in un_maybe_plural(values)]
 
 
 class MusicBrainzTags(TypedDict, total=False):
@@ -24,11 +28,11 @@ class MusicBrainzTags(TypedDict, total=False):
 	#: MusicBrainz Track ID
 	musicbrainz_releasetrackid: str
 	#: MusicBrainz Artist ID
-	musicbrainz_artistid: str
+	musicbrainz_artistid: MaybePlural[str]
 	#: MusicBrainz Release ID
-	musicbrainz_albumid: str
+	musicbrainz_albumid: MaybePlural[str]
 	#: MusicBrainz Release Artist ID
-	musicbrainz_albumartistid: str
+	musicbrainz_albumartistid: MaybePlural[str]
 	#: MusicBrainz Release Group ID
 	musicbrainz_releasegroupid: str
 	#: MusicBrainz Work ID
@@ -63,19 +67,23 @@ class MusicBrainzIds:
 	#: https://musicbrainz.org/doc/Track
 	track: OptionUUID
 
+	#: A MusicBrainz artist is pretty intuitively the artist who recorded the
+	#: song. This particular ID refers to the individual recording's artist or
+	#: artists, which may be distinct from the release artist below when a
+	#: release contains recordings from many different artists.
 	#: https://musicbrainz.org/doc/Artist
-	artist: OptionUUID
+	artist: list[UUID]
 
 	#: A MusicBrainz release roughly corresponds to an "album", and indeed is
 	#: stored in a tag called MUSICBRAINZ_ALBUMID. The more general name is
 	#: meant to encompass all the different ways music can be released.
 	#: https://musicbrainz.org/doc/Release
-	release: OptionUUID
+	release: list[UUID]
 
 	#: Again, the release artist corresponds to an "album artist". These MBIDs
 	#: refer to the same artists in the MusicBrainz database that individual
 	#: recordings' artist MBIDs do.
-	release_artist: OptionUUID
+	release_artist: list[UUID]
 
 	#: A MusicBrainz release group roughly corresponds to "all the editions of
 	#: a particular album". For example, if the same album were released on CD,
@@ -92,8 +100,8 @@ def to_brainz(tags: MusicBrainzTags) -> MusicBrainzIds:
 		recording=option_uuid(tags.get("musicbrainz_trackid")),
 		work=option_uuid(tags.get("musicbrainz_workid")),
 		track=option_uuid(tags.get("musicbrainz_releasetrackid")),
-		artist=option_uuid(tags.get("musicbrainz_artistid")),
-		release=option_uuid(tags.get("musicbrainz_albumid")),
-		release_artist=option_uuid(tags.get("musicbrainz_albumartistid")),
+		artist=to_uuids(tags.get("musicbrainz_artistid")),
+		release=to_uuids(tags.get("musicbrainz_albumid")),
+		release_artist=to_uuids(tags.get("musicbrainz_albumartistid")),
 		release_group=option_uuid(tags.get("musicbrainz_releasegroupid")),
 	)
