@@ -20,8 +20,11 @@ OneshotFlag = Literal[BooleanFlag, "oneshot"]
 class StatusResponse(TypedDict):
 	state: Literal["play", "stop", "pause"]
 
-	# The total duration and elapsed playback of the current song, measured in seconds. Fractional seconds are allowed.
-	duration: str
+	# The total duration and elapsed playback of the current song, measured in
+	# seconds. Fractional seconds are allowed. The duration field may be
+	# omitted because MPD cannot determine the duration of certain sources,
+	# such as Internet radio streams.
+	duration: NotRequired[str]
 	elapsed: str
 
 	# The volume value ranges from 0-100. It may be omitted from

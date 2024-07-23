@@ -49,7 +49,7 @@ def mpd_state_to_song(config: MpdConfig, mpd: MpdState) -> Song:
 		genre=un_maybe_plural(mpd.current.get("genre")),
 		track=option_fmap(int, mpd.current.get("track")),
 		disc=option_fmap(int, mpd.current.get("disc")),
-		duration=float(mpd.status["duration"]),
+		duration=option_fmap(float, mpd.status.get("duration")),
 		elapsed=float(mpd.status["elapsed"]),
 		musicbrainz=to_brainz(mpd.current),
 		art=to_artwork(mpd.art),

@@ -69,8 +69,9 @@ class Song:
 	genre: list[str]
 
 	#: The song's duration as read from its tags, measured in seconds.
-	#: Fractional seconds are allowed.
-	duration: float
+	#: Fractional seconds are allowed. The duration may be unavailable for some
+	#: sources, such as internet radio streams.
+	duration: float | None
 
 	#: How far into the song MPD is, measured in seconds. Fractional seconds
 	#: are allowed. This is usually going to be less than or equal to the
