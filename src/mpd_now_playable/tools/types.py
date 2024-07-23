@@ -5,7 +5,6 @@ __all__ = (
 	"AnyExceptList",
 	"MaybePlural",
 	"option_fmap",
-	"convert_if_exists",
 	"un_maybe_plural",
 )
 
@@ -43,12 +42,6 @@ def option_fmap(f: Callable[[U], V], value: U | None) -> V | None:
 	if value is None:
 		return None
 	return f(value)
-
-
-def convert_if_exists(value: str | None, converter: Callable[[str], U]) -> U | None:
-	if value is None:
-		return None
-	return converter(value)
 
 
 T = TypeVar("T", bound=AnyExceptList)

@@ -11,7 +11,7 @@ from ..config.model import MpdConfig
 from ..player import Player
 from ..song import Artwork, PlaybackState, Song, to_artwork, to_brainz
 from ..song_receiver import Receiver
-from ..tools.types import convert_if_exists, un_maybe_plural
+from ..tools.types import option_fmap, un_maybe_plural
 from .artwork_cache import MpdArtworkCache
 from .types import CurrentSongResponse, StatusResponse
 
@@ -30,8 +30,8 @@ def mpd_current_to_song(
 		album_artist=un_maybe_plural(current.get("albumartist")),
 		composer=un_maybe_plural(current.get("composer")),
 		genre=un_maybe_plural(current.get("genre")),
-		track=convert_if_exists(current.get("track"), int),
-		disc=convert_if_exists(current.get("disc"), int),
+		track=option_fmap(int, current.get("track")),
+		disc=option_fmap(int, current.get("disc")),
 		duration=float(status["duration"]),
 		elapsed=float(status["elapsed"]),
 		musicbrainz=to_brainz(current),
