@@ -1,17 +1,14 @@
 from __future__ import annotations
 
-from contextlib import suppress
 from typing import Any, Generic, Optional, TypeVar
 
+import ormsgpack
 from aiocache import Cache
 from aiocache.serializers import BaseSerializer
 from pydantic.type_adapter import TypeAdapter
 from yarl import URL
 
 T = TypeVar("T")
-
-with suppress(ImportError):
-	import ormsgpack
 
 
 class OrmsgpackSerializer(BaseSerializer, Generic[T]):
