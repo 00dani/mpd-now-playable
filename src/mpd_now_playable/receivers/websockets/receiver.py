@@ -34,7 +34,7 @@ class WebsocketsReceiver(Receiver):
 
 	async def start(self, player: Player) -> None:
 		self.player = player
-		await serve(self.handle, host=self.config.host, port=self.config.port)
+		await serve(self.handle, host=self.config.host, port=self.config.port, reuse_port=True)
 
 	async def handle(self, conn: WebSocketServerProtocol) -> None:
 		self.connections.add(conn)
