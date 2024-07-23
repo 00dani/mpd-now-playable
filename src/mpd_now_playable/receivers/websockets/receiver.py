@@ -3,6 +3,7 @@ from pathlib import Path
 import ormsgpack
 from websockets import broadcast
 from websockets.server import WebSocketServerProtocol, serve
+from yarl import URL
 
 from ...config.model import WebsocketsReceiverConfig
 from ...player import Player
@@ -15,6 +16,8 @@ MSGPACK_NULL = ormsgpack.packb(None)
 def default(value: object) -> object:
 	if isinstance(value, Path):
 		return str(value)
+	if isinstance(value, URL):
+		return value.human_repr()
 	raise TypeError
 
 

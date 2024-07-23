@@ -1,7 +1,9 @@
+from os.path import expanduser
 from typing import Annotated, NewType
 
 from annotated_types import Ge, Le
 from pydantic import (
+	BeforeValidator,
 	Field,
 	PlainSerializer,
 	PlainValidator,
@@ -9,9 +11,12 @@ from pydantic import (
 	Strict,
 	WithJsonSchema,
 )
+from pydantic import (
+	DirectoryPath as DirectoryType,
+)
 from yarl import URL as Yarl
 
-__all__ = ("Host", "Password", "Port", "Url")
+__all__ = ("DirectoryPath", "Host", "Password", "Port", "Url")
 
 
 def from_yarl(url: Yarl) -> str:
@@ -24,6 +29,7 @@ def to_yarl(value: object) -> Yarl:
 	raise NotImplementedError(f"Cannot convert {type(object)} to URL")
 
 
+DirectoryPath = Annotated[DirectoryType, BeforeValidator(expanduser)]
 Host = NewType(
 	"Host", Annotated[str, Strict(), Field(json_schema_extra={"format": "hostname"})]
 )

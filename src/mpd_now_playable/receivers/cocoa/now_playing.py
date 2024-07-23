@@ -25,6 +25,7 @@ from MediaPlayer import (
 	MPNowPlayingInfoCenter,
 	MPNowPlayingInfoMediaTypeAudio,
 	MPNowPlayingInfoMediaTypeNone,
+	MPNowPlayingInfoPropertyAssetURL,
 	MPNowPlayingInfoPropertyElapsedPlaybackTime,
 	MPNowPlayingInfoPropertyExternalContentIdentifier,
 	MPNowPlayingInfoPropertyMediaType,
@@ -105,6 +106,9 @@ def song_to_media_item(song: Song) -> NSMutableDictionary:
 	nowplaying_info[MPMediaItemPropertyGenre] = join_plural_field(song.genre)
 	nowplaying_info[MPMediaItemPropertyComposer] = join_plural_field(song.composer)
 	nowplaying_info[MPMediaItemPropertyPlaybackDuration] = song.duration
+
+	if song.url is not None:
+		nowplaying_info[MPNowPlayingInfoPropertyAssetURL] = song.url.human_repr()
 
 	# MPD can't play back music at different rates, so we just want to set it
 	# to 1.0 if the song is playing. (Leave it at 0.0 if the song is paused.)

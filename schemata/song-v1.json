@@ -194,6 +194,12 @@
 			"description": "The track number the song has on its album. This is usually one-based, but it's just an arbitrary audio tag so a particular album might start at zero or do something weird with it.",
 			"title": "Track",
 			"type": "integer"
+		},
+		"url": {
+			"description": "An absolute URL referring to the current song, if available. If the song's a local file and its absolute path can be determined (mpd-now-playable has been configured with your music directory), then this field will contain a file:// URL. If the song's remote, then MPD itself returns an absolute URL in the first place.",
+			"format": "uri",
+			"title": "Url",
+			"type": "string"
 		}
 	},
 	"required": [

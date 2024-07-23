@@ -34,6 +34,7 @@ MPNowPlayingInfoPropertyPlaybackQueueIndex: Final = (
 MPNowPlayingInfoPropertyElapsedPlaybackTime: Final = (
 	"MPNowPlayingInfoPropertyElapsedPlaybackTime"
 )
+MPNowPlayingInfoPropertyAssetURL: Final = "MPNowPlayingInfoPropertyAssetURL"
 MPNowPlayingInfoPropertyExternalContentIdentifier: Final = (
 	"MPNowPlayingInfoPropertyExternalContentIdentifier"
 )

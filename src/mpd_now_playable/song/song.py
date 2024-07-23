@@ -3,6 +3,7 @@ from enum import StrEnum
 from pathlib import Path
 
 from ..tools.schema.define import schema
+from ..tools.schema.fields import Url
 from .artwork import Artwork
 from .musicbrainz import MusicBrainzIds
 
@@ -14,7 +15,7 @@ class PlaybackState(StrEnum):
 
 
 @schema("https://cdn.00dani.me/m/schemata/mpd-now-playable/song-v1.json")
-@dataclass(slots=True)
+@dataclass(slots=True, kw_only=True)
 class Song:
 	#: Whether MPD is currently playing, paused, or stopped. Pretty simple.
 	state: PlaybackState
@@ -29,6 +30,13 @@ class Song:
 	#: itself uses this path as a stable identifier for the audio file in many
 	#: places, so you can safely do the same.
 	file: Path
+
+	#: An absolute URL referring to the current song, if available. If the
+	#: song's a local file and its absolute path can be determined
+	#: (mpd-now-playable has been configured with your music directory), then
+	#: this field will contain a file:// URL. If the song's remote, then MPD
+	#: itself returns an absolute URL in the first place.
+	url: Url | None = None
 
 	#: The song's title, if it's been tagged with one. Currently only one title
 	#: is supported, since it doesn't make a lot of sense to tag a single audio

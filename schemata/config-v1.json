@@ -24,6 +24,12 @@
 					"title": "Host",
 					"type": "string"
 				},
+				"music_directory": {
+					"description": "Your music directory, just as it's set up in your mpd.conf. mpd-now-playable uses this setting to figure out an absolute file:// URL for the current song, which MPNowPlayingInfoCenter will use to display cool stuff like audio waveforms. It'll still work fine without setting this, though.",
+					"format": "directory-path",
+					"title": "Music Directory",
+					"type": "string"
+				},
 				"password": {
 					"description": "The password required to connect to your MPD instance, if you need one.",
 					"format": "password",

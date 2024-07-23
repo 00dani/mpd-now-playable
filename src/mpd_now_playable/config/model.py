@@ -4,7 +4,7 @@ from typing import Annotated, Literal, Optional, Protocol
 from pydantic import Field
 
 from ..tools.schema.define import schema
-from .fields import Host, Password, Port, Url
+from ..tools.schema.fields import DirectoryPath, Host, Password, Port, Url
 
 __all__ = (
 	"Config",
@@ -55,6 +55,12 @@ class MpdConfig:
 	#: servers on one machine for some reason, you probably haven't changed this
 	#: from the default port, 6600.
 	port: Port = Port(6600)
+	#: Your music directory, just as it's set up in your mpd.conf.
+	#: mpd-now-playable uses this setting to figure out an absolute file:// URL
+	#: for the current song, which MPNowPlayingInfoCenter will use to display
+	#: cool stuff like audio waveforms. It'll still work fine without setting
+	#: this, though.
+	music_directory: Optional[DirectoryPath] = None
 
 
 @schema("https://cdn.00dani.me/m/schemata/mpd-now-playable/config-v1.json")
