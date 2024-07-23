@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Literal, NotRequired, Protocol, TypedDict
 
 from ..song.musicbrainz import MusicBrainzTags
@@ -76,3 +77,10 @@ class CurrentSongResponse(CurrentSongTags):
 
 
 ReadPictureResponse = TypedDict("ReadPictureResponse", {"binary": bytes})
+
+
+@dataclass
+class MpdState:
+	status: StatusResponse
+	current: CurrentSongResponse
+	art: bytes | None = None
