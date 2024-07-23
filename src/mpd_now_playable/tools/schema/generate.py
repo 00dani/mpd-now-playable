@@ -11,8 +11,8 @@ from .define import ModelWithSchema
 __all__ = ("write",)
 
 
-def write(model: ModelWithSchema) -> None:
-	schema = model.schema.json_schema(schema_generator=MyGenerateJsonSchema)
+def write(model: ModelWithSchema, mode: JsonSchemaMode = "validation") -> None:
+	schema = model.schema.json_schema(schema_generator=MyGenerateJsonSchema, mode=mode)
 	schema["$id"] = model.id.human_repr()
 	schema_file = Path(__file__).parents[4] / "schemata" / model.id.name
 	print(f"Writing this schema to {schema_file}")
@@ -46,8 +46,10 @@ class MyGenerateJsonSchema(GenerateJsonSchema):
 	def nullable_schema(self, schema: s.NullableSchema) -> JsonSchemaValue:
 		return self.generate_inner(schema["schema"])
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
 	from ...config.model import Config
 	from ...song import Song
+
 	write(Config)
-	write(Song)
+	write(Song, mode="serialization")
