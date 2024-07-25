@@ -45,6 +45,10 @@ class StatusResponse(TypedDict):
 	# The total number of items in the play queue, which is called the "playlist" throughout the MPD protocol for legacy reasons.
 	playlistlength: str
 
+	# The zero-based index of the song that will play when the current song
+	# ends, taking into account repeat and random playback settings.
+	nextsong: str
+
 	# The format of decoded audio MPD is producing, expressed as a string in the form "samplerate:bits:channels".
 	audio: str
 
