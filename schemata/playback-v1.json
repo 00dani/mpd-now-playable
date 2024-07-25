@@ -1,0 +1,355 @@
+{
+	"$defs": {
+		"HasArtwork": {
+			"properties": {
+				"data": {
+					"format": "binary",
+					"title": "Data",
+					"type": "string"
+				}
+			},
+			"required": [
+				"data"
+			],
+			"title": "HasArtwork",
+			"type": "object"
+		},
+		"MusicBrainzIds": {
+			"properties": {
+				"artist": {
+					"description": "A MusicBrainz artist is pretty intuitively the artist who recorded the song. This particular ID refers to the individual recording's artist or artists, which may be distinct from the release artist below when a release contains recordings from many different artists. https://musicbrainz.org/doc/Artist",
+					"items": {
+						"format": "uuid",
+						"type": "string"
+					},
+					"title": "Artist",
+					"type": "array"
+				},
+				"recording": {
+					"description": "A MusicBrainz recording represents audio from a specific performance. For example, if the same song was released as a studio recording and as a live performance, those two versions of the song are different recordings. The song itself is considered a \"work\", of which two recordings were made. However, recordings are not always associated with a work in the MusicBrainz database, and Picard won't load work IDs by default (you have to enable \"use track relationships\" in the options), so recording IDs are a much more reliable way to identify a particular song. https://musicbrainz.org/doc/Recording",
+					"format": "uuid",
+					"title": "Recording",
+					"type": "string"
+				},
+				"release": {
+					"description": "A MusicBrainz release roughly corresponds to an \"album\", and indeed is stored in a tag called MUSICBRAINZ_ALBUMID. The more general name is meant to encompass all the different ways music can be released. https://musicbrainz.org/doc/Release",
+					"items": {
+						"format": "uuid",
+						"type": "string"
+					},
+					"title": "Release",
+					"type": "array"
+				},
+				"release_artist": {
+					"description": "Again, the release artist corresponds to an \"album artist\". These MBIDs refer to the same artists in the MusicBrainz database that individual recordings' artist MBIDs do.",
+					"items": {
+						"format": "uuid",
+						"type": "string"
+					},
+					"title": "Release Artist",
+					"type": "array"
+				},
+				"release_group": {
+					"description": "A MusicBrainz release group roughly corresponds to \"all the editions of a particular album\". For example, if the same album were released on CD, vinyl records, and as a digital download, then all of those would be different releases but share a release group. Note that MPD's support for this tag is relatively new (July 2023) and doesn't seem especially reliable, so it might be missing here even if your music has been tagged with it. Not sure why. https://musicbrainz.org/doc/Release_Group",
+					"format": "uuid",
+					"title": "Release Group",
+					"type": "string"
+				},
+				"track": {
+					"description": "A MusicBrainz track represents a specific instance of a recording appearing as part of some release. For example, if the same song appears on both two-CD and four-CD versions of a soundtrack, then it will be considered the same \"recording\" in both cases, but different \"tracks\". https://musicbrainz.org/doc/Track",
+					"format": "uuid",
+					"title": "Track",
+					"type": "string"
+				},
+				"work": {
+					"description": "A MusicBrainz work represents the idea of a particular song or creation (it doesn't have to be audio). Each work may have multiple recordings (studio versus live, different performers, etc.), with the work ID grouping them together. https://musicbrainz.org/doc/Work",
+					"format": "uuid",
+					"title": "Work",
+					"type": "string"
+				}
+			},
+			"required": [
+				"artist",
+				"release",
+				"release_artist"
+			],
+			"title": "MusicBrainzIds",
+			"type": "object"
+		},
+		"NoArtwork": {
+			"properties": {},
+			"title": "NoArtwork",
+			"type": "object"
+		},
+		"Queue": {
+			"properties": {
+				"current": {
+					"description": "The zero-based index of the current song in MPD's queue.",
+					"title": "Current",
+					"type": "integer"
+				},
+				"length": {
+					"description": "The total length of MPD's queue - the last song in the queue will have the index one less than this, since queue indices are zero-based.",
+					"title": "Length",
+					"type": "integer"
+				},
+				"next": {
+					"description": "The index of the next song to be played, taking into account random and repeat playback settings.",
+					"title": "Next",
+					"type": "integer"
+				}
+			},
+			"required": [
+				"current",
+				"next",
+				"length"
+			],
+			"title": "Queue",
+			"type": "object"
+		},
+		"Settings": {
+			"properties": {
+				"consume": {
+					"anyOf": [
+						{
+							"type": "boolean"
+						},
+						{
+							"const": "oneshot",
+							"enum": [
+								"oneshot"
+							],
+							"type": "string"
+						}
+					],
+					"description": "Remove songs from the queue as they're played. This flag can also be set to \"oneshot\", which means the currently playing song will be consumed, and then the flag will automatically be switched off.",
+					"title": "Consume"
+				},
+				"random": {
+					"description": "Play the queued songs in random order. This is distinct from shuffling the queue, which randomises the queue's order once when you send the shuffle command and will then play the queue in that new order repeatedly if asked. If MPD is asked to both repeat and randomise, the queue is effectively shuffled each time it loops.",
+					"title": "Random",
+					"type": "boolean"
+				},
+				"repeat": {
+					"description": "Repeat playback of the queued songs. This setting normally means the entire queue will be played on repeat, but its behaviour can be influenced by the other playback mode flags.",
+					"title": "Repeat",
+					"type": "boolean"
+				},
+				"single": {
+					"anyOf": [
+						{
+							"type": "boolean"
+						},
+						{
+							"const": "oneshot",
+							"enum": [
+								"oneshot"
+							],
+							"type": "string"
+						}
+					],
+					"description": "Play only a single song. If MPD is asked to repeat, then the current song will be played repeatedly. Otherwise, when the current song ends MPD will simply stop playback. Like the consume flag, the single flag can also be set to \"oneshot\", which will cause the single flag to be switched off after it takes effect once (either the current song will repeat just once, or playback will stop but the single flag will be switched off).",
+					"title": "Single"
+				},
+				"volume": {
+					"description": "The playback volume ranging from 0 to 100 - it will only be available if MPD has a volume mixer configured.",
+					"title": "Volume",
+					"type": "integer"
+				}
+			},
+			"required": [
+				"volume",
+				"repeat",
+				"random",
+				"single",
+				"consume"
+			],
+			"title": "Settings",
+			"type": "object"
+		},
+		"Song": {
+			"properties": {
+				"album": {
+					"description": "The name of the song's containing album, which may be multivalued.",
+					"items": {
+						"type": "string"
+					},
+					"title": "Album",
+					"type": "array"
+				},
+				"album_artist": {
+					"description": "The album's artists. This is often used to group together songs from a single album that featured different artists.",
+					"items": {
+						"type": "string"
+					},
+					"title": "Album Artist",
+					"type": "array"
+				},
+				"art": {
+					"anyOf": [
+						{
+							"$ref": "#/$defs/HasArtwork"
+						},
+						{
+							"$ref": "#/$defs/NoArtwork"
+						}
+					],
+					"description": "The song's cover art, if it has any - the art will be available as bytes if present, ready to be displayed directly by receivers.",
+					"title": "Art"
+				},
+				"artist": {
+					"description": "The song's artists. Will be an empty list if the song has not been tagged with an artist, and may contain multiple values if the song has been tagged with several artists.",
+					"items": {
+						"type": "string"
+					},
+					"title": "Artist",
+					"type": "array"
+				},
+				"composer": {
+					"description": "The song's composers. Again, this is permitted to be multivalued.",
+					"items": {
+						"type": "string"
+					},
+					"title": "Composer",
+					"type": "array"
+				},
+				"disc": {
+					"description": "The disc number of the song on its album. As with the track number, this is usually one-based, but it doesn't have to be.",
+					"title": "Disc",
+					"type": "integer"
+				},
+				"duration": {
+					"description": "The song's duration as read from its tags, measured in seconds. Fractional seconds are allowed. The duration may be unavailable for some sources, such as internet radio streams.",
+					"title": "Duration",
+					"type": "number"
+				},
+				"elapsed": {
+					"description": "How far into the song MPD is, measured in seconds. Fractional seconds are allowed. This is usually going to be less than or equal to the song's duration, but because the duration is tagged as metadata and this value represents the actual elapsed time, it might go higher if the song's duration tag is inaccurate.",
+					"title": "Elapsed",
+					"type": "number"
+				},
+				"file": {
+					"description": "The relative path to the current song inside the music directory. MPD itself uses this path as a stable identifier for the audio file in many places, so you can safely do the same.",
+					"format": "path",
+					"title": "File",
+					"type": "string"
+				},
+				"genre": {
+					"description": "The song's genre or genres. These are completely arbitrary descriptions and don't follow any particular standard.",
+					"items": {
+						"type": "string"
+					},
+					"title": "Genre",
+					"type": "array"
+				},
+				"musicbrainz": {
+					"$ref": "#/$defs/MusicBrainzIds",
+					"description": "The MusicBrainz IDs associated with the song and with its artist and album, which if present are an extremely accurate way to identify a given song. They're not always present, though."
+				},
+				"state": {
+					"description": "Whether MPD is currently playing or paused. Pretty simple.",
+					"enum": [
+						"play",
+						"pause"
+					],
+					"title": "State",
+					"type": "string"
+				},
+				"title": {
+					"description": "The song's title, if it's been tagged with one. Currently only one title is supported, since it doesn't make a lot of sense to tag a single audio file with multiple titles.",
+					"title": "Title",
+					"type": "string"
+				},
+				"track": {
+					"description": "The track number the song has on its album. This is usually one-based, but it's just an arbitrary audio tag so a particular album might start at zero or do something weird with it.",
+					"title": "Track",
+					"type": "integer"
+				},
+				"url": {
+					"description": "An absolute URL referring to the current song, if available. If the song's a local file and its absolute path can be determined (mpd-now-playable has been configured with your music directory), then this field will contain a file:// URL. If the song's remote, then MPD itself returns an absolute URL in the first place.",
+					"format": "uri",
+					"title": "Url",
+					"type": "string"
+				}
+			},
+			"required": [
+				"state",
+				"file",
+				"title",
+				"artist",
+				"composer",
+				"album",
+				"album_artist",
+				"track",
+				"disc",
+				"genre",
+				"duration",
+				"elapsed",
+				"art",
+				"musicbrainz"
+			],
+			"title": "Song",
+			"type": "object"
+		},
+		"Stopped": {
+			"properties": {
+				"state": {
+					"const": "stop",
+					"default": "stop",
+					"enum": [
+						"stop"
+					],
+					"title": "State",
+					"type": "string"
+				}
+			},
+			"title": "Stopped",
+			"type": "object"
+		}
+	},
+	"$id": "https://static.00dani.me/m/schemata/mpd-now-playable/playback-v1.json",
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"properties": {
+		"partition": {
+			"description": "The MPD partition this playback information came from. Essentially, MPD can act as multiple music player servers simultaneously, distinguished by name. For most users, this will always be \"default\".",
+			"title": "Partition",
+			"type": "string"
+		},
+		"queue": {
+			"$ref": "#/$defs/Queue",
+			"description": "Stats about MPD's song queue, including the current song and next song's indices in it."
+		},
+		"settings": {
+			"$ref": "#/$defs/Settings",
+			"description": "Playback settings such as volume and repeat mode."
+		},
+		"song": {
+			"description": "Information about the current song itself. MPD provides none of this information if its playback is currently stopped, so mpd-now-playable doesn't either and will give you a Stopped instead in that case.",
+			"discriminator": {
+				"mapping": {
+					"pause": "#/$defs/Song",
+					"play": "#/$defs/Song",
+					"stop": "#/$defs/Stopped"
+				},
+				"propertyName": "state"
+			},
+			"oneOf": [
+				{
+					"$ref": "#/$defs/Song"
+				},
+				{
+					"$ref": "#/$defs/Stopped"
+				}
+			],
+			"title": "Song"
+		}
+	},
+	"required": [
+		"song",
+		"partition",
+		"queue",
+		"settings"
+	],
+	"title": "Playback",
+	"type": "object"
+}

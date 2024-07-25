@@ -6,8 +6,8 @@ from websockets.server import WebSocketServerProtocol, serve
 from yarl import URL
 
 from ...config.model import WebsocketsReceiverConfig
+from ...playback import Playback
 from ...player import Player
-from ...song import Song
 from ...song_receiver import DefaultLoopFactory, Receiver
 
 MSGPACK_NULL = ormsgpack.packb(None)
@@ -37,7 +37,9 @@ class WebsocketsReceiver(Receiver):
 
 	async def start(self, player: Player) -> None:
 		self.player = player
-		await serve(self.handle, host=self.config.host, port=self.config.port, reuse_port=True)
+		await serve(
+			self.handle, host=self.config.host, port=self.config.port, reuse_port=True
+		)
 
 	async def handle(self, conn: WebSocketServerProtocol) -> None:
 		self.connections.add(conn)
@@ -47,9 +49,6 @@ class WebsocketsReceiver(Receiver):
 		finally:
 			self.connections.remove(conn)
 
-	async def update(self, song: Song | None) -> None:
-		if song is None:
-			self.last_status = MSGPACK_NULL
-		else:
-			self.last_status = ormsgpack.packb(song, default=default)
+	async def update(self, playback: Playback) -> None:
+		self.last_status = ormsgpack.packb(playback, default=default)
 		broadcast(self.connections, self.last_status)

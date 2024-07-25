@@ -1,30 +1,19 @@
 from dataclasses import dataclass
-from enum import StrEnum
 from pathlib import Path
+from typing import Literal
 
+from ..playback.state import PlaybackState
 from ..tools.schema.define import schema
 from ..tools.schema.fields import Url
 from .artwork import Artwork
 from .musicbrainz import MusicBrainzIds
 
 
-class PlaybackState(StrEnum):
-	play = "play"
-	pause = "pause"
-	stop = "stop"
-
-
 @schema("https://cdn.00dani.me/m/schemata/mpd-now-playable/song-v1.json")
 @dataclass(slots=True, kw_only=True)
 class Song:
-	#: Whether MPD is currently playing, paused, or stopped. Pretty simple.
-	state: PlaybackState
-
-	#: The zero-based index of the current song in MPD's queue.
-	queue_index: int
-	#: The total length of MPD's queue - the last song in the queue will have
-	#: the index one less than this, since queue indices are zero-based.
-	queue_length: int
+	#: Whether MPD is currently playing or paused. Pretty simple.
+	state: Literal[PlaybackState.play, PlaybackState.pause]
 
 	#: The relative path to the current song inside the music directory. MPD
 	#: itself uses this path as a stable identifier for the audio file in many

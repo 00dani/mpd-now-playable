@@ -49,7 +49,9 @@ class MyGenerateJsonSchema(GenerateJsonSchema):
 
 if __name__ == "__main__":
 	from ...config.model import Config
+	from ...playback import Playback
 	from ...song import Song
 
 	write(Config)
+	write(Playback, mode="serialization")
 	write(Song, mode="serialization")

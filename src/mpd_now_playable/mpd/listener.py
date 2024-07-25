@@ -1,6 +1,5 @@
 import asyncio
 from collections.abc import Iterable
-from pathlib import Path
 
 from mpd.asyncio import MPDClient
 from mpd.base import CommandError
@@ -8,52 +7,13 @@ from rich import print as rprint
 from yarl import URL
 
 from ..config.model import MpdConfig
+from ..playback import Playback
+from ..playback.state import PlaybackState
 from ..player import Player
-from ..song import PlaybackState, Song, to_artwork, to_brainz
 from ..song_receiver import Receiver
-from ..tools.types import option_fmap, un_maybe_plural
 from .artwork_cache import MpdArtworkCache
+from .convert.to_playback import to_playback
 from .types import MpdState
-
-
-def mpd_file_to_uri(config: MpdConfig, file: str) -> URL | None:
-	url = URL(file)
-	if url.scheme != "":
-		# We already got an absolute URL - probably a stream? - so we can just return it.
-		return url
-
-	if not config.music_directory:
-		# We have a relative song URI, but we can't make it absolute since no music directory is configured.
-		return None
-
-	# Prepend the configured music directory, then turn the whole path into a file:// URL.
-	abs_file = config.music_directory / file
-	return URL(abs_file.as_uri())
-
-
-def mpd_state_to_song(config: MpdConfig, mpd: MpdState) -> Song:
-	file = mpd.current["file"]
-	url = mpd_file_to_uri(config, file)
-
-	return Song(
-		state=PlaybackState(mpd.status["state"]),
-		queue_index=int(mpd.current["pos"]),
-		queue_length=int(mpd.status["playlistlength"]),
-		file=Path(file),
-		url=url,
-		title=mpd.current.get("title"),
-		artist=un_maybe_plural(mpd.current.get("artist")),
-		album=un_maybe_plural(mpd.current.get("album")),
-		album_artist=un_maybe_plural(mpd.current.get("albumartist")),
-		composer=un_maybe_plural(mpd.current.get("composer")),
-		genre=un_maybe_plural(mpd.current.get("genre")),
-		track=option_fmap(int, mpd.current.get("track")),
-		disc=option_fmap(int, mpd.current.get("disc")),
-		duration=option_fmap(float, mpd.status.get("duration")),
-		elapsed=float(mpd.status["elapsed"]),
-		musicbrainz=to_brainz(mpd.current),
-		art=to_artwork(mpd.art),
-	)
 
 
 class MpdStateListener(Player):
@@ -101,22 +61,19 @@ class MpdStateListener(Player):
 		if starting_idle_count != self.idle_count:
 			return
 
-		if status["state"] == "stop":
-			print("Nothing playing")
-			await self.update(None)
-			return
-
-		art = await self.art_cache.get_cached_artwork(current)
-		if starting_idle_count != self.idle_count:
-			return
+		art = None
+		if status["state"] != "stop":
+			art = await self.art_cache.get_cached_artwork(current)
+			if starting_idle_count != self.idle_count:
+				return
 
 		state = MpdState(status, current, art)
-		song = mpd_state_to_song(self.config, state)
-		rprint(song)
-		await self.update(song)
+		pb = to_playback(self.config, state)
+		rprint(pb)
+		await self.update(pb)
 
-	async def update(self, song: Song | None) -> None:
-		await asyncio.gather(*(r.update(song) for r in self.receivers))
+	async def update(self, playback: Playback) -> None:
+		await asyncio.gather(*(r.update(playback) for r in self.receivers))
 
 	async def get_art(self, file: str) -> bytes | None:
 		picture = await self.readpicture(file)

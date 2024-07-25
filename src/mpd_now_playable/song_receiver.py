@@ -4,8 +4,8 @@ from importlib import import_module
 from typing import Generic, Iterable, Literal, Protocol, TypeVar, cast
 
 from .config.model import BaseReceiverConfig
+from .playback import Playback
 from .player import Player
-from .song import Song
 from .tools.types import not_none
 
 T = TypeVar("T", bound=AbstractEventLoop, covariant=True)
@@ -25,7 +25,7 @@ class Receiver(Protocol):
 	def loop_factory(cls) -> LoopFactory[AbstractEventLoop]: ...
 
 	async def start(self, player: Player) -> None: ...
-	async def update(self, song: Song | None) -> None: ...
+	async def update(self, playback: Playback) -> None: ...
 
 
 class ReceiverModule(Protocol):
