@@ -11,6 +11,7 @@ from ..playback import Playback
 from ..playback.state import PlaybackState
 from ..player import Player
 from ..song_receiver import Receiver
+from ..tools.asyncio import run_background_task
 from .artwork_cache import MpdArtworkCache
 from .convert.to_playback import to_playback
 from .types import MpdState
@@ -37,16 +38,25 @@ class MpdStateListener(Player):
 			print("Authorising to MPD with your password...")
 			await self.client.password(conf.password.get_secret_value())
 		print(f"Connected to MPD v{self.client.mpd_version}")
+		run_background_task(self.heartbeat())
+
+	async def heartbeat(self) -> None:
+		while True:
+			await self.client.ping()
+			await asyncio.sleep(10)
 
 	async def refresh(self) -> None:
 		await self.update_receivers()
 
 	async def loop(self, receivers: Iterable[Receiver]) -> None:
 		self.receivers = receivers
-		# notify our receivers of the initial state MPD is in when this script loads up.
+		# Notify our receivers of the initial state MPD is in when this script loads up.
 		await self.update_receivers()
-		# then wait for stuff to change in MPD. :)
-		async for _ in self.client.idle():
+		# And then wait for stuff to change in MPD. :)
+		async for subsystems in self.client.idle():
+			# If no subsystems actually changed, we don't need to update the receivers.
+			if not subsystems:
+				continue
 			self.idle_count += 1
 			await self.update_receivers()
 
