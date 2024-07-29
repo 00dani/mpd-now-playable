@@ -1,7 +1,7 @@
 from ...config.model import MpdConfig
 from ...playback import Playback
 from ...playback.queue import Queue
-from ...playback.settings import Settings, to_oneshot
+from ...playback.settings import MixRamp, Settings, to_oneshot
 from ...tools.types import option_fmap
 from ..types import MpdState
 from .to_song import to_song
@@ -15,6 +15,16 @@ def to_queue(mpd: MpdState) -> Queue:
 	)
 
 
+def to_mixramp(mpd: MpdState) -> MixRamp:
+	delay = mpd.status.get("mixrampdelay", 0)
+	if delay == "nan":
+		delay = 0
+	return MixRamp(
+		db=float(mpd.status.get("mixrampdb", 0)),
+		delay=float(delay),
+	)
+
+
 def to_settings(mpd: MpdState) -> Settings:
 	return Settings(
 		volume=option_fmap(int, mpd.status.get("volume")),
@@ -22,6 +32,8 @@ def to_settings(mpd: MpdState) -> Settings:
 		random=mpd.status["random"] == "1",
 		single=to_oneshot(mpd.status["single"]),
 		consume=to_oneshot(mpd.status["consume"]),
+		crossfade=int(mpd.status.get("xfade", 0)),
+		mixramp=to_mixramp(mpd),
 	)
 
 

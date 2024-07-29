@@ -37,6 +37,20 @@ class StatusResponse(TypedDict):
 	single: OneshotFlag
 	consume: OneshotFlag
 
+	# The configured crossfade time in seconds. Omitted if crossfading isn't
+	# enabled. Fractional seconds are *not* allowed for this field.
+	xfade: NotRequired[str]
+
+	# The volume threshold at which MixRamp-compatible songs will be
+	# overlapped, measured in decibels. Will usually be negative, and is
+	# permitted to be fractional.
+	mixrampdb: NotRequired[str]
+
+	# A number of seconds to subtract from the overlap computed by MixRamp.
+	# Must be positive for MixRamp to work and is permitted to be fractional.
+	# Can be set to "nan" to disable MixRamp and use basic crossfading instead.
+	mixrampdelay: NotRequired[str]
+
 	# Partitions essentially let one MPD server act as multiple music players.
 	# For most folks, this will just be "default", but mpd-now-playable will
 	# eventually support addressing specific partitions. Eventually.

@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from typing import Literal
+from typing import Annotated, Literal
+
+from annotated_types import Ge
 
 OneShotFlag = bool | Literal["oneshot"]
 
@@ -13,6 +15,19 @@ def to_oneshot(value: str) -> OneShotFlag:
 		case "oneshot":
 			return "oneshot"
 	return False
+
+
+@dataclass(slots=True, kw_only=True)
+class MixRamp:
+	#: The volume threshold at which MPD will overlap MixRamp-analysed songs,
+	#: measured in decibels. Can be set to any float, but sensible values are
+	#: typically negative.
+	db: float
+
+	#: A delay time in seconds which will be subtracted from the MixRamp
+	#: overlap. Must be set to a positive value for MixRamp to work at all -
+	#: will be zero if it's disabled.
+	delay: float
 
 
 @dataclass(slots=True, kw_only=True)
@@ -46,3 +61,16 @@ class Settings:
 	#: to "oneshot", which means the currently playing song will be consumed,
 	#: and then the flag will automatically be switched off.
 	consume: OneShotFlag
+
+	#: The number of seconds to overlap songs when cross-fading between the
+	#: current song and the next. Will be zero when the cross-fading feature is
+	#: disabled entirely. Curiously, fractional seconds are not supported here,
+	#: unlike many other places MPD uses seconds.
+	crossfade: Annotated[int, Ge(0)]
+
+	#: Settings for MixRamp-powered cross-fading, which analyses your songs'
+	#: volume levels to choose optimal places for cross-fading. This requires
+	#: either that the songs have previously been analysed and tagged with
+	#: MixRamp information, or that MPD's on the fly mixramp_analyzer has been
+	#: enabled.
+	mixramp: MixRamp

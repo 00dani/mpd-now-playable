@@ -14,6 +14,26 @@
 			"title": "HasArtwork",
 			"type": "object"
 		},
+		"MixRamp": {
+			"properties": {
+				"db": {
+					"description": "The volume threshold at which MPD will overlap MixRamp-analysed songs, measured in decibels. Can be set to any float, but sensible values are typically negative.",
+					"title": "Db",
+					"type": "number"
+				},
+				"delay": {
+					"description": "A delay time in seconds which will be subtracted from the MixRamp overlap. Must be set to a positive value for MixRamp to work at all - will be zero if it's disabled.",
+					"title": "Delay",
+					"type": "number"
+				}
+			},
+			"required": [
+				"db",
+				"delay"
+			],
+			"title": "MixRamp",
+			"type": "object"
+		},
 		"MusicBrainzIds": {
 			"properties": {
 				"artist": {
@@ -125,6 +145,16 @@
 					"description": "Remove songs from the queue as they're played. This flag can also be set to \"oneshot\", which means the currently playing song will be consumed, and then the flag will automatically be switched off.",
 					"title": "Consume"
 				},
+				"crossfade": {
+					"description": "The number of seconds to overlap songs when cross-fading between the current song and the next. Will be zero when the cross-fading feature is disabled entirely. Curiously, fractional seconds are not supported here, unlike many other places MPD uses seconds.",
+					"minimum": 0,
+					"title": "Crossfade",
+					"type": "integer"
+				},
+				"mixramp": {
+					"$ref": "#/$defs/MixRamp",
+					"description": "Settings for MixRamp-powered cross-fading, which analyses your songs' volume levels to choose optimal places for cross-fading. This requires either that the songs have previously been analysed and tagged with MixRamp information, or that MPD's on the fly mixramp_analyzer has been enabled."
+				},
 				"random": {
 					"description": "Play the queued songs in random order. This is distinct from shuffling the queue, which randomises the queue's order once when you send the shuffle command and will then play the queue in that new order repeatedly if asked. If MPD is asked to both repeat and randomise, the queue is effectively shuffled each time it loops.",
 					"title": "Random",
@@ -162,7 +192,9 @@
 				"repeat",
 				"random",
 				"single",
-				"consume"
+				"consume",
+				"crossfade",
+				"mixramp"
 			],
 			"title": "Settings",
 			"type": "object"
