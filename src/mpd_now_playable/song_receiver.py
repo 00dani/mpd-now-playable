@@ -1,17 +1,15 @@
 from asyncio import AbstractEventLoop, new_event_loop
 from dataclasses import dataclass
 from importlib import import_module
-from typing import Generic, Iterable, Literal, Protocol, TypeVar, cast
+from typing import Iterable, Literal, Protocol, cast
 
 from .config.model import BaseReceiverConfig
 from .playback import Playback
 from .player import Player
 from .tools.types import not_none
 
-T = TypeVar("T", bound=AbstractEventLoop, covariant=True)
 
-
-class LoopFactory(Generic[T], Protocol):
+class LoopFactory[T: AbstractEventLoop](Protocol):
 	@property
 	def is_replaceable(self) -> bool: ...
 

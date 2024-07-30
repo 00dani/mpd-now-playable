@@ -1,11 +1,9 @@
-from typing import ClassVar, Optional, TypeVar
+from typing import ClassVar, Optional
 
 from .base import BaseCache
 from .serializers import BaseSerializer
 
-T = TypeVar("T")
-
-class Cache(BaseCache[T]):
+class Cache[T](BaseCache[T]):
 	MEMORY: ClassVar[type[BaseCache]]
 	REDIS: ClassVar[type[BaseCache] | None]
 	MEMCACHED: ClassVar[type[BaseCache] | None]

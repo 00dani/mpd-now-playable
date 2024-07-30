@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, TypeAlias, TypeVar
+from typing import Any
 
 __all__ = (
 	"AnyExceptList",
@@ -28,27 +28,22 @@ AnyExceptList = (
 )
 
 
-U = TypeVar("U")
-V = TypeVar("V")
-
-
-def not_none(value: U | None) -> U:
+def not_none[U](value: U | None) -> U:
 	if value is None:
 		raise ValueError("None should not be possible here.")
 	return value
 
 
-def option_fmap(f: Callable[[U], V], value: U | None) -> V | None:
+def option_fmap[U, V](f: Callable[[U], V], value: U | None) -> V | None:
 	if value is None:
 		return None
 	return f(value)
 
 
-T = TypeVar("T", bound=AnyExceptList)
-MaybePlural: TypeAlias = list[T] | T
+type MaybePlural[T: AnyExceptList] = list[T] | T
 
 
-def un_maybe_plural(value: MaybePlural[T] | None) -> list[T]:
+def un_maybe_plural[T: AnyExceptList](value: MaybePlural[T] | None) -> list[T]:
 	match value:
 		case None:
 			return []

@@ -1,6 +1,5 @@
 from collections.abc import Mapping
 from os import environ
-from typing import TypeVar
 
 from boltons.iterutils import remap
 from pytomlpp import load
@@ -9,8 +8,6 @@ from xdg_base_dirs import xdg_config_home
 from .model import Config
 
 __all__ = ("loadConfig",)
-K = TypeVar("K")
-V = TypeVar("V")
 
 
 # Sadly this is the kind of function that's incredibly easy to type statically
@@ -24,7 +21,7 @@ V = TypeVar("V")
 # type like NonNullable<T>. Python's type system also doesn't infer a
 # dictionary literal as having a structural type by default in the way
 # TypeScript does, of course, so that part wouldn't work anyway.
-def withoutNones(data: Mapping[K, V | None]) -> Mapping[K, V]:
+def withoutNones[K, V](data: Mapping[K, V | None]) -> Mapping[K, V]:
 	return remap(data, lambda p, k, v: v is not None)
 
 

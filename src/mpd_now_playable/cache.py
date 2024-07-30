@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Generic, Optional, TypeVar
+from typing import Any, Optional
 
 import ormsgpack
 from aiocache import Cache
@@ -8,10 +8,8 @@ from aiocache.serializers import BaseSerializer
 from pydantic.type_adapter import TypeAdapter
 from yarl import URL
 
-T = TypeVar("T")
 
-
-class OrmsgpackSerializer(BaseSerializer, Generic[T]):
+class OrmsgpackSerializer[T](BaseSerializer):
 	DEFAULT_ENCODING = None
 
 	def __init__(self, schema: TypeAdapter[T]):
@@ -28,7 +26,7 @@ class OrmsgpackSerializer(BaseSerializer, Generic[T]):
 		return self.schema.validate_python(data)
 
 
-def make_cache(schema: TypeAdapter[T], url: URL, namespace: str = "") -> Cache[T]:
+def make_cache[T](schema: TypeAdapter[T], url: URL, namespace: str = "") -> Cache[T]:
 	backend = Cache.get_scheme_class(url.scheme)
 	if backend == Cache.MEMORY:
 		return Cache(backend)

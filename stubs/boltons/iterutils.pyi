@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping
-from typing import TypeAlias, TypeVar
+from typing import TypeVar
 
 # Apparently you need Python 3.13 for type var defaults to work. But since this
 # is just a stub file, it's okay if they aren't supported at runtime.
@@ -8,7 +8,7 @@ KOut = TypeVar("KOut", default=KIn)
 VIn = TypeVar("VIn")
 VOut = TypeVar("VOut", default=VIn)
 
-Path: TypeAlias = tuple[KIn, ...]
+type Path[KIn] = tuple[KIn, ...]
 
 # remap() is Complicated and really difficult to define a type for, so I'm not
 # surprised the boltons package doesn't try to type it for you. This particular
