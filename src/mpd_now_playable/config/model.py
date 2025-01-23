@@ -35,7 +35,7 @@ class WebsocketsReceiverConfig(BaseReceiverConfig):
 	#: The hostname you'd like your WebSockets server to listen on. In most
 	#: cases the default behaviour, which binds to all network interfaces, will
 	#: be fine.
-	host: Optional[Host | tuple[Host, ...]] = None
+	host: Optional[Host] = None
 
 
 ReceiverConfig = Annotated[
