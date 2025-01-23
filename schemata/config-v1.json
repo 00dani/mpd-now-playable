@@ -5,9 +5,6 @@
 				"kind": {
 					"const": "cocoa",
 					"default": "cocoa",
-					"enum": [
-						"cocoa"
-					],
 					"title": "Kind",
 					"type": "string"
 				}
@@ -52,28 +49,14 @@
 		"WebsocketsReceiverConfig": {
 			"properties": {
 				"host": {
-					"anyOf": [
-						{
-							"format": "hostname",
-							"type": "string"
-						},
-						{
-							"items": {
-								"format": "hostname",
-								"type": "string"
-							},
-							"type": "array"
-						}
-					],
 					"description": "The hostname you'd like your WebSockets server to listen on. In most cases the default behaviour, which binds to all network interfaces, will be fine.",
-					"title": "Host"
+					"format": "hostname",
+					"title": "Host",
+					"type": "string"
 				},
 				"kind": {
 					"const": "websockets",
 					"default": "websockets",
-					"enum": [
-						"websockets"
-					],
 					"title": "Kind",
 					"type": "string"
 				},

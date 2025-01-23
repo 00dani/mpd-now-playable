@@ -136,9 +136,6 @@
 						},
 						{
 							"const": "oneshot",
-							"enum": [
-								"oneshot"
-							],
 							"type": "string"
 						}
 					],
@@ -172,9 +169,6 @@
 						},
 						{
 							"const": "oneshot",
-							"enum": [
-								"oneshot"
-							],
 							"type": "string"
 						}
 					],
@@ -328,9 +322,6 @@
 				"state": {
 					"const": "stop",
 					"default": "stop",
-					"enum": [
-						"stop"
-					],
 					"title": "State",
 					"type": "string"
 				}
