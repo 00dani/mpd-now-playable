@@ -37,4 +37,4 @@ def ns_image_to_media_item_artwork(img: NSImage) -> MPMediaItemArtwork:
 	)
 
 
-MPD_LOGO = logo_to_ns_image()
+MPD_LOGO = ns_image_to_media_item_artwork(logo_to_ns_image())
