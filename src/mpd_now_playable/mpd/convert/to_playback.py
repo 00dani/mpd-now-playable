@@ -9,8 +9,8 @@ from .to_song import to_song
 
 def to_queue(mpd: MpdState) -> Queue:
 	return Queue(
-		current=int(mpd.current["pos"]),
-		next=int(mpd.status["nextsong"]),
+		current=option_fmap(int, mpd.current.get("pos")),
+		next=int(mpd.status.get("nextsong", 0)),
 		length=int(mpd.status["playlistlength"]),
 	)
 
