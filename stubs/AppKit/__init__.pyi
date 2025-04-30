@@ -2,6 +2,16 @@ from typing import Final, Literal
 
 from Foundation import CGSize
 
+NSApplicationActivationPolicyRegular: Final = 0
+NSApplicationActivationPolicyAccessory: Final = 1
+NSApplicationActivationPolicyProhibited: Final = 2
+NSApplicationActivationPolicy = Literal[0, 1, 2]
+
+class NSApplication:
+	@staticmethod
+	def sharedApplication() -> NSApplication: ...
+	def setActivationPolicy_(self, policy: NSApplicationActivationPolicy) -> bool: ...
+
 # There are many other operations available but we only actually use copy, so we don't need all of them here.
 NSCompositingOperationClear: Final = 0
 NSCompositingOperationCopy: Final = 1

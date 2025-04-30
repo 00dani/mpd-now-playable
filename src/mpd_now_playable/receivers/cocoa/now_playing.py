@@ -1,6 +1,7 @@
 from collections.abc import Callable, Coroutine
 from typing import Literal
 
+from AppKit import NSApplication, NSApplicationActivationPolicyAccessory
 from MediaPlayer import (
 	MPChangePlaybackPositionCommandEvent,
 	MPMusicPlaybackStatePlaying,
@@ -42,6 +43,9 @@ class CocoaNowPlayingReceiver(Receiver):
 		pass
 
 	async def start(self, player: Player) -> None:
+		NSApplication.sharedApplication().setActivationPolicy_(
+			NSApplicationActivationPolicyAccessory
+		)
 		self.cmd_center = MPRemoteCommandCenter.sharedCommandCenter()
 		self.info_center = MPNowPlayingInfoCenter.defaultCenter()
 
