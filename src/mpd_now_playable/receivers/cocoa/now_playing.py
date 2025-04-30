@@ -1,7 +1,6 @@
 from collections.abc import Callable, Coroutine
 from typing import Literal
 
-from corefoundationasyncio import CoreFoundationEventLoop
 from MediaPlayer import (
 	MPChangePlaybackPositionCommandEvent,
 	MPMusicPlaybackStatePlaying,
@@ -11,6 +10,8 @@ from MediaPlayer import (
 	MPRemoteCommandHandlerStatus,
 	MPRemoteCommandHandlerStatusSuccess,
 )
+
+from corefoundationasyncio import CoreFoundationEventLoop
 
 from ...config.model import CocoaReceiverConfig
 from ...playback import Playback
