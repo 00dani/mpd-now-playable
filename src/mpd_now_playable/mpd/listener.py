@@ -18,6 +18,10 @@ from .types import MpdState
 
 
 class MpdStateListener(Player):
+	# Subsystems relevant to now-playing metadata and remote controls.
+	# Listening to all MPD subsystems can cause noisy wakeups (e.g. database
+	# updates), which drives unnecessary status/currentsong polling.
+	WATCHED_SUBSYSTEMS = ("player", "mixer", "options", "playlist", "partition")
 	config: MpdConfig
 	client: MPDClient
 	receivers: Iterable[Receiver]
@@ -53,7 +57,7 @@ class MpdStateListener(Player):
 		# Notify our receivers of the initial state MPD is in when this script loads up.
 		await self.update_receivers()
 		# And then wait for stuff to change in MPD. :)
-		async for subsystems in self.client.idle():
+		async for subsystems in self.client.idle(self.WATCHED_SUBSYSTEMS):
 			# If no subsystems actually changed, we don't need to update the receivers.
 			if not subsystems:
 				continue
