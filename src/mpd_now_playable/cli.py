@@ -34,7 +34,7 @@ def main() -> None:
 	asyncio.run(
 		listen(config, listener, receivers),
 		loop_factory=factory.make_loop,
-		debug=True,
+		debug=False,
 	)
 
 

@@ -3,7 +3,6 @@ from collections.abc import Iterable
 
 from mpd.asyncio import MPDClient
 from mpd.base import CommandError
-from rich import print as rprint
 from yarl import URL
 
 from ..config.model import MpdConfig
@@ -26,12 +25,14 @@ class MpdStateListener(Player):
 	receivers: Iterable[Receiver]
 	art_cache: MpdArtworkCache
 	idle_count = 0
+	last_playback: Playback | None
 
 	def __init__(self, cache: URL | None = None) -> None:
 		self.client = MPDClient()
 		self.art_cache = (
 			MpdArtworkCache(self, cache) if cache else MpdArtworkCache(self)
 		)
+		self.last_playback = None
 
 	async def start(self, conf: MpdConfig) -> None:
 		self.config = conf
@@ -53,6 +54,9 @@ class MpdStateListener(Player):
 		async for subsystems in self.client.idle(self.WATCHED_SUBSYSTEMS):
 			# If no subsystems actually changed, we don't need to update the receivers.
 			if not subsystems:
+				# MPD/python-mpd2 can occasionally wake idle() without reporting a
+				# changed subsystem; avoid a hot loop if that happens repeatedly.
+				await asyncio.sleep(0.1)
 				continue
 			self.idle_count += 1
 			await self.update_receivers()
@@ -76,7 +80,9 @@ class MpdStateListener(Player):
 
 		state = MpdState(status, current, art)
 		pb = to_playback(self.config, state)
-		rprint(pb)
+		if pb == self.last_playback:
+			return
+		self.last_playback = pb
 		await self.update(pb)
 
 	async def update(self, playback: Playback) -> None:

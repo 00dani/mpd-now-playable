@@ -19,7 +19,8 @@ def playback_to_media_item(playback: Playback) -> NSMutableDictionary:
 	if song := playback.active_song:
 		nowplaying_info = song_to_media_item(song)
 	nowplaying_info[MPNowPlayingInfoPropertyPlaybackQueueCount] = playback.queue.length
-	nowplaying_info[MPNowPlayingInfoPropertyPlaybackQueueIndex] = playback.queue.current
+	if playback.queue.current is not None:
+		nowplaying_info[MPNowPlayingInfoPropertyPlaybackQueueIndex] = playback.queue.current
 	return nowplaying_info
 
 
