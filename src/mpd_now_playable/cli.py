@@ -1,4 +1,5 @@
 import asyncio
+import sys
 from collections.abc import Iterable
 
 from rich import print
@@ -22,7 +23,23 @@ async def listen(
 	await listener.loop(receivers)
 
 
+def print_help() -> None:
+	print("Usage: mpd-now-playable [OPTIONS]")
+	print("")
+	print("Options:")
+	print("  -h, --help     Show this help message and exit.")
+	print("  -v, --version  Show version and exit.")
+
+
 def main() -> None:
+	args = set(sys.argv[1:])
+	if "-h" in args or "--help" in args:
+		print_help()
+		return
+	if "-v" in args or "--version" in args:
+		print(f"mpd-now-playable v{__version__}")
+		return
+
 	print(f"mpd-now-playable v{__version__}")
 	config = loadConfig()
 	print(config)
