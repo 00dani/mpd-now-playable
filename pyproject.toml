@@ -1,7 +1,7 @@
 [project]
 name = "mpd-now-playable"
 dynamic = ["version"]
-description = "Expose your MPD server as a 'now playable' app on MacOS"
+description = "Expose your MPD server as a 'now playable' app on macOS"
 authors = [
     {name = "Danielle McLean", email = "dani@00dani.me"},
 ]
@@ -52,6 +52,14 @@ mpd-now-playable = 'mpd_now_playable.cli:main'
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "mypy>=1.11",
+    "ruff>=0.15",
+    "class-doc>=0.2.6",
+]
+
 [tool.mypy]
 mypy_path = 'stubs'
 plugins = ['pydantic.mypy', 'mpd_now_playable.tools.schema.plugin']
@@ -77,8 +85,13 @@ select = [
     "C90",
 ]
 ignore = [
-    "ANN101", # missing-type-self
-    "ANN102", # missing-type-cls
+]
+
+[tool.ruff.lint.per-file-ignores]
+"src/corefoundationasyncio/eventloop.py" = [
+    "ANN",
+    "I001",
+    "S101",
 ]
 
 [tool.ruff.lint.flake8-annotations]
@@ -101,12 +114,3 @@ write_template = "__version__ = '{}'"
 
 [tool.pdm.build]
 excludes = ["**/.mypy_cache"]
-
-[tool.pdm.dev-dependencies]
-dev = [
-    "mypy>=1.11.0",
-    "ruff>=0.1.6",
-    "class-doc>=0.2.6",
-]
-
-

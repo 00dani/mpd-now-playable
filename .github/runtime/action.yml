@@ -1,0 +1,39 @@
+---
+name: Install runtime
+description: Install the required runtime and related base dependencies
+
+inputs:
+  python:
+    description: "Install Python"
+    default: "true"
+
+outputs:
+  python:
+    description: "Resolved version"
+    value: ${{ steps.get_version.outputs.python }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Determine version
+      id: get_version
+      shell: bash -eo pipefail {0}
+      run: |
+        python="$(grep -E '^requires-python\s*=\s*\"' pyproject.toml | sed -E 's/.*\"[^0-9]*([0-9]+\.[0-9]+).*/\1/' | head -n1)"
+        if [ -z "$python" ]; then
+          exit 1
+        fi
+        echo "python=${python}" >> "$GITHUB_OUTPUT"
+
+    - name: Install Python
+      if: ${{ inputs.python == 'true' }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ steps.get_version.outputs.python }}
+
+    - name: Show tooling information
+      shell: bash -eo pipefail {0}
+      run: |
+        set -x
+
+        python --version

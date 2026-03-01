@@ -1,0 +1,67 @@
+name: Static Checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: static-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install runtime
+        id: runtime
+        uses: ./.github/runtime
+
+      - name: Set up PDM
+        uses: pdm-project/setup-pdm@v4
+        with:
+          python-version: ${{ steps.runtime.outputs.python }}
+          cache: true
+
+      - name: Install dependencies
+        run: pdm sync -dG:all
+
+      - name: Ruff
+        run: pdm run ruff check src
+
+      - name: Mypy
+        run: pdm run mypy -p mpd_now_playable
+
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install runtime
+        id: runtime
+        uses: ./.github/runtime
+
+      - name: Set up PDM
+        uses: pdm-project/setup-pdm@v4
+        with:
+          python-version: ${{ steps.runtime.outputs.python }}
+          cache: true
+
+      - name: Install dependencies
+        run: pdm sync -dG:all
+
+      - name: Run tests
+        run: pdm run pytest tests
