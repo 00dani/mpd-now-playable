@@ -10,6 +10,7 @@ from ..playback import Playback
 from ..playback.state import PlaybackState
 from ..player import Player
 from ..song_receiver import Receiver
+from ..tools.asyncio import run_background_task
 from .artwork_cache import MpdArtworkCache
 from .convert.to_playback import to_playback
 from .types import MpdState
@@ -42,6 +43,12 @@ class MpdStateListener(Player):
 			print("Authorising to MPD with your password...")
 			await self.client.password(conf.password.get_secret_value())
 		print(f"Connected to MPD v{self.client.mpd_version}")
+		run_background_task(self.heartbeat())
+
+	async def heartbeat(self) -> None:
+		while True:
+			await self.client.ping()
+			await asyncio.sleep(10)
 
 	async def refresh(self) -> None:
 		await self.update_receivers()
