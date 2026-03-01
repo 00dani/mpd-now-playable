@@ -1,5 +1,7 @@
 from types import SimpleNamespace
 
+import pytest
+
 import mpd_now_playable.cli as cli
 
 
@@ -11,12 +13,15 @@ def test_main_help_prints_usage(monkeypatch, capsys) -> None:
 
 	monkeypatch.setattr(cli, "loadConfig", fail_load)
 
-	cli.main()
+	with pytest.raises(SystemExit) as exc:
+		cli.main()
+	assert exc.value.code == 0
 	output = capsys.readouterr().out
 
-	assert "Usage: mpd-now-playable [OPTIONS]" in output
-	assert "-h, --help" in output
-	assert "-v, --version" in output
+	assert "usage: mpd-now-playable" in output
+	assert "--version" in output
+	assert "install-launchagent" in output
+	assert "uninstall-launchagent" in output
 
 
 def test_main_version_prints_version(monkeypatch, capsys) -> None:
@@ -93,3 +98,43 @@ def test_main_starts_listener_and_receivers(monkeypatch) -> None:
 	assert seen["receivers"] == (receiver_1, receiver_2)
 	assert seen["listen_args"] == (config, listener, (receiver_1, receiver_2))
 	assert seen["run"] == (fake_coroutine, FakeLoopFactory.make_loop, False)
+
+
+def test_main_install_launchagent(monkeypatch, capsys) -> None:
+	seen = {}
+
+	def fake_install(*, label: str, force: bool) -> str:
+		seen["args"] = (label, force)
+		return "/tmp/example.plist"
+
+	monkeypatch.setattr(
+		cli.sys,
+		"argv",
+		["mpd-now-playable", "install-launchagent", "--label", "com.example.test", "--force"],
+	)
+	monkeypatch.setattr(cli, "install_launchagent", fake_install)
+
+	cli.main()
+	output = capsys.readouterr().out
+	assert seen["args"] == ("com.example.test", True)
+	assert "Installed LaunchAgent at /tmp/example.plist" in output
+
+
+def test_main_uninstall_launchagent(monkeypatch, capsys) -> None:
+	seen = {}
+
+	def fake_uninstall(*, label: str) -> str:
+		seen["label"] = label
+		return "/tmp/example.plist"
+
+	monkeypatch.setattr(
+		cli.sys,
+		"argv",
+		["mpd-now-playable", "uninstall-launchagent", "--label", "com.example.test"],
+	)
+	monkeypatch.setattr(cli, "uninstall_launchagent", fake_uninstall)
+
+	cli.main()
+	output = capsys.readouterr().out
+	assert seen["label"] == "com.example.test"
+	assert "Uninstalled LaunchAgent at /tmp/example.plist" in output

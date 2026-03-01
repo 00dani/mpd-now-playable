@@ -1,11 +1,24 @@
-# mpd-now-playable [![PyPI version](https://badge.fury.io/py/mpd-now-playable.svg)](https://badge.fury.io/py/mpd-now-playable)
+# mpd-now-playable
 
-This little Python program turns your MPD server into a [now playable app](https://developer.apple.com/documentation/mediaplayer/becoming_a_now_playable_app) on MacOS.
+[![PyPI version](https://badge.fury.io/py/mpd-now-playable.svg)](https://badge.fury.io/py/mpd-now-playable)
+
+This little Python program turns your MPD server into a [now playable app](https://developer.apple.com/documentation/mediaplayer/becoming_a_now_playable_app) on macOS.
 This enables your keyboard's standard media keys to control MPD, as well as more esoteric music control methods like the buttons on your Bluetooth headphones.
+
+## Table of Contents
+
+<!-- toc -->
+
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Limitations](#limitations)
+
+<!-- tocstop -->
 
 ## Installation
 
 The recommended way to install mpd-now-playable and its dependencies is with [pipx](https://pypa.github.io/pipx/):
+
 ```shell
 pipx install mpd-now-playable
 # or, if you'd like to use a separate cache service, one of these:
@@ -15,7 +28,27 @@ pipx install mpd-now-playable[memcached]
 
 Once pipx is done, the `mpd-now-playable` script should be available on your `$PATH` and ready to use.
 
-Most likely, you'll want mpd-now-playable to stay running in the background as a launchd service. [Here's the service plist I use](https://git.00dani.me/00dani/mpd-now-playable/src/branch/main/me.00dani.mpd-now-playable.plist), but it's hardcoded to my `$HOME` so you'll want to customise it.
+Most likely, you'll want mpd-now-playable to stay running in the background as a `launchd` service. The CLI can install a per-user LaunchAgent for you:
+
+```shell
+mpd-now-playable install-launchagent
+```
+
+This writes `~/Library/LaunchAgents/me.00dani.mpd-now-playable.plist`, bootstraps it with `launchctl`, and starts it immediately.
+
+To replace an existing LaunchAgent plist:
+
+```shell
+mpd-now-playable install-launchagent --force
+```
+
+To remove it later:
+
+```shell
+mpd-now-playable uninstall-launchagent
+```
+
+You may override the launchd label in both commands with `--label`.
 
 ## Configuration
 
@@ -37,6 +70,7 @@ Additionally, mpd-now-playable caches your album artwork, by default simply in m
 You may provide a `namespace` query parameter to prefix cache keys if you wish, as well as a `password` query parameter if your service requires a password to access. As with your other environment variables, keep your cache password secure.
 
 One simple secure way to set your environment variables is with a small wrapper script like this:
+
 ```shell
 #!/bin/sh
 export MPD_HOSTNAME=my.cool.mpd.host
@@ -45,12 +79,15 @@ export MPD_PASSWORD=swordfish
 export MPD_NOW_PLAYABLE_CACHE='redis://localhost:6379/0?namespace=mpd-now-playable&password=fishsword'
 exec mpd-now-playable
 ```
+
 Make sure this wrapper script is only readable by you, with something like `chmod 700`!
+
+If you're using launchd, you can point `ProgramArguments` in your plist at that wrapper script instead.
 
 ## Limitations
 
-mpd-now-playable is currently *very* specific to MacOS. I did my best to keep the generic MPD and extremely Apple parts separate, but it definitely won't work with MPRIS2 or the Windows system media feature.
+mpd-now-playable is currently _very_ specific to macOS. I did my best to keep the generic MPD and extremely Apple parts separate, but it definitely won't work with MPRIS2 or the Windows system media feature.
 
-Chances are my MacOS integration code isn't the best, either. This is the first project I've written using PyObjC and it took a lot of fiddling to get working.
+Chances are my macOS integration code isn't the best, either. This is the first project I've written using PyObjC and it took a lot of fiddling to get working.
 
 I'm very open to contributions to fix any of these things, if you're interested in writing them!
