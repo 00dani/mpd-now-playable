@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copied from https://github.com/alberthier/corefoundationasyncio/blob/5061b9b7daa8bcd40d54d58432d84dcc0a339ca6/corefoundationasyncio.py
 # This module is copied, rather than simply installed, because the PyPI version of this module depends on *all* of PyObjC even though it only needs pyobjc-framework-Cocoa.
-# There's an open PR to fix this: httpsV//github.com/alberthier/corefoundationasyncio/pull/3
+# There's an open PR to fix this: https://github.com/alberthier/corefoundationasyncio/pull/3
 
 
 import asyncio
@@ -10,8 +10,8 @@ import threading
 
 from CoreFoundation import (
     CFRunLoopGetCurrent,
-    CFRunLoopTimerCreate, CFRunLoopAddTimer, CFRunLoopRemoveTimer, CFAbsoluteTimeGetCurrent,
-    CFFileDescriptorCreate, CFFileDescriptorIsValid, CFFileDescriptorEnableCallBacks, CFFileDescriptorDisableCallBacks,
+    CFRunLoopTimerCreate, CFRunLoopAddTimer, CFRunLoopRemoveTimer, CFRunLoopTimerInvalidate, CFAbsoluteTimeGetCurrent,
+    CFFileDescriptorCreate, CFFileDescriptorIsValid, CFFileDescriptorEnableCallBacks, CFFileDescriptorDisableCallBacks, CFFileDescriptorInvalidate,
     CFFileDescriptorCreateRunLoopSource, CFRunLoopAddSource, CFRunLoopRemoveSource,
     kCFAllocatorDefault, kCFRunLoopDefaultMode, kCFRunLoopCommonModes,
     kCFFileDescriptorReadCallBack, kCFFileDescriptorWriteCallBack
@@ -106,8 +106,15 @@ class CoreFoundationEventLoop(asyncio.SelectorEventLoop):
         if handle.cancelled():
             return
         def ontimeout(cf_timer, info):
-            if not handle.cancelled():
-                handle._run()
+            try:
+                if not handle.cancelled():
+                    handle._run()
+            finally:
+                # Explicitly invalidate/remove one-shot timers. Relying on
+                # implicit cleanup can leak CoreFoundation timer objects under
+                # long-running loads.
+                CFRunLoopRemoveTimer(self._runloop, cf_timer, kCFRunLoopCommonModes)
+                CFRunLoopTimerInvalidate(cf_timer)
         when = handle.when() if is_timer else self.time()
         cf_timer = CFRunLoopTimerCreate(kCFAllocatorDefault, when, 0, 0, 0, ontimeout, None)
         CFRunLoopAddTimer(self._runloop, cf_timer, kCFRunLoopCommonModes)
@@ -116,7 +123,10 @@ class CoreFoundationEventLoop(asyncio.SelectorEventLoop):
             handle._scheduled = True
 
     def _timer_handle_cancelled(self, handle):
-        CFRunLoopRemoveTimer(self._runloop, handle.cf_runloop_timer, kCFRunLoopCommonModes)
+        if handle.cf_runloop_timer is not None:
+            CFRunLoopRemoveTimer(self._runloop, handle.cf_runloop_timer, kCFRunLoopCommonModes)
+            CFRunLoopTimerInvalidate(handle.cf_runloop_timer)
+            handle.cf_runloop_timer = None
 
     def time(self):
         return CFAbsoluteTimeGetCurrent()
@@ -161,6 +171,7 @@ class CoreFoundationEventLoop(asyncio.SelectorEventLoop):
             CFFileDescriptorDisableCallBacks(entry.cf_fd, event)
         else:
             CFRunLoopRemoveSource(self._runloop, entry.cf_source, kCFRunLoopDefaultMode)
+            CFFileDescriptorInvalidate(entry.cf_fd)
         return True
 
     def _add_reader(self, fd, callback, *args):
