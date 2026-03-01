@@ -2,7 +2,7 @@ import asyncio
 import sys
 from collections.abc import Iterable
 
-from rich import print
+from rich import print as rich_print
 
 from .__version__ import __version__
 from .config.load import loadConfig
@@ -40,9 +40,9 @@ def main() -> None:
 		print(f"mpd-now-playable v{__version__}")
 		return
 
-	print(f"mpd-now-playable v{__version__}")
+	rich_print(f"mpd-now-playable v{__version__}")
 	config = loadConfig()
-	print(config)
+	rich_print(config)
 
 	listener = MpdStateListener(config.cache)
 	receivers = tuple(construct_receiver(rec_config) for rec_config in config.receivers)
