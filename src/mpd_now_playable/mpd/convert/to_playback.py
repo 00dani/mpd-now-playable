@@ -17,10 +17,13 @@ def to_queue(mpd: MpdState) -> Queue:
 
 def to_mixramp(mpd: MpdState) -> MixRamp:
 	delay = mpd.status.get("mixrampdelay", 0)
+	db = mpd.status.get("mixrampdb", 0)
 	if delay == "nan":
 		delay = 0
+	if db == "nan":
+		db = 0
 	return MixRamp(
-		db=float(mpd.status.get("mixrampdb", 0)),
+		db=float(db),
 		delay=float(delay),
 	)
 
