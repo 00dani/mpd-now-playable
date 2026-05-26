@@ -24,6 +24,13 @@ def file_to_url(config: MpdConfig, file: str) -> URL | None:
 	return URL(abs_file.as_uri())
 
 
+def first_maybe_plural(value: str | list[str] | None) -> str | None:
+	values = un_maybe_plural(value)
+	if not values:
+		return None
+	return values[0]
+
+
 def to_song(config: MpdConfig, mpd: MpdState) -> Song | Stopped:
 	state = PlaybackState(mpd.status["state"])
 	if state == PlaybackState.stop:
@@ -42,8 +49,8 @@ def to_song(config: MpdConfig, mpd: MpdState) -> Song | Stopped:
 		album_artist=un_maybe_plural(mpd.current.get("albumartist")),
 		composer=un_maybe_plural(mpd.current.get("composer")),
 		genre=un_maybe_plural(mpd.current.get("genre")),
-		track=option_fmap(int, mpd.current.get("track")),
-		disc=option_fmap(int, mpd.current.get("disc")),
+		track=option_fmap(int, first_maybe_plural(mpd.current.get("track"))),
+		disc=option_fmap(int, first_maybe_plural(mpd.current.get("disc"))),
 		duration=option_fmap(float, mpd.status.get("duration")),
 		elapsed=float(mpd.status["elapsed"]),
 		musicbrainz=to_brainz(mpd.current),
