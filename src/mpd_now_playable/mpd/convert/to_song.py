@@ -5,7 +5,7 @@ from yarl import URL
 from ...config.model import MpdConfig
 from ...playback.state import PlaybackState
 from ...song import Song, Stopped, to_artwork, to_brainz
-from ...tools.types import option_fmap, un_maybe_plural
+from ...tools.types import first_fmap, option_fmap, un_maybe_plural
 from ..types import MpdState
 
 
@@ -42,8 +42,8 @@ def to_song(config: MpdConfig, mpd: MpdState) -> Song | Stopped:
 		album_artist=un_maybe_plural(mpd.current.get("albumartist")),
 		composer=un_maybe_plural(mpd.current.get("composer")),
 		genre=un_maybe_plural(mpd.current.get("genre")),
-		track=option_fmap(int, mpd.current.get("track")),
-		disc=option_fmap(int, mpd.current.get("disc")),
+		track=first_fmap(int, mpd.current.get("track")),
+		disc=first_fmap(int, mpd.current.get("disc")),
 		duration=option_fmap(float, mpd.status.get("duration")),
 		elapsed=float(mpd.status["elapsed"]),
 		musicbrainz=to_brainz(mpd.current),

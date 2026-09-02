@@ -78,11 +78,11 @@ class CurrentSongTags(MusicBrainzTags, total=False):
 	albumartistsort: MaybePlural[str]
 	title: str
 	album: MaybePlural[str]
-	track: str
+	track: MaybePlural[str]
 	date: str
 	originaldate: str
 	composer: MaybePlural[str]
-	disc: str
+	disc: MaybePlural[str]
 	label: str
 	genre: MaybePlural[str]
 
