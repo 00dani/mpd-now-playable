@@ -65,6 +65,9 @@ mypy_path = 'stubs'
 plugins = ['pydantic.mypy', 'mpd_now_playable.tools.schema.plugin']
 enable_incomplete_feature = 'NewGenericSyntax'
 
+[tool.ty.environment]
+extra-paths = ['./stubs']
+
 [tool.ruff.lint]
 select = [
     # pycodestyle
