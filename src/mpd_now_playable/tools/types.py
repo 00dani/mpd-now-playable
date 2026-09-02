@@ -6,6 +6,7 @@ __all__ = (
 	"MaybePlural",
 	"option_fmap",
 	"un_maybe_plural",
+	"first_fmap",
 )
 
 # Accept as many types as possible that are not lists. Yes, having to identify
@@ -51,3 +52,17 @@ def un_maybe_plural[T: AnyExceptList](value: MaybePlural[T] | None) -> list[T]:
 			return values[:]
 		case item:
 			return [item]
+
+
+# Composition of the above two operations (option_fmap . un_maybe_plural) -
+# given a value that may potentially be plural or None, map over only the first
+# element (if it exists). Doesn't actually use option_fmap to do this for
+# simplicity of implementation, but functionally works the same way. Something
+# something monad transformers.
+def first_fmap[U: AnyExceptList, V](
+	f: Callable[[U], V], value: MaybePlural[U] | None
+) -> V | None:
+	value = un_maybe_plural(value)
+	if not value:
+		return None
+	return f(value[0])
