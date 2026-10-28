@@ -136,26 +136,32 @@ class CoreFoundationEventLoop(asyncio.SelectorEventLoop):
     # The remove_*() methods return True if something was removed,
     # False if there was nothing to delete.
 
-    def _register_fd(self, fd, event, callback, args):
+    def _register_fd(self, fd, event, callback, args, context=None):
         entry = self._registered_fds.get(fd)
         if entry is not None:
             CFFileDescriptorEnableCallBacks(entry.cf_fd, event)
-            entry.callbacks[event] = (callback, args)
+            entry.callbacks[event] = (callback, args, context)
         else:
             def fd_callback(file_desc, callback_types, entry):
                 if callback_types & kCFFileDescriptorReadCallBack:
-                    (callback, args) = entry.callbacks[kCFFileDescriptorReadCallBack]
-                    callback(*args)
+                    (callback, args, context) = entry.callbacks[kCFFileDescriptorReadCallBack]
+                    if context:
+                        context.run(callback, args)
+                    else:
+                        callback(*args)
                 if callback_types & kCFFileDescriptorWriteCallBack:
-                    (callback, args) = entry.callbacks[kCFFileDescriptorWriteCallBack]
-                    callback(*args)
+                    (callback, args, context) = entry.callbacks[kCFFileDescriptorWriteCallBack]
+                    if context:
+                        context.run(callback, args)
+                    else:
+                        callback(*args)
                 if CFFileDescriptorIsValid(file_desc):
                     CFFileDescriptorEnableCallBacks(file_desc, callback_types)
 
             entry = _FDEntry()
             entry.cf_fd = CFFileDescriptorCreate(kCFAllocatorDefault, fd, 0, fd_callback, entry)
             CFFileDescriptorEnableCallBacks(entry.cf_fd, event)
-            entry.callbacks[event] = (callback, args)
+            entry.callbacks[event] = (callback, args, context)
             entry.cf_source = CFFileDescriptorCreateRunLoopSource(kCFAllocatorDefault, entry.cf_fd, 0)
             self._registered_fds[fd] = entry
             CFRunLoopAddSource(self._runloop, entry.cf_source, kCFRunLoopDefaultMode)
@@ -174,18 +180,18 @@ class CoreFoundationEventLoop(asyncio.SelectorEventLoop):
             CFFileDescriptorInvalidate(entry.cf_fd)
         return True
 
-    def _add_reader(self, fd, callback, *args):
+    def _add_reader(self, fd, callback, *args, context=None):
         self._check_closed()
-        self._register_fd(fd, kCFFileDescriptorReadCallBack, callback, args)
+        self._register_fd(fd, kCFFileDescriptorReadCallBack, callback, args, context)
 
     def _remove_reader(self, fd):
         if self.is_closed():
             return False
         return self._unregister_fd(fd, kCFFileDescriptorReadCallBack)
 
-    def _add_writer(self, fd, callback, *args):
+    def _add_writer(self, fd, callback, *args, context=None):
         self._check_closed()
-        self._register_fd(fd, kCFFileDescriptorWriteCallBack, callback, args)
+        self._register_fd(fd, kCFFileDescriptorWriteCallBack, callback, args, context)
 
     def _remove_writer(self, fd):
         if self.is_closed():
